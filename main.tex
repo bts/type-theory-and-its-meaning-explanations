@@ -113,8 +113,8 @@ equivalently, we can display this as a rule of inference:
   }
 \]
 
-A direct verification of $P\land Q$ consists in a direct verification of $P$
-and a direct verification of $Q$; this validates the assertion of the judgement
+A direct verification of $P\land Q$ consists in a verification of $P$
+and a verification of $Q$; this validates the assertion of the judgement
 \hyp{\istrue{P\land Q}}{\istrue{P},\istrue{Q}}. Because it is a valid
 inference, we can write it as an inference rule:
 \[
@@ -126,7 +126,7 @@ inference, we can write it as an inference rule:
   }
 \]
 
-A direct verification of $P\lor Q$ may be got either from a direct verification
+A direct verification of $P\lor Q$ may be got either from a verification
 of $P$ or one of $Q$. From this definition we know \hyp{\isprop{P\lor
 Q}}{\isprop{P},\isprop{Q}}, or
 \[
@@ -184,7 +184,7 @@ this judgement is going to be made evident, then we must indeed come up with
 what should count as a direct verification of $P\supset Q$ under the
 assumptions described above.
 
-And so to have a direct verification of $P\supset Q$ is to have a direct
+And so to have a direct verification of $P\supset Q$ is to have a
 verification of $Q$ assuming that one has one of $P$; this is the meaning of
 implication, and it validates the judgement \hyp{\istrue{P\supset
 Q}}{\hyp{\istrue{Q}}{\istrue{P}}} (elliding the hypothesis for
@@ -246,8 +246,56 @@ Now, we can rewrite the previous meaning explanation as follows:
   canonical (direct) verification of $P$.
 \end{quote}
 
+The meaning explanation for \isprop{P} must be accordingly modified to take
+into account the computational behavior of the expression domain:
+\begin{quote}
+  To know \isprop{P} is to know a $P'$ such that \reduce{P}{P'} and $P'$ is a
+  canonical proposition, which is to say, that one knows what counts as a
+  canonical verification for $P'$.
+\end{quote}
+
+As an example, then, the we will update the evidence of the assertion
+\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}. The meaning
+of this, expanded into spoken language, is as follows:
+\begin{quote}
+  To know \hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}} is
+  to know that what counts as a canonical verification of $P\subset Q$ under
+  the circumstances that \reduce{P}{P'}, such one knows what counts as a
+  canonical verification $P'$, and, if one has such a verification,
+  \reduce{Q}{Q'} such that one knows what counts as a canonical verification of
+  $Q'$.
+\end{quote}
+
+And this is evident, since we will say that a canonical verification of
+$P\subset Q$ is an expression $\lambda x. E$ such that we know
+\hyp{\ver{E}{Q}}{\ver{x}{P}}. This validates the assertion \hyp{\ver{\lambda
+x.E}{P\supset Q}}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}, written as an inference rule:
+\[
+  \infer{
+    \ver{\lambda x.E}{P\supset Q}
+  }{
+    \hyp{\ver{E}{Q}}{\ver{x}{P}}
+  }
+\]
+
 By the addition of this judgement, we have graduated from a logical theory to a
 type theory, in the sense of \emph{Constructive Mathematics and Computer
-Programming} (Martin-L\"of, 1979).
+Programming} (Martin-L\"of, 1979). In fact, we may dispense with the original
+\istrue{P} form of judgement by \emph{defining} it in terms of the new
+\ver{M}{P} judgement as follows:
+\[
+  \infer={
+    \ver{M}{P}
+  }{
+    \istrue{P}
+  }
+\]
+
+Further forms of judgement, such as assertions of equality between propositions
+and verifications, may be added, as Martin-L\"of does. However, this is not
+strictly necessary as they too may be defined in terms of the $\ver{M}{P}$
+judgement in the presence of an \emph{equality} proposition; this is what is
+done in Constable et al's Computational Type Theory, which has only one
+primitive form of judgement.
 
 \end{document}
