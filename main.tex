@@ -1,0 +1,253 @@
+\documentclass{amsart}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{multicol}
+\usepackage{proof}
+\usepackage{setspace}
+\usepackage{stmaryrd}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+\numberwithin{equation}{section}
+
+\newcommand\isprop[1]{\ensuremath{#1\;\mathit{prop}}}
+\newcommand\istrue[1]{\ensuremath{#1\;\mathit{true}}}
+\newcommand\hyp[2]{\ensuremath{#1\ [#2]}}
+\newcommand\ver[2]{\ensuremath{#1\in#2}}
+\newcommand\reduce[2]{\ensuremath{#1\Rightarrow#2}}
+
+\begin{document}
+\title{Type theory and its meaning explanations}
+\author{Jonathan Sterling}
+% \address{AlephCloud Systems}
+% \email{jon@jonmsterling.com}
+
+\maketitle
+
+\onehalfspacing
+
+To start, we will consider the notion of a \emph{logical theory}; in my mind,
+it starts with a species (or set) of judgements that can be proposed, asserted,
+and (if they are evident) known.
+
+\section{Judgements of a Logical Theory}
+
+The basic forms of judgement for a logical theory will be \framebox{\isprop{P}} and
+\framebox{\istrue{P}}; and what is $P$? It is a member of the species of terms,
+which are made meaningful in the course of making the judgement
+$\isprop{P}$ evident for a proposition $P$.
+
+To each judgement is assigned a \emph{meaning explanation}, which explicates
+the knowledge-theoretic content of the judgement. For a judgement
+$\mathcal{J}$, a meaning explanation should be in the form:
+\begin{quote}
+  To know $\mathcal{J}$ is to know...
+\end{quote}
+
+The meaning of the judgement \isprop{P} is, then, as follows:
+\begin{quote}
+  To know \isprop{P} is to know that $P$ is a proposition, which is to know
+  what counts as a direct verification of $P$.
+\end{quote}
+
+So if a symbol $P$ is taken to denote a proposition, we must know \emph{what
+sort of thing} is to be taken as a direct verification of $P$, and this is by
+definition. A ``direct verification'' is understood in constrast with an
+``indirect verification'', which is to be thought of as a means or plan for
+verifying the proposition. Now, the judgement \istrue{P} is only meaningful in
+case we know \isprop{P} (this is called a presupposition). Then the meaning of
+\istrue{P} is as follows:
+\begin{quote}
+  To know \istrue{P} is to have a verification of $P$.
+\end{quote}
+
+From the (implicit) presupposition \isprop{P}, we already know what counts as a
+verification, so the meaning explanation is well-defined. Note that it is the
+same to have a means or plan for verifying $P$ as to have a (direct)
+verification; this follows from the fact that one may put into action a plan
+for verifying $P$ and get out such a verification, and likewise, it is possible
+to propound a plan of verification by appealing to an existing verification.
+
+The judgement we have described so far are ``categorical'' in the sense that
+they are made without assumption. We will need to define a further form of
+judgement, which is called ``hypothetical'', and this is the judgement under
+hypothesis \framebox{\hyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n}}. And
+its meaning explanation is as follows:
+
+\begin{quote}
+  To know the judgement \hyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n} is to know the
+  categorical judgement $\mathcal{J}$ when you know the judgements
+  $\mathcal{J}_1\dots\mathcal{J}_n$.
+\end{quote}
+
+
+\section{Propositions}
+Now that we have propounded and explained the minimal system of judgements for
+a logical theory, let us populate it with propositions. First, we have falsity
+$\bot$, and we wish to make \isprop{\bot} evident; to do this, we simply state
+what counts as a direct verification of $\bot$, which is that there can be no
+direct verification of $\bot$.
+
+The next basic proposition is trivial true $\top$, and to make \isprop{\top}
+evident, we state that a direct verification of $\top$ is trivial. The meaning
+of $\top$ thus validates the judgement \istrue{\top}.
+
+Next, let us define conjunction; in doing so, we will make evident the
+hypothetical judgmenet \hyp{\isprop{P\land Q}}{\isprop{P},\isprop{Q}};
+equivalently, we can display this as a rule of inference:
+\[
+  \infer{
+    \isprop{P\land Q}
+  }{
+    \isprop{P} &
+    \isprop{Q}
+  }
+\]
+
+A direct verification of $P\land Q$ consists in a direct verification of $P$
+and a direct verification of $Q$; this validates the assertion of the judgement
+\hyp{\istrue{P\land Q}}{\istrue{P},\istrue{Q}}. Because it is a valid
+inference, we can write it as an inference rule:
+\[
+  \infer{
+    \istrue{P\land Q}
+  }{
+    \istrue{P} &
+    \istrue{Q}
+  }
+\]
+
+A direct verification of $P\lor Q$ may be got either from a direct verification
+of $P$ or one of $Q$. From this definition we know \hyp{\isprop{P\lor
+Q}}{\isprop{P},\isprop{Q}}, or
+\[
+  \infer{
+    \isprop{P\lor Q}
+  }{
+    \isprop{P} &
+    \isprop{Q}
+  }
+\]
+The verification conditions of disjunction give
+rise to two evident judgements \hyp{\istrue{P\lor Q}}{\istrue{P}} and
+\hyp{\istrue{P\lor Q}}{\istrue{Q}}, which we can write as inference rules:
+\begin{gather*}
+  \infer{
+    \istrue{P\lor Q}
+  }{
+    \istrue{P}
+  }
+  \qquad
+  \infer{
+    \istrue{P\lor Q}
+  }{
+    \istrue{Q}
+  }
+\end{gather*}
+
+Finally, we must define the circumstances under which $P\supset Q$ is a
+proposition (i.e.\ when \isprop{P\supset q} is evident). And we intend this to
+be under the circumstances that $P$ is a proposition, and also that $Q$ is a
+proposition assuming that $P$ is true. In other words, \hyp{\isprop{P\supset
+Q}}{\isprop{P}, \hyp{\isprop{Q}}{\istrue{P}}}, or
+\[
+  \infer{
+    \isprop{P\supset Q}
+  }{
+    \isprop{P} &
+    \hyp{\isprop{Q}}{\istrue{P}}
+  }
+\]
+
+Now, to validate this judgement will be a bit more complicated than the
+previous ones. But by unfolding the meaning explanations for hypothetical
+judgement, proposition-hood and truth of a proposition, we arrive at the
+following explanation:
+\begin{quote}
+  To know \hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}} is
+  to know what counts as a direct verification of $P\supset Q$ when one knows what
+  counts as a direct verification of $P$, and, when one has such a verification, what
+  counts as a direct verification of $Q$.
+\end{quote}
+
+(Note that unless \istrue{P}, it need not be evident that \isprop{Q}.) Now, if
+this judgement is going to be made evident, then we must indeed come up with
+what should count as a direct verification of $P\supset Q$ under the
+assumptions described above.
+
+And so to have a direct verification of $P\supset Q$ is to have a direct
+verification of $Q$ assuming that one has one of $P$; this is the meaning of
+implication, and it validates the judgement \hyp{\istrue{P\supset
+Q}}{\hyp{\istrue{Q}}{\istrue{P}}} (elliding the hypothesis for
+propositionhood), and may be written as an inference rule as follows:
+\[
+  \infer{
+    \istrue{P\supset Q}
+  }{
+    \hyp{\istrue{Q}}{\istrue{P}}
+  }
+\]
+
+\section{Judgements for Verifications}
+
+So far, we have given judgements which circumscribe what it means to be a
+proposition, and thence for each proposition, we have by definition a notion of
+what should count as a verification of that proposition. And by definition, to
+assert the judgment \istrue{P} is to assert that one has a verification of $P$,
+but we have not considered any judgements which actually describe such
+verifications.
+
+It is a hallmark of Martin-L\"of's program to resolve the contradiction between
+syntax and semantics not by choosing symbols over meanings or meanings over
+symbols, but by endowing symbols with meaning in the course of making evident
+the true judgements. As such $P$ is a symbol, but when we assert \isprop{P} we
+are saying that we know what proposition $P$ denotes.
+
+A similar thing can be done with verifications themselves, by placing them in
+the syntactic domain together with the propositional symbols. And then, we can
+consider a judgement such as ``$M$ is a verification of $P$'', and in knowing
+that judgement, we know what verification $M$ is meant to denote. In practice,
+this judgement has been written in several ways:\\\medskip
+\begin{tabular}{c|l}
+  $M\in P$ & $M$ is an element of $P$\\
+  $M\Vdash P$ & $M$ realizes $P$\\
+  $P\ \llcorner\mathsf{ext}\; M\lrcorner$ & $P$ is witnessed by $M$
+\end{tabular}
+
+But they all mean the same thing, and so we will tentatively give the following
+meaning explanation to this new judgement:
+\begin{quote}
+  * To know $\ver{M}{P}$ is to know that $M$ is a verification of $P$.
+\end{quote}
+
+But now that we have started to assign expressions to verifications, we must be
+more careful about differentiating \emph{direct verifications} (which we will
+call ``canonical''') from \emph{indirect verifications} (which we will call
+``non-canonical''). So the domain of expressions must itself be accorded with a
+notion of reduction to canonical form, and this corresponds with putting into
+action a plan of verification in order to get an actual verification.
+\begin{quote}
+  To know \reduce{M}{M'} is to know that $M$ is an expression which reduces to
+  a canonical form $M'$.
+\end{quote}
+
+Now, we can rewrite the previous meaning explanation as follows:
+\begin{quote}
+  To know \ver{M}{P} is to know an $M'$ such that \reduce{M}{M'} and $M'$ is a
+  canonical (direct) verification of $P$.
+\end{quote}
+
+By the addition of this judgement, we have graduated from a logical theory to a
+type theory, in the sense of \emph{Constructive Mathematics and Computer
+Programming} (Martin-L\"of, 1979).
+
+\end{document}
