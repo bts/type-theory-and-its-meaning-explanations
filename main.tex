@@ -21,12 +21,16 @@
 
 \newcommand\isprop[1]{\ensuremath{#1\;\mathit{prop}}}
 \newcommand\istrue[1]{\ensuremath{#1\;\mathit{true}}}
-\newcommand\hyp[2]{\ensuremath{#1\ [#2]}}
+\newcommand\hyp[2]{\ensuremath{#1\ (#2)}}
 \newcommand\ver[2]{\ensuremath{#1\in#2}}
 \newcommand\reduce[2]{\ensuremath{#1\Rightarrow#2}}
 \newcommand\naturals{\ensuremath{\mathbb{N}}}
 \newcommand\suc[1]{\ensuremath{\mathsf{S}(#1)}}
 \newcommand\natrec[3]{\ensuremath{\mathsf{rec}_\naturals(#1;#2;#3)}}
+\newcommand\lfhyp[2]{\ensuremath{#1\ [#2]}}
+\newcommand\MLLF{\textbf{MLLF}}
+
+\newcommand\type[1]{\ensuremath{#1:\mathit{type}}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
@@ -351,7 +355,7 @@ proposition whose truth is not known:
 \subsection{Proof of a judgement vs.\ verification of a proposition}
 
 Because the judgement \ver{M}{P} is synthetic, we cannot say that it gives rise
-to a proof theory for the logic, since the core judgment of a proof theory
+to a proof theory for the logic, since the core judgement of a proof theory
 $M:A$ must be analytic, in order to avoid the infinite regress of a proof
 theory requiring a proof theory requiring a proof theory, and so on.
 
@@ -403,5 +407,112 @@ In short, the judgements \ver{M}{P} and $M:P$ are unrelated to each other in
 two respects: firstly, that they have different meanings, and secondly that the
 one is at the same level as the judgements of a logical theory, whereas the the
 latter is a judgement in a theory which is defined over a logical theory.
+
+\subsection{Meaning explanations for proof theoretic type theory}
+
+%% In a computational type theory which is defined by the meaning explanations,
+%% the computational content of terms is understood immediately by means of the
+%% \reduce{M}{M'} relation; that is, computation is prior to the main judgements
+%% because their meaning explanations are defined in terms of evaluation to
+%% canonical form.
+%%
+%% In contrast, the computational content of a proof-theoretic type theory is not
+%% understood primitively, but comes through a metamathematical argument (a proof
+%% of a property called ``strong normalization''), and is used in practice to
+%% implement an algorithm to decide the judgements of the theory. As such, the
+%% meaning explanations for this kind of theory do not contain the phrase
+%% ``evaluates to a canonical...'', since evaluation can only be understood
+%% through a metamathematical argument, which necessarily requires understanding
+%% of the judgements of the theory. To avoid this apparent impredicativity, then,
+%% the meaning explanation for the judgement $M:A$ doesn't refer to evaluation.
+
+To make this more concrete, let us expound a proof theoretic type theory called
+\MLLF, which stands for ``Martin-L\"of's Logical Framework''; in the course of
+introducing each type, we will specify which judgement of the underlying
+logical theory $\mathcal{L}$ it is meant to interpret. Since we are now
+beginning to refer to judgements in multiple theories, where there is
+ambiguity, we will use the notation ``$\mathcal{T}$-judgement'' to refer to a
+judgement in the theory $\mathcal{T}$, and $\mathcal{T}\vdash\mathcal{J}$ will
+be shorthand for ``the $\mathcal{T}$-judgement $\mathcal{J}$ is evident''.
+
+We start with four categorical judgements:\\
+
+\begin{tabular}{c|l}
+Judgement & Pronunciation \\ \hline
+  \type{\alpha} & $\alpha$ is a type \\
+  \type{\alpha=\beta} & $\alpha$ and $\beta$ are equal types \\
+  $M:\alpha$ & $M$ is of type $\alpha$ \\
+  $M=N:\alpha$ & $M$ and $N$ are equal at type $\alpha$ \\
+\end{tabular}
+
+But we have not defined the meaning of the judgements; let us do so below:
+
+\begin{quote}
+  To know $\type\alpha$ is to know what counts as an object of type $\alpha$,
+  and when two such objects are equal.
+\end{quote}
+
+We leave the question of what is an ``object'' as abstract, allowing that to be
+defined on a type-by-type basis; in many cases, types will represent
+$\mathcal{L}$-judgements and objects will represent $\mathcal{L}$-derivations.
+
+\begin{quote}
+  To know $\type{\alpha=\beta}$ is to know that any object of type $\alpha$ is
+  also an object of type $\beta$, and two equal objects of type $\alpha$ are
+  equal as objects of type $\beta$ (necessarily presupposing \type\alpha and
+  \type\beta).
+\end{quote}
+
+\begin{quote}
+  To know $M:\alpha$ is to know that $M$ is an object of type $\alpha$
+  (necessarily presupposing \type\alpha).
+\end{quote}
+
+\begin{quote}
+  To know $M=N:\alpha$ is to know that $M$ and $N$ are equal objects of type
+  $\alpha$ (necessarily presupposing $M:\alpha$ and $N:\alpha$).
+\end{quote}
+
+Next, we will introduce hypothetical judgement in the logical framework; to
+avoid confusion, where \hyp{\mathcal{J}}{\mathcal{J}'} is a hypothetical
+$\mathcal{L}$-judgement, we will use \lfhyp{\mathcal{J}}{\mathcal{J}'} for
+hypothetical judgements in the logical framework. Then,
+
+\begin{quote}
+  To know \lfhyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n} is to know $\mathcal{J}$ when one knows $\mathcal{J}...\mathcal{J}_n$.
+\end{quote}
+
+At this point, we may begin adding types to the logical framework. In practice,
+most types which we will introduce in the logical framework will be defined in
+terms of a judgement of the logical theory $\mathcal{L}$ which lies below it.
+For instance, hypothetical judgement in $\mathcal{L}$ is represented by a
+function type in the logical framework, $(x:\alpha)\beta$, whose typehood is
+meant to be evident under the following circumstances
+\[
+  \infer{
+    \type{(x:\alpha)\beta}
+  }{
+    \type\alpha &
+    \lfhyp{\type\beta}{x:\alpha}
+  }
+\]
+Or as a hypothetical judgement,
+\lfhyp{\type{(x:\alpha)\beta}}{\type\alpha,\lfhyp{\type\beta}{x:\alpha}}.
+
+Now, to know this judgement is to know that under the circumstances we know
+what is an object of type $\alpha$ and when two such objects are equal, and
+that if we have such an object $x$, we know what an object of type $\beta$ is,
+and when two such objects are equal---then we know what an object of type
+$(x:\alpha)\beta$ is.  To make this evident, then, we will say that under those
+circumstances an object of type $(x:\alpha)\beta$ is an object $[x]M$ such that
+one knows \lfhyp{M:\beta}{x:\alpha} and \lfhyp{[y/x]M=[z/x]M}{y=z:\alpha}.
+
+Then, for each atomic $\mathcal{L}$-proposition $P$, we can easily define a
+type $\llcorner P\lrcorner$, as follows. Under the circumstances that
+$\mathcal{L}\vdash\isprop{P}$, then $\MLLF\vdash\type{\llcorner P\lrcorner}$,
+since we will define an object of type $\llcorner P\lrcorner$ to be an
+$\mathcal{L}$-derivation of \istrue{P}; beyond reflexivity, further
+definitional equalities can be added to reflect the harmony of introduction and
+elimination rules.
 
 \end{document}
