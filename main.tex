@@ -305,7 +305,7 @@ primitive form of judgement.
 to account for new propositions and verifications
 
 
-\section{Proof Theoretic Type Theory}
+\section{Proof-Theoretic Type Theory}
 
 \subsection{Analytic and Synthetic Judgement}
 
@@ -348,6 +348,8 @@ proposition whose truth is not known:
     \reduce{M}{\bullet} such that Goldbach's conjecture is true.
 \end{itemize}
 
+\subsection{Proof of a judgement vs.\ verification of a proposition}
+
 Because the judgement \ver{M}{P} is synthetic, we cannot say that it gives rise
 to a proof theory for the logic, since the core judgment of a proof theory
 $M:A$ must be analytic, in order to avoid the infinite regress of a proof
@@ -377,6 +379,29 @@ have considered so far; it must consist in terms which represent traces of the
 inferences made in the course of knowing the judgements of a logical theory.
 There is a sense in which one can consider the types of a proof theory to
 interpret the judgements of the logical theory, and this methodology is called
-``judgements as types''.
+``judgements as types'' (and this implies ``derivations as terms'').
+
+What I am calling a ``proof-theoretic type theory'' is a type theory of the
+sort used in the the proof assistants Agda, Coq and Idris, whereas the kind of
+type theory that I have described in the previous sections, the one based on
+meaning explanations, underlies the proof assistant Nuprl.
+
+The proof-theoretic type theories on the one hand are often called
+``intensional'' and the meaning-theoretic type theories on the other hand are
+usually ``extensional''; these characterizations are certainly true, though I
+fear that comparing one of the former with one of the latter is not quite fair,
+since they is not any clear analogy to be had. That is to say, the judgement
+\ver{M}{P} is a judgement which is added to a logical theory and its meaning is
+(briefly) ``$M$ evaluates to a canonical proof of $P$'', whereas $M:P$ cannot
+be construed as a judgement added to a logical theory. Instead, it must be
+understood as part of a theory which is overlayed atop an existing logical
+theory; it is possible to understand the theory which contains the judgement
+$M:P$ to be a metatheory, or logical framework, for the theory which contains
+the judgement \istrue{P}, which can be construed as the ``object language''.
+
+In short, the judgements \ver{M}{P} and $M:P$ are unrelated to each other in
+two respects: firstly, that they have different meanings, and secondly that the
+one is at the same level as the judgements of a logical theory, whereas the the
+latter is a judgement in a theory which is defined over a logical theory.
 
 \end{document}
