@@ -24,6 +24,9 @@
 \newcommand\hyp[2]{\ensuremath{#1\ [#2]}}
 \newcommand\ver[2]{\ensuremath{#1\in#2}}
 \newcommand\reduce[2]{\ensuremath{#1\Rightarrow#2}}
+\newcommand\naturals{\ensuremath{\mathbb{N}}}
+\newcommand\suc[1]{\ensuremath{\mathsf{S}(#1)}}
+\newcommand\natrec[3]{\ensuremath{\mathsf{rec}_\naturals(#1;#2;#3)}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
@@ -297,5 +300,83 @@ strictly necessary as they too may be defined in terms of the $\ver{M}{P}$
 judgement in the presence of an \emph{equality} proposition; this is what is
 done in Constable et al's Computational Type Theory, which has only one
 primitive form of judgement.
+
+[TODO] Give the syntax of full type theory and expand the meaning explanations
+to account for new propositions and verifications
+
+
+\section{Proof Theoretic Type Theory}
+
+\subsection{Analytic and Synthetic Judgement}
+
+The judgements of the theory we have developed so far are uniformly
+\emph{synthetic}. Now, a synthetic judgement is one for which the experience of
+\emph{coming to know it} necessarily results in the synthesis of some new
+information; on the other hand, to know an \emph{analytic} judgement is to know
+it purely on the basis of the information contained inside it. So analytic
+judgements are decidable, since if they may become evident, it will be purely
+on the basis of their own conent; whereas synthetic judgements become evident
+when one has acquired some particular evidence for them.
+
+The judgements of a logical theory are then synthetic, since to know \isprop{P}
+is to know some extra information (which is, what counts as a verification of
+$P$); and to know \istrue{P} is also to know some extra information, namely to
+know a verification of $P$. It is not surprising, then, that when we have
+extended the logical theory to a type theory in the manner of the previous
+sections, that the judgement \ver{M}{P} is also synthetic, since \ver{M}{P} is
+not self-evident in general.
+
+But why is it not enough to assert that $M$ verifies $P$ to know \ver{M}{P}? It
+suffices to define a $P$ such that one cannot decide in general whether some
+term is a verification of it. Let us define the propositional symbol
+$\mathsf{P}$, and we intend to know the judgement \isprop{\mathsf{P}}, whose
+meaning is to be expanded as follows:
+\begin{quote}
+  To know \isprop{\mathsf{P}} is to know counts as a canonical verification of $\mathsf{P}$.
+\end{quote}
+
+We will say, then, that $\bullet$ is a canonical verification of $\mathsf{P}$
+just when Goldbach's conjecture is true. Then it comes immediately that the
+judgement \ver{M}{\mathsf{P}} may not be known or refuted on its own basis, nor
+even the judgement \ver{\bullet}{\mathsf{P}}, since they depend on an
+proposition whose truth is not known:
+
+\begin{itemize}
+  \item[] To know \ver{M}{\mathsf{P}} is to know that \reduce{M}{M'} to a
+    canonical verification of $P$.
+  \item[$\Leftrightarrow$] To know $\ver{M}{\mathsf{P}}$ is to know that
+    \reduce{M}{\bullet} such that Goldbach's conjecture is true.
+\end{itemize}
+
+Because the judgement \ver{M}{P} is synthetic, we cannot say that it gives rise
+to a proof theory for the logic, since the core judgment of a proof theory
+$M:A$ must be analytic, in order to avoid the infinite regress of a proof
+theory requiring a proof theory requiring a proof theory, and so on.
+
+The notion of verification of a proposition could never be the same as proof
+anyway, except in the most trivial circumstances, since a verification is meant
+to be an effective operation which realizes the truth of the proposition, and
+no constraints whatsoever (termination, totality, etc.) are placed on these
+operations except those which come from the meaning of the judgements (see
+Dummett).
+
+So a proof theory is necessarily intensional, and its judgements are to be
+analytic/decidable. What is it, then, that we have considered so far which
+corresponds with a proof $M$ such that $M:P$ in a proof theory? As discussed
+above, $M$ is not merely a term such that \ver{M}{P}, since this is not in
+general enough information to know whether $M$ is a proof. In fact, $M$ must
+comprise all the logical inferences which led to the knowledge that $P$ is
+true, and so a meaning explanation for the judgement $M:P$ in a proof theory
+immediately suggests itself:
+\begin{quote}
+  To know $M:P$ is to know that $M$ is evidence of the judgement \istrue{P}.
+\end{quote}
+
+And so the term domain of the proof theory is not the same as the one that we
+have considered so far; it must consist in terms which represent traces of the
+inferences made in the course of knowing the judgements of a logical theory.
+There is a sense in which one can consider the types of a proof theory to
+interpret the judgements of the logical theory, and this methodology is called
+``judgements as types''.
 
 \end{document}
