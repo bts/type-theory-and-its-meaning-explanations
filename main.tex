@@ -503,9 +503,12 @@ Now, to know this judgement is to know that under the circumstances we know
 what is an object of type $\alpha$ and when two such objects are equal, and
 that if we have such an object $x$, we know what an object of type $\beta$ is,
 and when two such objects are equal---then we know what an object of type
-$(x:\alpha)\beta$ is.  To make this evident, then, we will say that under those
+$(x:\alpha)\beta$ is. To make this evident, then, we will say that under those
 circumstances an object of type $(x:\alpha)\beta$ is an object $[x]M$ such that
-one knows \lfhyp{M:\beta}{x:\alpha} and \lfhyp{[y/x]M=[z/x]M}{y=z:\alpha}.
+one knows \lfhyp{M:\beta}{x:\alpha} and \lfhyp{[y/x]M=[z/x]M}{y=z:\alpha};
+furthermore, two such objects are equal just when they yield equal outputs for
+equal inputs. (The equality is extensional, but since it is with respect to the
+definitional equality, this does not break the decidability of the judgement)
 
 Then, for each atomic $\mathcal{L}$-proposition $P$, we can easily define a
 type $\llcorner P\lrcorner$, as follows. Under the circumstances that
