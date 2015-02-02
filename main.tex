@@ -322,13 +322,13 @@ judgements are decidable, since if they may become evident, it will be purely
 on the basis of their own conent; whereas synthetic judgements become evident
 when one has acquired some particular evidence for them.
 
-The judgements of a logical theory are then synthetic, since to know \isprop{P}
-is to know some extra information (which is, what counts as a verification of
-$P$); and to know \istrue{P} is also to know some extra information, namely to
-know a verification of $P$. It is not surprising, then, that when we have
-extended the logical theory to a type theory in the manner of the previous
-sections, that the judgement \ver{M}{P} is also synthetic, since \ver{M}{P} is
-not self-evident in general.
+A logical theory has, then, both analytic and synthetic judgements; the
+judgement \isprop{P} is analytic, since its evidence follows from the
+definition of $P$, whereas the assertion of \istrue{P} entails the knowledge of
+some extra information, namely a verification of $P$. When we have extended the
+logical theory to a type theory in the manner of the previous sections, the
+judgement \ver{M}{P} is also synthetic, since \ver{M}{P} is not self-evident in
+general.
 
 But why is it not enough to assert that $M$ verifies $P$ to know \ver{M}{P}? It
 suffices to define a $P$ such that one cannot decide in general whether some
@@ -459,7 +459,7 @@ $\mathcal{L}$-judgements and objects will represent $\mathcal{L}$-derivations.
 \begin{quote}
   To know $\type{\alpha=\beta}$ is to know that any object of type $\alpha$ is
   also an object of type $\beta$, and two equal objects of type $\alpha$ are
-  equal as objects of type $\beta$ (necessarily presupposing \type\alpha and
+  equal as objects of type $\beta$ (necessarily presupposing \type\alpha\ and
   \type\beta).
 \end{quote}
 
@@ -470,7 +470,7 @@ $\mathcal{L}$-judgements and objects will represent $\mathcal{L}$-derivations.
 
 \begin{quote}
   To know $M=N:\alpha$ is to know that $M$ and $N$ are equal objects of type
-  $\alpha$ (necessarily presupposing $M:\alpha$ and $N:\alpha$).
+  $\alpha$ (necessarily presupposing $M:\alpha$\ and $N:\alpha$).
 \end{quote}
 
 Next, we will introduce hypothetical judgement in the logical framework; to
