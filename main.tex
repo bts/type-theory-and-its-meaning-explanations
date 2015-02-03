@@ -5,6 +5,7 @@
 \usepackage{multicol}
 \usepackage{proof}
 \usepackage{setspace}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{stmaryrd}
 
 \newtheorem{thm}{Theorem}[section]
@@ -28,15 +29,37 @@
 \newcommand\suc[1]{\ensuremath{\mathsf{S}(#1)}}
 \newcommand\natrec[3]{\ensuremath{\mathsf{rec}_\naturals(#1;#2;#3)}}
 \newcommand\lfhyp[2]{\ensuremath{#1\ [#2]}}
+\newcommand\prf[1]{\ensuremath{\mathsf{Prf}(#1)}}
 \newcommand\MLLF{\textbf{MLLF}}
+\newcommand\infers[2]{\ensuremath{#1\uparrow{\color{Gray}{#2}}}}
+\newcommand\checks[2]{\ensuremath{#1\downarrow#2}}
 
 \newcommand\type[1]{\ensuremath{#1:\mathit{type}}}
+\newcommand\product[2]{\ensuremath{#1\&#2}}
+\newcommand\pair[2]{\ensuremath{\langle #1,#2\rangle}}
+\newcommand\fst[1]{\ensuremath{\mathsf{fst}(#1)}}
+\newcommand\snd[1]{\ensuremath{\mathsf{snd}(#1)}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
 \author{Jonathan Sterling}
+
+\thanks{Thanks to Bob Harper, Peter Dybjer and Bengt Norstr\"om for invaluable
+conversations that helped to clarify my understanding of the meaning
+explanations for Martin-L\"of's Type Theory.}
+
 % \address{AlephCloud Systems}
 % \email{jon@jonmsterling.com}
+
+\begin{abstract}
+  At the heart of intuitionistic type theory lies an intuitive semantics called
+  the ``meaning explanations''; crucially, when meaning explanations are taken as
+  definitive for type theory, the core notion is no longer ``proof'' but
+  ``verification''. We’ll explore how type theories of this sort arise naturally
+  as enrichments of logical theories with further judgements, and contrast this
+  with modern proof-theoretic type theories which interpret the judgements and
+  proofs of logics, not their propositions and verifications.
+\end{abstract}
 
 \maketitle
 
@@ -87,13 +110,13 @@ to propound a plan of verification by appealing to an existing verification.
 The judgements we have described so far are ``categorical'' in the sense that
 they are made without assumption. We will need to define a further form of
 judgement, which is called ``hypothetical'', and this is the judgement under
-hypothesis \framebox{\hyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n}}. And
+hypothesis \framebox{\hyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n}}. And
 its meaning explanation is as follows:
 
 \begin{quote}
-  To know the judgement \hyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n} is to know the
+  To know the judgement \hyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n} is to know the
   categorical judgement $\mathcal{J}$ when you know the judgements
-  $\mathcal{J}_1\dots\mathcal{J}_n$.
+  $\mathcal{J}_1,\dots,\mathcal{J}_n$.
 \end{quote}
 
 
@@ -452,9 +475,9 @@ But we have not defined the meaning of the judgements; let us do so below:
   and when two such objects are equal.
 \end{quote}
 
-We leave the question of what is an ``object'' as abstract, allowing that to be
-defined on a type-by-type basis; in many cases, types will represent
-$\mathcal{L}$-judgements and objects will represent $\mathcal{L}$-derivations.
+For now, we'll leave the question of what is an ``object'' as abstract; in many
+cases, types will represent $\mathcal{L}$-judgements and objects will represent
+$\mathcal{L}$-derivations.
 
 \begin{quote}
   To know $\type{\alpha=\beta}$ is to know that any object of type $\alpha$ is
@@ -479,7 +502,7 @@ $\mathcal{L}$-judgement, we will use \lfhyp{\mathcal{J}}{\mathcal{J}'} for
 hypothetical judgements in the logical framework. Then,
 
 \begin{quote}
-  To know \lfhyp{\mathcal{J}}{\mathcal{J}_1\dots\mathcal{J}_n} is to know $\mathcal{J}$ when one knows $\mathcal{J}...\mathcal{J}_n$.
+  To know \lfhyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n} is to know $\mathcal{J}$ when one knows $\mathcal{J},\dots,\mathcal{J}_n$.
 \end{quote}
 
 At this point, we may begin adding types to the logical framework. In practice,
@@ -511,11 +534,160 @@ equal inputs. (The equality is extensional, but since it is with respect to the
 definitional equality, this does not break the decidability of the judgement)
 
 Then, for each atomic $\mathcal{L}$-proposition $P$, we can easily define a
-type $\llcorner P\lrcorner$, as follows. Under the circumstances that
-$\mathcal{L}\vdash\isprop{P}$, then $\MLLF\vdash\type{\llcorner P\lrcorner}$,
-since we will define an object of type $\llcorner P\lrcorner$ to be an
-$\mathcal{L}$-derivation of \istrue{P}; beyond reflexivity, further
-definitional equalities can be added to reflect the harmony of introduction and
-elimination rules.
+type \prf{P}, as follows. Under the circumstances that
+$\mathcal{L}\vdash\isprop{P}$, then $\MLLF\vdash\type{\prf{P}}$, since we will
+define an object of type \prf{P} to be an $\mathcal{L}$-derivation of
+\istrue{P}; beyond reflexivity, further definitional equalities can be added to
+reflect the harmony of introduction and elimination rules.
+
+It is time to revisit what it means to be an ``object'' of a type in the
+proof-theoretic type theory, we must note how this will necessarily differ from
+what it meant to be a ``verification'' of a proposition in the previous
+sections. Namely, a verification of a proposition is either a \emph{canonical
+verification} of that proposition (and what sort of thing this might be is
+known from the the presupposition \isprop{P}), or it is a means of getting such
+a canonical verification (i.e. a term which evaluates to a canonical
+verification).
+
+On the other hand, what we have called an ``object'' of type $P$ is quite
+different, since in addition to the possibility that it is a canonical proof of
+the judgement \istrue{P}, it may also be \emph{neutral} (i.e. blocked by a
+variable); we will call this ``normal'' rather than ``canonical''. Why does
+this happen?
+
+In order to keep the judgement $M:A$ analytic (decidable), its meaning
+explanation can no longer be based on the idea of the computation of closed
+terms to canonical form; instead, we will consider the computation of open
+terms (i.e. terms with free variables) to \emph{normal} form. The desire for
+$M:A$ to be analytic follows from our intention that it characterize a
+\emph{proof theory}: we must be able to recognize a proof when we see one. But
+why are closed-term-based meaning explanations incompatible with this goal?
+Consider briefly the following judgement:
+\[
+  \hyp{M(n) \in P}{n\in\naturals}
+\]
+
+To know this judgement is to know that $M(n)$ computes to a canonical
+verification of $P$ whenever $n$ is a natural number; when $P$'s use of $n$ is
+not trivial, this amounts to testing an infinite domain (all of the natural
+numbers), probably by means of mathematical induction. The judgement is then
+clearly synthetic: to know it is, briefly, to have come up with an (inductive)
+argument that $M(N)$ computes to a canonical verification of $P$ at each
+natural number $n$.
+
+On the other hand, the judgement \lfhyp{M(n):P}{n:\naturals} must have a
+different meaning, one which admits its evidence or refutation purely on
+syntactic/analytic grounds. In essence, it is to know that $M(n)$ is a proof of
+$P$ for any \emph{arbitrary} object/expression $n$ such that $n:\naturals$
+(i.e., the only thing we know about $n$ is that it is of type $\naturals$; we
+do not necessarily know that it is a numeral).
+
+\subsubsection{Finer Judgements for Proof-Theoretic Type Theory}
+
+As soon as we have begun to consider the computation of open terms to normal
+form, as opposed to the computation of closed terms to canonical form, a more
+fine-grained structure of judgements begins to present itself. We'll replace
+the $M:\alpha$ judgement with two new ones:\\
+
+\begin{tabular}{c|l}
+  \infers{R}{\alpha} & $R$ \textbf{synthesizes} type $\alpha$\\
+  \checks{M}{\alpha} & $M$ \textbf{checks} type $\alpha$\\
+\end{tabular}\\
+
+A peculiarity of the notation is that \infers{R}{\alpha} is really a synthetic
+judgement involving the expression $R$ only, where the evidence for the
+judgement contains $\alpha$. Its meaning explanation is, ``I know of what type $R$
+is (and by the way, it is $\alpha$)''.  On the other hand, \checks{M}{\alpha} is
+analytic, and it carries the epistemic content of the old $M:\alpha$ judgement; to
+know it is to know that $M$ computes to a normal proof of $\alpha$.
+
+Let us amend the meaning explanation for the other judgements; first, typehood,
+which will once again be cast in terms of canonical forms (of proofs, not
+verifications):
+\begin{quote}
+  To know \type{\alpha} is to know what counts as a canonical proof of $\alpha$, and when
+  two proofs of \type{\alpha} are equal.
+\end{quote}
+
+Then the typing judgements are given:
+\begin{quote}
+  To know \infers{R}{\alpha} is to know that \reduce{R}{R'} such that $R'$ is a non-canonical proof of a known type, namely $\alpha$.
+\end{quote}
+\begin{quote}
+  To know \checks{M}{\alpha} is to know that \reduce{M}{M'} such that $M'$ is a
+  normal proof of $\alpha$ (i.e., it is either a canonical proof of $\alpha$ or
+  it is a neutral term such that one knows \infers{M}{\alpha}).
+\end{quote}
+
+We will restrict the hypothetical judgement to only contain hypotheses of the
+form \infers{x}{A} where $x$ is a variable, or \type\alpha\ where $\alpha$ is a variable:
+\begin{quote}
+  To know
+  \lfhyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n} is
+  to know $\mathcal{J}$ when one knows
+  $\mathcal{J}_1,\dots,\mathcal{J}_n$.
+\end{quote}
+
+Now, we will show how to make true the judgement \type\alpha\ for a number of
+types $\alpha$, by defining them. For example, to define conjunction, first we
+introduce the following syntax: \product\alpha\beta, \pair{M}{N}, \fst{R},
+\snd{R} subject to the following computation rules:
+\begin{gather*}
+  \reduce{\fst{\pair{M}{N}}}{M}
+  \qquad
+  \reduce{\snd{\pair{M}{N}}}{N}\\
+  \infer{
+    \reduce{\fst{R}}{\fst{R'}}
+  }{
+    \reduce{R}{R'} &
+    \text{$R'$ is neutral}
+  }
+  \qquad
+  \infer{
+    \reduce{\snd{R}}{\snd{R'}}
+  }{
+    \reduce{R}{R'} &
+    \text{$R'$ is neutral}
+  }
+\end{gather*}
+
+The, to make the judgement
+\lfhyp{\type{\product\alpha\beta}}{\type\alpha,\type\beta} evident, let's first
+expand its meaning explanation.
+\begin{quote}
+  To know \lfhyp{\type{\product\alpha\beta}}{\type\alpha,\type\beta} is to know
+  what counts as a canonical proof of \product\alpha\beta, and when two proofs
+  of \product\alpha\beta\ are equal, when one knows that what counts as a
+  canonical proof of $\alpha$ and when two proofs of $\alpha$ are equal, and
+  one knows what counts as a canonical proof of $\beta$ and when two proofs of
+  $\beta$ are equal.
+\end{quote}
+
+This is evident, since we will say that a canonical proof of
+\product\alpha\beta\ is a pair \pair{M}{N} such that we know \checks{M}{\alpha}
+and \checks{N}{\beta}. This corresponds to the following inference rule:
+\[
+  \infer{
+    \checks{\pair{M}{N}}{\product\alpha\beta}
+  }{
+    \checks{M}{\alpha} &
+    \checks{N}{\beta}
+  }
+\]
+
+Based on these definitions and computation rules, the following inference rules are justified:
+\begin{gather*}
+  \infer{
+    \infers{\fst{R}}{\alpha}
+  }{
+    \infers{R}{\product\alpha\beta}
+  }
+  \qquad
+  \infer{
+    \infers{\snd{R}}{\beta}
+  }{
+    \infers{R}{\product\alpha\beta}
+  }
+\end{gather*}
 
 \end{document}
