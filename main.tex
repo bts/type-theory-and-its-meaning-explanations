@@ -666,13 +666,21 @@ expand its meaning explanation.
 
 This is evident, since we will say that a canonical proof of
 \product\alpha\beta\ is a pair \pair{M}{N} such that we know \checks{M}{\alpha}
-and \checks{N}{\beta}. This corresponds to the following inference rule:
+and \checks{N}{\beta}, and that the equality of pairs is structural. This
+corresponds to the following inference rules:
 \[
   \infer{
     \checks{\pair{M}{N}}{\product\alpha\beta}
   }{
     \checks{M}{\alpha} &
     \checks{N}{\beta}
+  }
+  \qquad
+  \infer{
+    \pair{M}{N}=\pair{M'}{N'}:\product\alpha\beta
+  }{
+    M=M':\alpha &
+    N=N':\beta
   }
 \]
 
@@ -688,6 +696,11 @@ Based on these definitions and computation rules, the following inference rules 
     \infers{\snd{R}}{\beta}
   }{
     \infers{R}{\product\alpha\beta}
+  }\\
+  \infer{
+    M=\pair{\fst{M}}{\snd{M}}:\product\alpha\beta
+  }{
+    \checks{M}{\product\alpha\beta}
   }
 \end{gather*}
 
