@@ -289,18 +289,18 @@ be understood separately, secondarily. Why is this a problem? It means that the
 definition of each type must be made with the full knowledge of the definitions
 of every other type; in essence, the open-ended nature of type theory is
 obliterated and one is forced into a fixed formal system; this is in addition
-to the fact that it causes the epistemic content of \type\alpha for any type
+to the fact that it causes the epistemic content of \type\alpha\ for any type
 $\alpha$ to be extremely complicated.
 
-To illustrate, let us consider an example which is a type theory that has four
+To illustrate, let us consider as an example a type theory which has four
 type-formers: trivial truth $\top$, trivial falsity $\bot$, implication
-$(\alpha)\beta$, and conjunction \product\alpha\beta; we will then introduce the
-following terms to represent proofs: the trivial element $\bullet$,
-\emph{reductio ad absurdum} \abort{\alpha}{E}, abstraction $[x]E$, application
-$E(E')$, pairing \pair{E}{E'}, and projections \fst{E}, \snd{E}.
+$(\alpha)\beta$, and conjunction \product\alpha\beta; we will then introduce
+the following terms to represent proofs: the trivial element $\bullet$,
+\emph{reductio ad absurdum} \abort{\alpha}{E}, abstraction $[x:\alpha]E$,
+application $E(E')$, pairing \pair{E}{E'}, and projections \fst{E}, \snd{E}.
 
 If we will try to make the judgement \type\top\ evident, the deficiencies of
-formulation will immediately present themselves.
+the formulation will immediately present themselves.
 
 \begin{quote}
 To know \type\top\ is to know what counts as an object of type $\top$, and when
@@ -308,8 +308,8 @@ two such objects are equal. An object of type $\top$, then, is either the
 expression $\bullet$, or an expression \abort{\top}{E} such that we know
 $E:\bot$, or an expression $E(E')$ such that we know $E:(\alpha)\top$ and
 $E':\alpha$, or an expression \fst{E} such that we know $E:\product\top\beta$
-and \type\beta, or an expression \snd{E} such that we know
-$E:\product\alpha\top$ and \type\alpha; and we additionally have that $\bullet$
+for some $\beta$, or an expression \snd{E} such that we know
+$E:\product\alpha\top$ for some $\alpha$; and we additionally have that $\bullet$
 is equal to $\bullet$, and ...
 \end{quote}
 
