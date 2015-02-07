@@ -40,6 +40,7 @@
 \newcommand\pair[2]{\ensuremath{\langle #1,#2\rangle}}
 \newcommand\fst[1]{\ensuremath{\mathsf{fst}(#1)}}
 \newcommand\snd[1]{\ensuremath{\mathsf{snd}(#1)}}
+\newcommand\abort[2]{\ensuremath{\mathsf{abort}(#1;#2)}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
@@ -52,6 +53,8 @@ explanations for Martin-L\"of's Type Theory.}
 % \address{AlephCloud Systems}
 % \email{jon@jonmsterling.com}
 
+\maketitle
+
 \begin{abstract}
   At the heart of intuitionistic type theory lies an intuitive semantics called
   the ``meaning explanations''; crucially, when meaning explanations are taken as
@@ -62,9 +65,9 @@ explanations for Martin-L\"of's Type Theory.}
   proofs of logics, not their propositions and verifications.
 \end{abstract}
 
-\maketitle
-
 \onehalfspacing
+
+\tableofcontents
 
 \subfile{logicaltheory}
 \subfile{prooftheory}
