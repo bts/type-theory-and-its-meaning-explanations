@@ -289,7 +289,7 @@ As an example, then, we will update the evidence of the assertion
 of this, expanded into spoken language, is as follows:
 \begin{quote}
   To know \hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}} is
-  to know what counts as a canonical verification of $P\subset Q$ under
+  to know what counts as a canonical verification of $P\supset Q$ under
   the circumstances that \reduce{P}{P'}, such one knows what counts as a
   canonical verification $P'$, and, if one has such a verification,
   \reduce{Q}{Q'} such that one knows what counts as a canonical verification of
@@ -297,7 +297,7 @@ of this, expanded into spoken language, is as follows:
 \end{quote}
 
 And this is evident, since we will say that a canonical verification of
-$P\subset Q$ is an expression $\lambda x. E$ such that we know
+$P\supset Q$ is an expression $\lambda x. E$ such that we know
 \hyp{\ver{E}{Q}}{\ver{x}{P}}. This validates the assertion \hyp{\ver{\lambda
 x.E}{P\supset Q}}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}, written as an inference rule:
 \[
