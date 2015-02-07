@@ -6,9 +6,9 @@
 
 \chapter{Proof Theories and Logical Frameworks}
 
-\section{Proof-Theoretic Type Theory}
+\section{Proof-theoretic type theory}
 
-\subsection{Analytic and Synthetic Judgement}
+\subsection{Analytic and synthetic Judgement}
 
 A synthetic judgement is one for which the experience of \emph{coming to know
 it} necessarily results in the synthesis of some new information; on the other
@@ -241,7 +241,7 @@ $P$ for any \emph{arbitrary} object/expression $n$ such that $n:\naturals$
 do not necessarily know that it is a numeral).
 
 
-\section{A Critique of \textbf{MLLF}}
+\section{A critique of \textbf{MLLF}}
 
 The type theory which we constructed in the previous section is to be
 considered a proof theory for a logic with the judgements \isprop{P},
@@ -249,7 +249,7 @@ considered a proof theory for a logic with the judgements \isprop{P},
 a few reasons to be dissatisfied with this state of affairs, which I shall
 enumerate in this section.
 
-\subsection{Lack of Computational Content}
+\subsection{Lack of computational content}
 
 Unlike the type theory in the first chapter, there is no built-in computational
 content. In a computational type theory which is defined by the verificationist
@@ -323,123 +323,6 @@ Furthermore, to extend an existing theory with a new type, the definitions of
 every other type must be rewritten to account for the elimination forms of the
 new type.
 
-%% As soon as we have begun to consider the computation of open terms to normal
-%% form, as opposed to the computation of closed terms to canonical form, a more
-%% fine-grained structure of judgements begins to present itself. We'll replace
-%% the $M:\alpha$ judgement with two new ones:\\
-%%
-%% \begin{tabular}{c|l}
-%%   \infers{R}{\alpha} & $R$ \textbf{synthesizes} type $\alpha$\\
-%%   \checks{M}{\alpha} & $M$ \textbf{checks} type $\alpha$\\
-%% \end{tabular}\\
-%%
-%% A peculiarity of the notation is that \infers{R}{\alpha} is really a synthetic
-%% judgement involving the expression $R$ only, where the evidence for the
-%% judgement contains $\alpha$. Its meaning explanation is, ``I know of what type $R$
-%% is (and by the way, it is $\alpha$)''.  On the other hand, \checks{M}{\alpha} is
-%% analytic, and it carries the epistemic content of the old $M:\alpha$ judgement; to
-%% know it is to know that $M$ computes to a normal proof of $\alpha$.
-%%
-%% Let us amend the meaning explanation for the judgements of type theory.
-%% \begin{quote}
-%%   To know \type{\alpha} is to know what counts as a canonical verification of
-%%   $\alpha$, and when two proofs of \type{\alpha} are equal; furthermore, to
-%%   know to what is the \emph{purpose} of $\alpha$ (i.e. what is true by virtue
-%%   of the truth of $\alpha$).
-%% \end{quote}
-%%
-%% Then the typing judgements are given:
-%% \begin{quote}
-%%   To know \infers{R}{\alpha} is to know that \reduce{R}{R'} such that $R'$ is a non-canonical proof of a known type, namely $\alpha$.
-%% \end{quote}
-%% \begin{quote}
-%%   To know \checks{M}{\alpha} is to know that \reduce{M}{M'} such that $M'$ is a
-%%   normal proof of $\alpha$ (i.e., it is either a canonical proof of $\alpha$ or
-%%   it is a neutral term such that one knows \infers{M}{\alpha}).
-%% \end{quote}
-%%
-%% We will restrict the hypothetical judgement to only contain hypotheses of the
-%% form \infers{x}{A} where $x$ is a variable, or \type\alpha\ where $\alpha$ is a
-%% variable, or further hypothetical judgements:
-%% \begin{quote}
-%%   To know
-%%   \lfhyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n} is
-%%   to know $\mathcal{J}$ when one knows
-%%   $\mathcal{J}_1,\dots,\mathcal{J}_n$.
-%% \end{quote}
-%%
-%% Now, we will show how to make true the judgement \type\alpha\ for a number of
-%% types $\alpha$, by defining them. For example, to define conjunction, first we
-%% introduce the following syntax: \product\alpha\beta, \pair{M}{N}, \fst{R},
-%% \snd{R} subject to the following computation rules:
-%% \begin{gather*}
-%%   \reduce{\fst{\pair{M}{N}}}{M}
-%%   \qquad
-%%   \reduce{\snd{\pair{M}{N}}}{N}\\
-%%   \infer{
-%%     \reduce{\fst{R}}{\fst{R'}}
-%%   }{
-%%     \reduce{R}{R'} &
-%%     \text{$R'$ is neutral}
-%%   }
-%%   \qquad
-%%   \infer{
-%%     \reduce{\snd{R}}{\snd{R'}}
-%%   }{
-%%     \reduce{R}{R'} &
-%%     \text{$R'$ is neutral}
-%%   }
-%% \end{gather*}
-%%
-%% The, to make the judgement
-%% \lfhyp{\type{\product\alpha\beta}}{\type\alpha,\type\beta} evident, let's first
-%% expand its meaning explanation.
-%% \begin{quote}
-%%   To know \lfhyp{\type{\product\alpha\beta}}{\type\alpha,\type\beta} is to know
-%%   what counts as a canonical proof of \product\alpha\beta, and when two proofs
-%%   of \product\alpha\beta\ are equal, when one knows that what counts as a
-%%   canonical proof of $\alpha$ and when two proofs of $\alpha$ are equal, and
-%%   one knows what counts as a canonical proof of $\beta$ and when two proofs of
-%%   $\beta$ are equal.
-%% \end{quote}
-%%
-%% This is evident, since we will say that a canonical proof of
-%% \product\alpha\beta\ is a pair \pair{M}{N} such that we know \checks{M}{\alpha}
-%% and \checks{N}{\beta}, and that the equality of pairs is structural. This
-%% corresponds to the following inference rules:
-%% \[
-%%   \infer{
-%%     \checks{\pair{M}{N}}{\product\alpha\beta}
-%%   }{
-%%     \checks{M}{\alpha} &
-%%     \checks{N}{\beta}
-%%   }
-%%   \qquad
-%%   \infer{
-%%     \pair{M}{N}=\pair{M'}{N'}:\product\alpha\beta
-%%   }{
-%%     M=M':\alpha &
-%%     N=N':\beta
-%%   }
-%% \]
-%%
-%% Based on these definitions and computation rules, the following inference rules are justified:
-%% \begin{gather*}
-%%   \infer{
-%%     \infers{\fst{R}}{\alpha}
-%%   }{
-%%     \infers{R}{\product\alpha\beta}
-%%   }
-%%   \qquad
-%%   \infer{
-%%     \infers{\snd{R}}{\beta}
-%%   }{
-%%     \infers{R}{\product\alpha\beta}
-%%   }\\
-%%   \infer{
-%%     M=\pair{\fst{M}}{\snd{M}}:\product\alpha\beta
-%%   }{
-%%     \checks{M}{\product\alpha\beta}
-%%   }
-%% \end{gather*}
+\section{The logic of verifications and uses}
+
 \end{document}
