@@ -69,14 +69,14 @@ mutual
     []_ : ∀ {A B E} → (Γ , A) ⊢ E ↓ B → Γ ⊢ ([] E) verifies (A ⊃ B)
 
   -- Direct/immediate(?) uses
-  data _uses_ {n : ℕ} : elim n → prop → Set where
-    abort[_] : (A : prop) → abort[ A ] uses ⊥
-    fst : ∀ {A B} → fst uses (A & B)
-    snd : ∀ {A B} → snd uses (A & B)
-    ap : ∀ {A B} M → ap M uses (A ⊃ B) 
+  data _⊢_uses_ (Γ : prop ⋆) : elim ∣ Γ ∣ → prop → Set where
+    abort[_] : (A : prop) → Γ ⊢ abort[ A ] uses ⊥
+    fst : ∀ {A B} → Γ ⊢ fst uses (A & B)
+    snd : ∀ {A B} → Γ ⊢ snd uses (A & B)
+    ap : ∀ {A B} {M} → Γ ⊢ M ↓ A → Γ ⊢ ap M uses (A ⊃ B) 
 
   -- The evidence for the judgmeent (E uses P) will be the purpose for the use
-  purpose : ∀ {A n} {E : elim n} → E uses A → prop
+  purpose : ∀ {A Γ} {E : elim ∣ Γ ∣} → Γ ⊢ E uses A → prop
   purpose abort[ A ] = A
   purpose (fst {A} {_}) = A
   purpose (snd {_} {B}) = B
@@ -86,7 +86,7 @@ mutual
   -- synthesis for neutral terms
   data _⊢_↑ (Γ : prop ⋆) : neu ∣ Γ ∣ → Set where
     `_ : ∀ {A} (h : hyp Γ A)→ Γ ⊢ ` ∣ h ∣hyp ↑
-    _•_ : ∀ {E R} (D : Γ ⊢ R ↑) (u : E uses (synthesis D)) → Γ ⊢ R • E ↑
+    _•_ : ∀ {E R} (D : Γ ⊢ R ↑) (u : Γ ⊢ E uses (synthesis D)) → Γ ⊢ R • E ↑
 
   -- the evidence for Γ ⊢ R ↑ is the synthesized type
   synthesis : ∀ {Γ R} → Γ ⊢ R ↑ → prop
