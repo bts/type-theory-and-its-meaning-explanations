@@ -96,8 +96,8 @@ mutual
   -- checking for normal terms
   data _⊢_↓_ (Γ : prop ⋆) : nrm ∣ Γ ∣ → prop → Set where
     ⌜_⌝ : ∀ {M A} → Γ ⊢ M verifies A → Γ ⊢ ⌜ M ⌝ ↓ A
-    ⌞_by_⌟ : ∀ {R A} (D : Γ ⊢ R ↑) → synthesis D == A prop → Γ ⊢ ⌞ R ⌟ ↓ A
+    ⌞_⌟ : ∀ {R A} (D : Γ ⊢ R ↑) {{_ : synthesis D == A prop}} → Γ ⊢ ⌞ R ⌟ ↓ A
 
 -- an example
 test : · ⊢ ⌜ [] ⌞ ` ze • fst ⌟ ⌝ ↓ ((⊤ & ⊥) ⊃ ⊤)
-test = ⌜ [] ⌞ ` ze • fst by ⊤ ⌟ ⌝
+test = ⌜ [] ⌞ ` ze • fst ⌟ ⌝
