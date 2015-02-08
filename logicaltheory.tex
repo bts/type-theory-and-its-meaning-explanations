@@ -50,6 +50,8 @@ verification; this follows from the fact that one may put into action a plan
 for verifying $P$ and achieve such a verification, and likewise, it is possible
 to propound a plan of verification by appeal to an existing verification.
 
+\section{Hypothetical and General Judgement}
+
 The judgements we have described so far are ``categorical'' in the sense that
 they are made without assumption. We will need to define a further form of
 judgement, which is called ``hypothetical'', and this is the judgement under
@@ -58,10 +60,39 @@ meaning explanation is as follows:
 
 \begin{quote}
   To know the judgement \hyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n} is to know the
-  categorical judgement $\mathcal{J}$ when you know the judgements
+  categorical judgement $\mathcal{J}$ assuming you know the judgements
   $\mathcal{J}_1,\dots,\mathcal{J}_n$.
 \end{quote}
 
+\subsection{General Judgement}
+
+Another kind of higher order judgement is ``general judgement'', which is
+judgement with respect to a collection of free variables,
+\framebox{\genj{\vec{x}}{\mathcal{J}}}. The meaning explanation for this new
+judgement is as follows:
+
+\begin{quote}
+  To know the judgement \genj{\vec{x}}{\mathcal{J}} is, for any arbitrary
+  collection of expressions $\vec{E}$ of the same length of $\vec{x}$, to know
+  $[\vec{E}/\vec{x}]\mathcal{J}$ (i.e. the substitution of each expression in
+  $\vec{E}$ for each variable in $\vec{x}$ respectively).
+\end{quote}
+
+As far as notation is concerned, the general judgement bar binds the least
+tightly of all the other notations we have considered.
+
+\subsection{Hypothetico-General Judgement}
+
+When hypothetical judgment is used inside general judgement (as in
+\genj{x}{\hyp{\istrue{A(x)}}{\istrue{B(x)}}}, we term the whole thing a
+``hypothetico-general'' judgement. One thing bears clarifying, which is, why do
+we write \hyp{\istrue{P}}{\istrue{P}} rather than
+\genj{P}{\hyp{\istrue{P}}{\istrue{P}}}?
+
+The former is formally not a single judgement, but rather a \emph{scheme} for
+judgements, where $P$ and $Q$ are intended to be replaced with concrete
+expressions by the person making use of the inference. On the other hand, the
+latter is itself a single judgement which may be asserted all on its own.
 
 \section{Propositions}
 Now that we have propounded and explained the minimal system of judgements for
@@ -248,14 +279,16 @@ of this, expanded into spoken language, is as follows:
 \end{quote}
 
 And this is evident, since we will say that a canonical verification of
-$P\supset Q$ is an expression $\lambda x. E$ such that we know
-\hyp{\ver{E}{Q}}{\ver{x}{P}}. This validates the assertion \hyp{\ver{\lambda
-x.E}{P\supset Q}}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}, written as an inference rule:
+$P\supset Q$ is an expression $\lambda x. E$ such that we know the
+hypothetico-general judgement \genj{x}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}. This
+validates the assertion \hyp{\ver{\lambda x.E}{P\supset
+Q}}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}, written as an inference rule:
+%
 \[
   \infer{
     \ver{\lambda x.E}{P\supset Q}
   }{
-    \hyp{\ver{E}{Q}}{\ver{x}{P}}
+    \genj{x}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}
   }
 \]
 
