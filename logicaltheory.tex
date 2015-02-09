@@ -50,7 +50,7 @@ verification; this follows from the fact that one may put into action a plan
 for verifying $P$ and achieve such a verification, and likewise, it is possible
 to propound a plan of verification by appeal to an existing verification.
 
-\section{Hypothetical and General Judgement}
+\section{Higher-order judgements}
 
 The judgements we have described so far are ``categorical'' in the sense that
 they are made without assumption. We will need to define a further form of
@@ -64,7 +64,7 @@ meaning explanation is as follows:
   $\mathcal{J}_1,\dots,\mathcal{J}_n$.
 \end{quote}
 
-\subsection{General Judgement}
+\subsection{General judgement}
 
 Another kind of higher order judgement is ``general judgement'', which is
 judgement with respect to a collection of free variables,
@@ -81,7 +81,7 @@ judgement is as follows:
 As far as notation is concerned, the general judgement bar binds the least
 tightly of all the other notations we have considered.
 
-\subsection{Hypothetico-General Judgement}
+\subsection{Hypothetico-general judgement}
 
 When hypothetical judgment is used inside general judgement (as in
 \genj{x}{\hyp{\istrue{A(x)}}{\istrue{B(x)}}}, we term the whole thing a
@@ -94,7 +94,7 @@ judgements, where $P$ and $Q$ are intended to be replaced with concrete
 expressions by the person making use of the inference. On the other hand, the
 latter is itself a single judgement which may be asserted all on its own.
 
-\section{Propositions}
+\section{Propositions and verifications}
 Now that we have propounded and explained the minimal system of judgements for
 a logical theory, let us populate it with propositions. First, we have falsity
 $\bot$, and we wish to make \isprop{\bot} evident; to do this, we simply state
@@ -311,8 +311,5 @@ strictly necessary as they too may be defined in terms of the $\ver{M}{P}$
 judgement in the presence of an \emph{equality} proposition; this is what is
 done in Constable et al's Computational Type Theory, which has only one
 primitive form of judgement.
-
-[TODO] Give the syntax of full type theory and expand the meaning explanations
-to account for new propositions and verifications
 
 \end{document}
