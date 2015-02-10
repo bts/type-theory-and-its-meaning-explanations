@@ -7,8 +7,13 @@
 
 As alluded to at the end of the previous chapter, we may add a judgement
 \ver{M}{A} which deals directly with the objects $M$ which verify the
-propositions (or types) $P$. We will develop a full theory of dependent types in
-the sense of Martin-L\"of 1979.
+propositions (or types) $P$. We will develop a full theory of dependent types
+in the sense of Martin-L\"of.\footnote{Please note that the judgements given here, and
+their meaning explanations, are \emph{not} the same as those used in Constable
+et al's ``Computational Type Theory'' and Nuprl. In this chaper, we use the
+term ``computational type theory'' in a general sense to characterize a family
+of type theories which have their origin in Martin-L\"of's 1979 paper
+\emph{Constructive Mathematics and Computer Programming}.}
 
 \section{The judgments of a computational type theory}
 
@@ -40,8 +45,7 @@ The next form of judgement is \framebox{\ver{M}{A}}, which remains the same as b
 We'll need to add new judgements for equality (equality of types, and equality
 of verifications). For equality of types \framebox{\isset{A=B}}, there are a
 number of possible meaning explanations, but we'll use the one that
-Martin-L\"of used starting in 1979\footnote{This meaning explanation was
-abandoned in Constable's Computational Type Theory for practical reasons.}:
+Martin-L\"of used starting in 1979:
 
 \begin{quote}
   To know \isset{A=B} (presupposing \isset{A} and \isset{B}) is to know
@@ -53,7 +57,12 @@ abandoned in Constable's Computational Type Theory for practical reasons.}:
 
 In other words, two types are equal when they have the same canonical
 verifications, and moreover, the same equality relation over their canonical
-verifications.
+verifications. Note that there are other possible explanations for type
+equality, including more intensional ones that appeal to the syntactic
+structure of type expressions, and these turn out to be more useful in proof
+assistants for practical reasons. However, the extensional equality that we
+have chosen here is the easiest and most obvious one to formulate, so we will
+use it here.
 
 Now, because we are allowing the definition of types with arbitrary equivalence
 relations, we cannot use plain hypothetico-general judgement in the course of
@@ -274,6 +283,126 @@ $\mathsf{abort}(R)$. This is because, computationally speaking, there is never
 any chance that we should ever have use for such a term, since we need only
 consider the evaluation of closed terms (which is guaranteed by the meaning
 explanations).
+
+\subsection{The cartesian product of a family}
+
+This will be our first dependent type, and it will likewise be the first
+example of a non-trivial addition to the computation system. First, let us add
+our canonical and non-canonical forms and their reduction rules:
+\begin{gather*}
+  \reduce{\typrod{A}{x}{B}}{\typrod{A}{x}{B}}
+  \qquad
+  \reduce{\lam{x}{E}}{\lam{x}{E}}
+  \tag{Canonical}\\
+  \infer{
+    \reduce{\ap{\lam{x}{E}}{M}}{N}
+  }{
+    \reduce{[M/x]E}{N}
+  }\tag{Non-canonical}
+\end{gather*}
+
+This is the first time in this chapter that we have introduced a term former
+with binding; it should be noted that the intensional equality of expressions
+is up to alpha equivalence, and we will not pay attention to issues of variable
+renaming in our presentation.
+
+We will make evident the following judgement scheme:
+\[
+  \infer{
+    \isset{\typrod{A}{x}{B}}
+  }{
+    \isset{A} &
+    \sequent{\ver{x}{A}}{\isset{B}}
+  }
+\]
+
+Or, written as a hypothetical judgement:
+\[
+  \hyp{\isset{\typrod{A}{x}{B}}}{\isset{A};\sequent{\ver{x}{A}}{\isset{B}}}
+\]
+
+This is to say, under the stated assumptions, we know what counts as a
+canonical verification of \typrod{A}{x}{B} and when two such verifications are
+equal. We will say that \lam{x}{E} is a canonical verification of
+\typrod{A}{x}{B} just when we know \sequent{\ver{x}{A}}{\ver{E}{B}}; moreover,
+that two verifications \lam{x}{E} and \lam{y}{E'} are equal just when
+\sequent{\ver{z}{A}}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}.
+
+By the meaning of the sequent judgement, this is to say that a lambda
+expression must be functional with respect to its domain (i.e. it must take
+equals to equals). We did not need to hypothesize directly two elements of the
+domain and their equality because this is part of the meaning explanation for
+the sequent judgement already. Likewise, two lambda expressions are equal when
+equal inputs yield the equal results in both.
+
+The familiar inference rules, which codify the standard mode of use for the
+family cartesian product, are justified by this definition:
+\begin{gather*}
+  \infer{
+    \sequent\Gamma\isset{\typrod{A}{x}{B}}
+  }{
+    \sequent\Gamma\isset{A} &
+    \sequent{\Gamma,\ver{x}{A}}{\isset{B}}
+  }\qquad
+  \infer{
+    \sequent\Gamma\isset{\typrod{A}{x}{B}=\typrod{A'}{y}{B'}}
+  }{
+   \sequent\Gamma\isset{A=A'} &
+    \sequent{\Gamma,\ver{z}{A}}{\isset{[z/x]B=[z/y]B'}}
+  }\\[6pt]
+  \infer{
+    \sequent\Gamma\ver{\lam{x}{E}}{\typrod{A}{x}{B}}
+  }{
+    \sequent{\Gamma,\ver{x}{A}}{\ver{E}{B}}
+  }\qquad
+  \infer{
+    \sequent\Gamma\ver{\lam{x}{E}=\lam{y}{E'}}{\typrod{A}{x}{B}}
+  }{
+    \sequent{\Gamma,\ver{z}{A}}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}
+  }\\[6pt]
+  \infer{
+    \sequent\Gamma\ver{\ap{M}{N}}{[N/x]B}
+  }{
+    \sequent\Gamma\ver{M}{\typrod{A}{x}{B}} &
+    \sequent\Gamma\ver{N}{A}
+  }\qquad
+  \infer{
+    \sequent\Gamma\ver{\ap{M}{N}=\ap{M'}{N'}}{[N/x]B}
+  }{
+    \sequent\Gamma\ver{M=M'}{\typrod{A}{x}{B}} &
+    \sequent\Gamma\ver{N=N'}{A'}
+  }
+\end{gather*}
+
+Note that the type equality rule scheme that we gave above is structural; it is
+validated by the meaning explanations, but it is by no means the full totality
+of possible equalities between family cartesian product types, which is
+extensional in this theory.
+
+It will be instructive to explicitly justify the application rule above with
+respect to the meaning explanations, since I have claimed that such rules are
+posterior to the definitions we expounded prior to giving these rules. Let use
+expand the conclusion and relevant hypothesis, to convince ourselves that it is
+evident:
+
+\begin{quote}
+
+  Given a sequence of values $\vec{L}$ such that $\ver{\vec{L}}{\vec\Gamma_1}$,
+  assuming that $[\vec{L}/\vec\Gamma_0]M$ evaluates to a canonical verification
+  $\lam{x}{E}$ of $[\vec{L}/\vec\Gamma_0]\typrod{A}{x}{B}$ such that
+  \textbf{for any arbitrary $K$ such that
+  \ver{K}{[\vec{L}/\vec\Gamma_0]A}, you know
+  \ver{[K/x]E}{[K/x][\vec{L}/\vec\Gamma_0]B},} and $[\vec{L}/\vec\Gamma_0]N$
+  evaluates to a canonical verification $N'$ of $[\vec{L}/\vec\Gamma_0]A$, then
+  \ap{\lam{x}{E}}{N'} evaluates to a canonical verification of
+  $[N'/x][\vec{L}/\vec\Gamma_0]B$.
+
+\end{quote}
+
+Though it is a mouthful, this is clearly evident, since we know
+\reduce{\ap{\lam{x}{E}}{N'}}{[N'/x]E}, and we know that this is a canonical
+verification of $[N'/x][\vec{L}/\vec\Gamma_0]B$ directly via the emboldened
+assumption.
 
 \end{document}
 
