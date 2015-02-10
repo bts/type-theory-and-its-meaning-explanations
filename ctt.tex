@@ -205,18 +205,18 @@ First, we introduce two canonical forms with trivial reduction rules:
 \end{equation}
 
 Next, we intend to make the judgement \isset\tyunit\ evident; and this is done by
-defining what counts as a canonical verification of \tyunit and when two such
+defining what counts as a canonical verification of \tyunit\ and when two such
 verifications are equal. To this end, we say that $\bullet$ is a canonical
 verification of \tyunit, and that it is equal to itself.  I wish to emphasize
 that this is the entire definition of the type: we have introduced syntax, and
 we have defined the canonical forms, and there is nothing more to be done.
 
-In traditional treatments of type theory, a type is ``defined'' by writing out
-a bunch of inference rules, but in type theory, the definitions that we have
-given above are prior to the rules, which are justified in respect of the
-definitions and the meaning explanations for the judgements. For instance,
-based on the meaning of the various forms of sequent judgement, the following
-rules schemes are justified:
+In the presentations of type theory which are currently in vogue, a type is
+``defined'' by writing out a bunch of inference rules, but in type theory, the
+definitions that we have given above are prior to the rules, which are
+justified in respect of the definitions and the meaning explanations of the
+judgements. For instance, based on the meaning of the various forms of sequent
+judgement, the following rules schemes are justified:
 \begin{gather*}
   \infer{
     \sequent\Gamma\isset\tyunit
@@ -239,11 +239,11 @@ rules schemes are justified:
 Each of the assertions above has evidence of a certain kind; since the
 justification of these rules with respect to the definitions of the logical
 constants and the meaning explanations of the judgements is largely
-self-evident, we omit it. It is just important to remember that it is not the
-rules which define the types; a type $A$ is defined in the course of causing
-the judgement \isset{A} to become evident according to its meaning explanation.
-These rules merely codify standard patterns of use, nothing more, and they must
-each be justified.
+self-evident, we omit it in nearly all cases. It is just important to remember
+that it is not the rules which define the types; a type $A$ is defined in the
+course of causing the judgement \isset{A} to become evident.  These rules
+merely codify standard patterns of use, nothing more, and they must each be
+justified.
 
 \subsection{The empty type}
 
@@ -276,15 +276,16 @@ may conclude any judgement whatsoever. Remember that the inference rules are
 just notation for an \emph{evident} hypothetical judgement, e.g.\
 \hyp{\mathcal{J}}{\sequent\Gamma\ver{M}{\tyvoid}}.
 
-Note that we did not introduce any special constant into the syntax/computation
-language to represent the elimination of a verification of \tyvoid\ (in
-intensional type theories, this non-canonical form is usually called
-$\mathsf{abort}(R)$. This is because, computationally speaking, there is never
-any chance that we should ever have use for such a term, since we need only
-consider the evaluation of closed terms (which is guaranteed by the meaning
-explanations).
+Note that we did not introduce any special constant into the computation system
+to represent the elimination of a verification of \tyvoid\ (in proof-theoretic
+type theories, this non-canonical form is usually called $\mathsf{abort}(R)$).
+This is because, computationally speaking, there is never any chance that we
+should ever have use for such a term, since we need only consider the
+evaluation of closed terms (which is guaranteed by the meaning explanations),
+and by its very definition, there can never be a closed verification of
+\tyvoid.
 
-\subsection{The cartesian product of a family}
+\subsection{The cartesian product of a family of types}
 
 This will be our first dependent type, and it will likewise be the first
 example of a non-trivial addition to the computation system. First, let us add
@@ -302,9 +303,9 @@ our canonical and non-canonical forms and their reduction rules:
 \end{gather*}
 
 This is the first time in this chapter that we have introduced a term former
-with binding; it should be noted that the intensional equality of expressions
-is up to alpha equivalence, and we will not pay attention to issues of variable
-renaming in our presentation.
+with binding structure; it should be noted that the intensional equality of
+expressions is up to alpha equivalence, and we will not pay attention to issues
+of variable renaming in our presentation.
 
 We will make evident the following judgement scheme:
 \[
@@ -333,7 +334,7 @@ expression must be functional with respect to its domain (i.e. it must take
 equals to equals). We did not need to hypothesize directly two elements of the
 domain and their equality because this is part of the meaning explanation for
 the sequent judgement already. Likewise, two lambda expressions are equal when
-equal inputs yield the equal results in both.
+equal inputs yield equal results in both.
 
 The familiar inference rules, which codify the standard mode of use for the
 family cartesian product, are justified by this definition:
@@ -382,7 +383,7 @@ extensional in this theory.
 It will be instructive to explicitly justify the application rule above with
 respect to the meaning explanations, since I have claimed that such rules are
 posterior to the definitions we expounded prior to giving these rules. Let use
-expand the conclusion and relevant hypothesis, to convince ourselves that it is
+expand the conclusion and relevant hypotheses, to convince ourselves that it is
 evident:
 
 \begin{quote}
@@ -400,9 +401,9 @@ evident:
 \end{quote}
 
 Though it is a mouthful, this is clearly evident, since we know
-\reduce{\ap{\lam{x}{E}}{N'}}{[N'/x]E}, and we know that this is a canonical
-verification of $[N'/x][\vec{L}/\vec\Gamma_0]B$ directly via the emboldened
-assumption.
+\ap{\lam{x}{E}}{N'} reduces to the value of $[N'/x]E$, and we know that this is
+a canonical verification of $[N'/x][\vec{L}/\vec\Gamma_0]B$ directly via the
+emboldened assumption.
 
 \end{document}
 
