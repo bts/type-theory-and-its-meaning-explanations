@@ -190,15 +190,15 @@ hand.
 
 First, we introduce two canonical forms with trivial reduction rules:
 \begin{equation}
-  \reduce\top\top\qquad
+  \reduce\tyunit\tyunit\qquad
   \reduce\bullet\bullet
   \tag{Canonical}
 \end{equation}
 
-Next, we intend to make the judgement \isset\top\ evident; and this is done by
-defining what counts as a canonical verification of $\top$ and when two such
+Next, we intend to make the judgement \isset\tyunit\ evident; and this is done by
+defining what counts as a canonical verification of \tyunit and when two such
 verifications are equal. To this end, we say that $\bullet$ is a canonical
-verification of $\top$, and that it is equal to itself.  I wish to emphasize
+verification of \tyunit, and that it is equal to itself.  I wish to emphasize
 that this is the entire definition of the type: we have introduced syntax, and
 we have defined the canonical forms, and there is nothing more to be done.
 
@@ -210,19 +210,19 @@ based on the meaning of the various forms of sequent judgement, the following
 rules schemes are justified:
 \begin{gather*}
   \infer{
-    \sequent\Gamma\isset\top
+    \sequent\Gamma\isset\tyunit
   }{
   }\qquad
   \infer{
-    \sequent\Gamma\isset{\top=\top}
+    \sequent\Gamma\isset{\tyunit=\tyunit}
   }{
-  }\\
+  }\\[6pt]
   \infer{
-    \sequent\Gamma\ver\bullet\top
+    \sequent\Gamma\ver\bullet\tyunit
   }{
   }\qquad
   \infer{
-    \sequent\Gamma\ver{\bullet=\bullet}{\top}
+    \sequent\Gamma\ver{\bullet=\bullet}{\tyunit}
   }{
   }
 \end{gather*}
@@ -237,5 +237,43 @@ These rules merely codify standard patterns of use, nothing more, and they must
 each be justified.
 
 \subsection{The empty type}
+
+The empty type is similarly easy to define. First, we introduce a constant:
+\begin{gather*}
+  \reduce\tyvoid\tyvoid\tag{Canonical}
+\end{gather*}
+
+To make the judgement \isset\tyvoid\ evident, we will say that there are no
+canonical verifications of \tyvoid, and be done with it. This definition
+validates some further rules schemes:
+\begin{gather*}
+  \infer{
+    \sequent\Gamma\isset\tyvoid
+  }{
+  }\qquad
+  \infer{
+    \sequent\Gamma\isset{\tyvoid=\tyvoid}
+  }{
+  }\\[6pt]
+  \infer{
+    \mathcal{J}
+  }{
+    \sequent\Gamma\ver{M}{\tyvoid}
+  }
+\end{gather*}
+
+The last rule simply says that if we have a verification of \tyvoid, then we
+may conclude any judgement whatsoever. Remember that the inference rules are
+just notation for an \emph{evident} hypothetical judgement, e.g.\
+\hyp{\mathcal{J}}{\sequent\Gamma\ver{M}{\tyvoid}}.
+
+Note that we did not introduce any special constant into the syntax/computation
+language to represent the elimination of a verification of \tyvoid\ (in
+intensional type theories, this non-canonical form is usually called
+$\mathsf{abort}(R)$. This is because, computationally speaking, there is never
+any chance that we should ever have use for such a term, since we need only
+consider the evaluation of closed terms (which is guaranteed by the meaning
+explanations).
+
 \end{document}
 
