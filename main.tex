@@ -28,6 +28,7 @@
 \newcommand\fresh[2]{\ensuremath{#1\mathrel{\#}#2}}
 \newcommand\sequent[2]{\ensuremath{#1\gg#2}}
 \newcommand\hyp[2]{\ensuremath{#1\ (#2)}}
+\newcommand\ahyp[2]{\ensuremath{#1 & (#2)}}
 \newcommand\genj[2]{\ensuremath{\lvert_{#1}\,#2}}
 \newcommand\ver[2]{\ensuremath{#1\in#2}}
 \newcommand\reduce[2]{\ensuremath{#1\Rightarrow#2}}
@@ -53,6 +54,11 @@
 \newcommand\typrod[3]{\ensuremath{\mathsf{\Pi}(#1;#2.#3)}}
 \newcommand\lam[2]{\ensuremath{\mathsf{\lambda}(#1.#2)}}
 \newcommand\ap[2]{\ensuremath{\mathsf{ap}(#1;#2)}}
+
+\newcommand\cmor[2]{\ensuremath{#2\to#2}}
+\newcommand\emptysub{\ensuremath{\diamond}}
+\newcommand\extsub[3]{\ensuremath{#1,#2\mapsto#3}}
+\newcommand\appsub[2]{\ensuremath{#2[#1]}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
