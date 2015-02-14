@@ -10,7 +10,7 @@ As alluded to at the end of the previous chapter, we may add a judgement
 propositions (or types) $P$. We will develop a full theory of dependent types
 in the sense of Martin-L\"of.\footnote{Please note that the judgements given here, and
 their meaning explanations, are \emph{not} the same as those used in Constable
-et al's ``Computational Type Theory'' and Nuprl. In this chaper, we use the
+et al's ``Computational Type Theory'' and Nuprl. In this chapter, we use the
 term ``computational type theory'' in a general sense to characterize a family
 of type theories which have their origin in Martin-L\"of's 1979 paper
 \emph{Constructive Mathematics and Computer Programming}.}
@@ -21,14 +21,12 @@ Because we will need to consider the introduction of types which do not have a
 trivial (intensional) equality relation, we must first amend the meaning
 explanations for some of our judgements, and add a few new forms of judgement.
 First, we will refer to \emph{types} rather than \emph{propositions} in order
-to emphasize the generality of the theory; in some places, the word \emph{set}
-is used instead.
+to emphasize the generality of the theory; in some presentations, the word
+\emph{set} is used instead.
 
 The meaning of hypothetical and general judgement are the same as in the
-previous chapter, and so we will not reproduce them here.
-
-The first form of judgement is \framebox{\isset{A}}, and its meaning explanation
-is as follows:
+previous chapter, and so we will not reproduce them here. The first form of
+judgement is \framebox{\isset{A}}, and its meaning explanation is as follows:
 
 \begin{quote}
   To know \isset{A} is to know what counts as a canonical verification of $A$
@@ -61,7 +59,7 @@ verifications. Note that there are other possible explanations for type
 equality, including more intensional ones that appeal to the syntactic
 structure of type expressions, and these turn out to be more useful in proof
 assistants for practical reasons. However, the extensional equality that we
-have chosen here is the easiest and most obvious one to formulate, so we will
+have expounded is the easiest and most obvious one to formulate, so we will
 use it here.
 
 Now, because we are allowing the definition of types with arbitrary equivalence
@@ -73,7 +71,7 @@ not take equal inputs to equal outputs. As such, we will need to bake
 functionality (also called extensionality) into the definition of functions,
 and since we will need this in many other places, we elect to simplify our
 definitions by baking it into a single judgement which is meant to be used
-instead of hypothetico-general judgement.
+instead of plain hypothetico-general judgement.
 
 The judgement which expresses simultaneously generality, hypothesis and
 functionality has been written in multiple ways. Martin-L\"of has always
