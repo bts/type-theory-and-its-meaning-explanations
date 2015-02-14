@@ -1,0 +1,62 @@
+mtm : type.
+rtm : type.
+tp : type.
+
+lam : (rtm -> mtm) -> mtm.
+app : rtm -> mtm -> rtm.
+c : rtm.
+pair : mtm -> mtm -> mtm.
+fst : rtm -> rtm.
+snd : rtm -> rtm.
+abort : rtm -> tp -> rtm.
+tt : mtm.
+neu : rtm -> mtm.
+
+⊃ : tp -> tp -> tp.    %infix right 9 ⊃.
+* : tp -> tp -> tp.    %infix right 8 *.
+b : tp.
+⊥ : tp.
+⊤ : tp.
+
+%block rtm_block : block {x : rtm}.
+%worlds (rtm_block) (tp) (rtm) (mtm).
+
+use : rtm -> tp -> type.
+%mode use +R -A.
+
+ver : mtm -> tp -> type. 
+%mode ver +M +A.
+
+use/c : use c b.
+use/app : use (app R M) B
+           <- use R (A ⊃ B)
+           <- ver M A.
+use/fst : use (fst R) A
+           <- use R (A * B).
+use/snd : use (snd R) B
+           <- use R (A * B).
+use/abort : use (abort R B) B
+             <- use R ⊥.
+
+ver/tt : ver tt ⊤.
+ver/lam : ver (lam M) (A ⊃ B)
+           <- {x} use x A -> ver (M x) B.
+ver/pair : ver (pair M N) (A * B)
+            <- ver M A
+            <- ver N B.
+ver/neu : ver (neu R) A
+           <- use R A.
+
+%block use_block : some {A:tp} block {x:rtm} {dx:use x A}.
+%worlds (use_block) (use _ _) (ver _ _).
+
+%terminates (R M) (use R _) (ver M _).
+
+false : type.
+%freeze false.
+
+
+welp : ver X ⊥ -> false -> type.
+%mode welp +X -Y.
+%worlds () (welp _ _).
+%total D (welp D _).
