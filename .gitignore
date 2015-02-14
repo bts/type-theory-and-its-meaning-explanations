@@ -2,3 +2,9 @@
 *.log
 *.fdb_latexmk
 *.fls
+*.prv
+*.fmt
+\#*
+.\#*
+_region_.tex
+auto
