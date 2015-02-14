@@ -6,7 +6,8 @@
 *.fmt
 \#*
 .\#*
-_region_.tex
+_region_.*
+*.toc
 auto
 *~
 *.agdai
