@@ -459,28 +459,34 @@ extensional in this theory.
 
 It will be instructive to explicitly justify the application rule above with
 respect to the meaning explanations, since I have claimed that such rules are
-posterior to the definitions we expounded prior to giving these rules. Let use
-expand the conclusion and relevant hypotheses, to convince ourselves that it is
-evident:
+posterior to the definitions we expounded prior to giving these rules.
 
-\begin{quote}
+\begin{proof}
+First, it suffices to consider the case that $\reduce{\Gamma}{\cdot}$,
+because hypotheses may always be added to the context (this is called
+weakening). And so, by the meaning of the sequent judgement at the
+empty context, the rule amounts to the assertion
+\[
+  \hyp{
+    \ver{\ap{M}{N}}{[N/x]B}
+  }{
+    \ver{M}{\typrod{A}{x}{B}}; \ver{N}{A}
+  }
+\]
 
-  Given a sequence of values $\vec{L}$ such that
-  $\ver{\vec{L}}{\vec\Gamma_1}$, assuming that $[\vec{L}/\vec\Gamma_0]M$
-  evaluates to a canonical verification $\lam{x}{E}$ of
-  $[\vec{L}/\vec\Gamma_0]\typrod{A}{x}{B}$ such that \textbf{for any
-  arbitrary $K$ such that $\ver{K}{[\vec{L}/\vec\Gamma_0]A}$, you know
-  $\ver{[K/x]E}{[K/x][\vec{L}/\vec\Gamma_0]B}$,} and
-  $[\vec{L}/\vec\Gamma_0]N$ evaluates to a canonical verification $N'$
-  of $[\vec{L}/\vec\Gamma_0]A$, then $\ap{\lam{x}{E}}{N'}$ evaluates to
-  a canonical verification of $[N'/x][\vec{L}/\vec\Gamma_0]B$.
+By the meaning explanation for hypothetical judgement, and the
+definition of the family cartesian product type, we know that
+$\reduce{M}{\lam{x}{E}}$ for some $E$ such that we know
+$\sequent{\ver{x}{A}}{\ver{E}{B}}$; from the meaning of the sequent
+judgement, we can conclude $\genj{L}{\hyp{\ver{[L/x]E}{[L/x]B}}{L\in
+A}}$. On the other hand, from the computation rules, we know that if
+for some particular $E'$, $\reduce{[N/x]E}{E'}$, then we know
+$\reduce{\ap{\lam{x}{E}}{N}}{E'}$; to demonstrate the evidence of the
+premise, we may instantiate $L$ at $N$ to know $\ver{[N/x]E}{[N/x]B}$,
+whence by the meaning of membership, we know that there exists some
+canonical $E'$ such that $\reduce{[N/x]}{E'}$.
+\end{proof}
 
-\end{quote}
-
-Though it is a mouthful, this is clearly evident, since we know
-$\ap{\lam{x}{E}}{N'}$ reduces to the value of $[N'/x]E$, and we know that this is
-a canonical verification of $[N'/x][\vec{L}/\vec\Gamma_0]B$ directly via the
-emboldened assumption.
 
 \end{document}
 
