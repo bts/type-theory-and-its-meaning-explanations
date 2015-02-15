@@ -307,7 +307,7 @@ In the presentations of type theory which are currently in vogue, a type is
 definitions that we have given above are prior to the rules, which are
 justified in respect of the definitions and the meaning explanations of the
 judgements. For instance, based on the meaning of the various forms of sequent
-judgement, the following rules schemes are justified:
+judgement, the following rule schemes are justified:
 \begin{gather*}
   \infer{
     \sequent\Gamma\isset\tyunit
@@ -411,7 +411,7 @@ We will make evident the following judgement scheme:
 
 Or, written as a hypothetical judgement:
 \[
-  \hyp{\isset{\typrod{A}{x}{B}}}{\isset{A};\sequent{\ver{x}{A}}{\isset{B}}}
+  \hyp{\isset{\typrod{A}{x}{B}}}{\isset{A},\;\sequent{\ver{x}{A}}{\isset{B}}}
 \]
 
 This is to say, under the stated assumptions, we know what counts as a
@@ -486,7 +486,7 @@ empty context, the rule amounts to the assertion
   \hyp{
     \ver{\ap{M}{N}}{[N/x]B}
   }{
-    \ver{M}{\typrod{A}{x}{B}}; \ver{N}{A}
+    \ver{M}{\typrod{A}{x}{B}},\; \ver{N}{A}
   }
 \]
 

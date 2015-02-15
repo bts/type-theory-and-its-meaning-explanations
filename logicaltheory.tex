@@ -55,33 +55,46 @@ a plan of verification by appeal to an existing verification.
 \section{Higher-order judgements}
 
 The judgements we have described so far are ``categorical'' in the sense that
-they are made without assumption. We will need to define a further form of
-judgement, which is called ``hypothetical'', and this is the judgement under
-hypothesis \framebox{$\hyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n}$}.Its
-meaning explanation is as follows:
+they are made without assumption or generality.
+
+\subsection{Hypothetical judgement}
+
+We will need to define a further form of judgement, which is called
+``hypothetical'', and this is the judgement under hypothesis
+\framebox{$\hyp{\mathcal{J}}{\mathcal{J}'}$}.Its meaning explanation
+is as follows:
 
 \begin{quote}
-  To know the judgement $\hyp{\mathcal{J}}{\mathcal{J}_1,\dots,\mathcal{J}_n}$ is to know the
-  categorical judgement $\mathcal{J}$ assuming you know the judgements
-  $\mathcal{J}_1,\dots,\mathcal{J}_n$.
+  To know the judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ is to know
+  the categorical judgement $\mathcal{J}$ assuming you know the
+  judgement $\mathcal{J}'$.
 \end{quote}
+
+Hypothetical judgement may be iterated, and
+$\hyp{\mathcal{J}}{\mathcal{J}_1,\mathcal{J}_2}$ will be used as notation for
+for $\hyp{\hyp{\mathcal{J}}{\mathcal{J}_2}}{\mathcal{J}_1}$.
 
 \subsection{General judgement}
 
-Another kind of higher order judgement is ``general judgement'', which is
-judgement with respect to a collection of free variables,
-\framebox{$\genj{\vec{x}}{\mathcal{J}}$}. The meaning explanation for this new
-judgement is as follows:
+Another kind of higher order judgement is ``general judgement'', which
+is judgement with respect to a variable,
+\framebox{$\genj{x}{\mathcal{J}}$}. The meaning explanation for this
+new judgement is as follows:
 
 \begin{quote}
-  To know the judgement $\genj{\vec{x}}{\mathcal{J}}$ is, for any arbitrary
-  collection of expressions $\vec{E}$ of the same length of $\vec{x}$, to know
-  $[\vec{E}/\vec{x}]\mathcal{J}$ (i.e. the substitution of each expression in
-  $\vec{E}$ for each variable in $\vec{x}$ respectively).
+  To know the judgement $\genj{x}{\mathcal{J}}$ is, for any arbitrary
+  expression $E$,   \footnote{Technically, $E$ is qualified as being of
+the same valence as $x$, but because we have not developed a formal
+theory of expressions in this presentation, I choose to ignore this
+issue.}      to know $[E/x]\mathcal{J}$ (i.e. the substitution of $E$ for
+  $x$ in the expression $\mathcal{J}$.
 \end{quote}
 
-As far as notation is concerned, the general judgement bar binds the least
-tightly of all the other notations we have considered.
+As far as notation is concerned, the general judgement bar binds the
+least tightly of all the other notations we have considered. Likewise,
+general judgement may be iterated, and the notation
+$\genj{x,y}{\mathcal{J}}$ will be used as notation for
+$\genj{x}{\genj{y}{\mathcal{J}}}$.
 
 \subsection{Hypothetico-general judgement}
 
