@@ -1,0 +1,133 @@
+val : type.
+exp : type.
+
+set : val.
+void : val.
+unit : val.
+& : exp -> exp -> val.   %infix right 10 &.
++ : exp -> exp -> val.   %infix right 10 +.
+
+ax : val.
+tt : val.
+ff : val.
+pair : exp -> exp -> val.
+inl : exp -> val.
+inr : exp -> val.
+
+↑ : val -> exp.
+
+fst : exp -> exp.
+snd : exp -> exp.
+decide : exp -> (exp -> exp) -> (exp -> exp) -> exp.
+
+=> : exp -> val -> type.  %infix right 9 =>.
+%mode => +X -Y.
+
+=>/↑ : ↑ X => X.
+=>/fst : fst X => X1'
+          <- X => pair X1 X2
+          <- X1 => X1'.
+=>/snd : snd X => X2'
+          <- X => pair X1 X2
+          <- X2 => X2'.
+=>/decide/inl : decide X L R => LX
+                 <- X => inl X'
+                 <- L X' => LX.
+=>/decide/inr : decide X L R => RX
+                 <- X => inr X'
+                 <- R X' => RX.
+
+∈ : exp -> exp -> type. %infix right 9 ∈.
+ver : val -> val -> type.
+
+ver/void : ver void set.
+ver/unit : ver unit set.
+ver/ax : ver ax unit.
+ver/pair : ver (pair X Y) (A & B)
+            <- Y ∈ B
+            <- X ∈ A.
+ver/inl : ver (inl X) (A + B)
+           <- B ∈ ↑ set
+           <- X ∈ A.
+ver/inr : ver (inr X) (A + B)
+           <- A ∈ ↑ set
+           <- X ∈ B.
+
+% The meaning of membership is based on evaluation to canonical form.
+∈/def : X ∈ A
+         <- ver X' A'
+         <- X => X'
+         <- A => A'.
+
+% The following lemmas demonstrate the point of the meaning
+% explanations. The introduction rules and elimination rules are *not*
+% part of the definitions of the logical constants; instead, they are
+% *justified* by appealing to the meanings of the judgements and the
+% definitions of the logical constants.
+
+% Elimination rules, then, are not a primitive notion, but are rather
+% a codification of commonly used inferences. A rule is an evident
+% judgement, i.e. evident by inspecting its meaning.
+
+% The elimination rules for pairs are justified below. Note that the
+% definition is completely modular with respect to the theory (i.e. it
+% is open-ended); we only have to appeal to canonical forms in the
+% justification of the elimination rules, so it is perfectly fine to
+% keep on adding new connectives.
+
+elim/fst : X ∈ ↑ (A & B) -> fst X ∈ A -> type.
+%mode elim/fst +D -E.
+- : elim/fst
+     (∈/def
+        =>/↑
+        X=>MN
+        (ver/pair (∈/def A=>A' M=>M' M'vA') _))
+     (∈/def A=>A' (=>/fst M=>M' X=>MN) M'vA').
+%worlds () (elim/fst _ _).
+%total E (elim/fst E _).
+
+elim/snd : X ∈ ↑ (A & B) -> snd X ∈ B -> type.
+%mode elim/snd +D -E.
+- : elim/snd
+     (∈/def
+        =>/↑
+        X=>MN
+        (ver/pair _ (∈/def B=>B' N=>N' N'vB')))
+     (∈/def B=>B' (=>/snd N=>N' X=>MN) N'vB').
+%worlds () (elim/snd _ _).
+%total E (elim/snd E _).
+
+mem/invert : X ∈ A -> {A':val}{X':val} A => A' -> X => X' -> ver X' A' -> type.
+%mode mem/invert +DX -A' -X' -RA -RX -V.
+- : mem/invert (∈/def (RA : A => A') (RX : X => X') V) A' X' RA RX V.
+%worlds () (mem/invert _ _ _ _ _ _).
+%total D (mem/invert D _ _ _ _ _).
+
+elim/decide : X ∈ ↑ (A + B) -> ({z} z ∈ A -> L z ∈ C) -> ({z} z ∈ B -> R z ∈ C) -> decide X L R ∈ C -> type.
+%mode elim/decide +DX +DL +DR -E.
+- : elim/decide
+     (∈/def
+        =>/↑
+        (X=>inlM : X => inl M)
+        (ver/inl (M∈A : M ∈ A) Bset))
+     (DL : {z} z ∈ A -> L z ∈ C)
+     (DR : {z} z ∈ B -> R z ∈ C)
+     (∈/def
+        C=>C'
+        (=>/decide/inl LM=>LM' X=>inlM)
+        LM'vC')
+     <- mem/invert (DL M M∈A) C' LM' C=>C' LM=>LM' LM'vC'.
+- : elim/decide
+     (∈/def
+        =>/↑
+        (X=>inrN : X => inr N)
+        (ver/inr (N∈B : N ∈ B) Aset))
+     (DL : {z} z ∈ A -> L z ∈ C)
+     (DR : {z} z ∈ B -> R z ∈ C)
+     (∈/def
+        C=>C'
+        (=>/decide/inr RN=>RN' X=>inrN)
+        RN'vC')
+     <- mem/invert (DR N N∈B) C' RN' C=>C' RN=>RN' RN'vC'.
+%worlds () (elim/decide _ _ _ _).
+%total DX (elim/decide DX _ _ _).
