@@ -5,17 +5,17 @@
 
 \chapter{Logical Theories}
 
-To start, we will consider the notion of a \emph{logical theory}; in my mind,
-it begins with a species (or set) of judgements that can be proposed, asserted,
-and (if they are evident) known.
+To start, we will consider the notion of a \emph{logical theory}; in
+my mind, it begins with a species (or set) of judgements that can be
+proposed, asserted, and (if they are evident) known.
 
 \section{Judgements of a logical theory}
 
 The basic forms of judgement for a logical theory will be
 \framebox{$\isprop{P}$} and \framebox{$\istrue{P}$}; and what is $P$?
 It is a member of the species of terms, which are made meaningful in
-the course of making the judgement $\isprop{P}$ evident for a
-proposition $P$.
+the course of making the judgement $\isprop{P}$ (``$P$ is a
+proposition'') evident for a proposition $P$.
 
 To each judgement is assigned a \emph{meaning explanation}, which explicates
 the knowledge-theoretic content of the judgement. For a judgement
@@ -32,13 +32,16 @@ The meaning of the judgement $\isprop{P}$ is, then, as follows:
   what would count as a direct verification of $P$.
 \end{quote}
 
-So if a symbol $P$ is taken to denote a proposition, we must know \emph{what
-sort of thing} is to be taken as a direct verification of $P$, and this is
-understood as part of the definition of $P$. A ``direct verification'' is
-understood in constrast with an ``indirect verification'', which is to be
-thought of as a means or plan for verifying the proposition. Now, the judgement
-$\istrue{P}$ is only meaningful in case we know $\isprop{P}$ (this is called a
-presupposition). Then the meaning of $\istrue{P}$ is as follows:
+So if a symbol $P$ is taken to denote a proposition, we must know
+\emph{what sort of thing} is to be taken as a direct verification of
+$P$, and this is understood as part of the definition of $P$. A
+``direct verification'' is understood in constrast with an ``indirect
+verification'', which is to be thought of as a means or plan for
+verifying the proposition; these distinctions will be explained in
+more detail later on. Now, the judgement $\istrue{P}$ (``$P$ is
+true'') is only meaningful in case we know $\isprop{P}$ (this is
+called a presupposition). Then the meaning of $\istrue{P}$ is as
+follows:
 
 \begin{quote}
   To know $\istrue{P}$ is to have a verification of $P$.
@@ -46,11 +49,11 @@ presupposition). Then the meaning of $\istrue{P}$ is as follows:
 
 From the (implicit) presupposition $\isprop{P}$, we already know what
 counts as a verification, so the meaning explanation is
-well-defined. Note that it is the same to have a means or plan for
-verifying $P$ as to have a (direct) verification; this follows from
-the fact that one may put into action a plan for verifying $P$ and
-achieve such a verification, and likewise, it is possible to propound
-a plan of verification by appeal to an existing verification.
+well-defined. Note that having a means or plan for verifying $P$ is
+equivalent to having a (direct) verification; this follows from the
+fact that one may put into action a plan for verifying $P$ and achieve
+such a verification, and likewise, it is possible to propound a plan
+of verification by appeal to an existing verification.
 
 \section{Higher-order judgements}
 
@@ -61,8 +64,9 @@ they are made without assumption or generality.
 
 We will need to define a further form of judgement, which is called
 ``hypothetical'', and this is the judgement under hypothesis
-\framebox{$\hyp{\mathcal{J}}{\mathcal{J}'}$}.Its meaning explanation
-is as follows:
+\framebox{$\hyp{\mathcal{J}}{\mathcal{J}'}$}, pronounced
+``$\mathcal{J}$ under the assumption $\mathcal{J}'$''.Its meaning
+explanation is as follows:
 
 \begin{quote}
   To know the judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ is to know
@@ -78,51 +82,62 @@ for $\hyp{\hyp{\mathcal{J}}{\mathcal{J}_2}}{\mathcal{J}_1}$.
 
 Another kind of higher order judgement is ``general judgement'', which
 is judgement with respect to a variable,
-\framebox{$\genj{x}{\mathcal{J}}$}. The meaning explanation for this
-new judgement is as follows:
+\framebox{$\genj{x}{\mathcal{J}}$}, pronounced ``for an arbitrary $x$,
+$\mathcal{J}$''. The meaning explanation for this new judgement is as
+follows:
 
 \begin{quote}
-  To know the judgement $\genj{x}{\mathcal{J}}$ is, for any arbitrary
-  expression $E$,   \footnote{Technically, $E$ is qualified as being of
-the same valence as $x$, but because we have not developed a formal
-theory of expressions in this presentation, I choose to ignore this
-issue.}      to know $[E/x]\mathcal{J}$ (i.e. the substitution of $E$ for
-  $x$ in the expression $\mathcal{J}$.
+  To know the judgement $\genj{x}{\mathcal{J}}$ is, to know
+$[E/x]\mathcal{J}$ (i.e. the substitution of $E$ for $x$ in the
+expression $\mathcal{J}$) for any arbitrary expression $E$,
+\footnote{Technically, $E$ is qualified as being of the same valence
+as $x$, but because we have not developed a formal theory of
+expressions in this presentation, I choose to ignore this issue.}
 \end{quote}
 
-As far as notation is concerned, the general judgement bar binds the
-least tightly of all the other notations we have considered. Likewise,
+As far as notation is concerned, the bar symbol binds the least
+tightly of all the other notations we have considered. Likewise,
 general judgement may be iterated, and the notation
 $\genj{x,y}{\mathcal{J}}$ will be used as notation for
 $\genj{x}{\genj{y}{\mathcal{J}}}$.
 
 \subsection{Hypothetico-general judgement}
 
-When hypothetical judgment is used inside general judgement, as in
+When hypothetical judgement is used inside general judgement, as in
 $\genj{x}{\hyp{\istrue{A(x)}}{\istrue{B(x)}}}$, we term the whole
 thing a ``hypothetico-general'' judgement. One thing bears clarifying,
-which is, why do we write $\hyp{\istrue{P}}{\istrue{P}}$ rather than
+which is, Why do we write $\hyp{\istrue{P}}{\istrue{P}}$ rather than
 $\genj{P}{\hyp{\istrue{P}}{\istrue{P}}}$?
 
-The former is properly not a single judgement, but rather a \emph{scheme} for
+The former is really not a single judgement, but rather a \emph{scheme} for
 judgements, where $P$ and $Q$ are intended to be replaced with concrete
-expressions by the person making asserting the judgements. On the other hand, the
+expressions by the person asserting the judgements. On the other hand, the
 latter is itself a single judgement which may be asserted all on its own.
 
 \section{Propositions and verifications}
 Now that we have propounded and explained the minimal system of judgements for
 a logical theory, let us populate it with propositions. First, we have falsity
 $\bot$, and we wish to make $\isprop{\bot}$ evident; to do this, we simply state
-what counts as a direct verification of $\bot$, which is that there is no
+what counts as a direct verification of $\bot$: there is no
 direct verification of $\bot$.
 
-The next basic proposition is trivial truth $\top$, and to make $\isprop{\top}$
-evident, we state that a direct verification of $\top$ is trivial. The definition
-of $\top$ thus validates the judgement $\istrue{\top}$.
+The next basic proposition is trivial truth $\top$, and to make
+$\isprop{\top}$ evident, we state that a direct verification of $\top$
+is trivial. The definition of $\top$ thus validates the judgement
+$\istrue{\top}$ (i.e. that we have a verification of $\top$; this
+is immediate).
 
 Next, let us define conjunction; in doing so, we will make evident the
 hypothetical judgement $\hyp{\isprop{P\land Q}}{\isprop{P},\isprop{Q}}$;
-equivalently, we can display this as a rule of inference:
+equivalently, we can display this as a rule of inference:\footnote{
+Evident hypothetical judgements are often written as rules, i.e.
+\[
+  \infer{\textit{conclusion}}{\textit{premise}} 
+\]
+rather than $\hyp{\textit{conclusion}}{\textit{premise}}$. It must be
+stressed that only \emph{evident}/\emph{known} judgements may be
+written in this way.
+}
 \[
   \infer{
     \isprop{P\land Q}
@@ -157,8 +172,8 @@ Q}}{\isprop{P},\isprop{Q}}$, or
   }
 \]
 The verification conditions of disjunction give
-rise to two evident judgements \hyp{\istrue{P\lor Q}}{\istrue{P}} and
-\hyp{\istrue{P\lor Q}}{\istrue{Q}}, which we can write as inference rules:
+rise to two evident judgements $\hyp{\istrue{P\lor Q}}{\istrue{P}}$ and
+$\hyp{\istrue{P\lor Q}}{\istrue{Q}}$, which we can write as inference rules:
 \begin{gather*}
   \infer{
     \istrue{P\lor Q}
@@ -199,10 +214,12 @@ following explanation:
   counts as a direct verification of $Q$.
 \end{quote}
 
-(Note that unless $\istrue{P}$, it need not be evident that \isprop{Q}.) If
-this judgement is going to be made evident, then we must indeed come up with
-what should count as a direct verification of $P\supset Q$ under the
-assumptions described above.
+(Note that unless $\istrue{P}$, it need not be evident that
+$\isprop{Q}$; in other words, $Q$ only has to be a proposition if $P$
+is true.) If the judgement $\hyp{\isprop{P\supset
+Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$ is going to be made
+evident, then we must come up with what should count as a direct
+verification of $P\supset Q$ under the assumptions described above.
 
 And so to have a direct verification of $P\supset Q$ is to have a
 verification of $Q$ assuming that one has one of $P$; this is the
@@ -220,46 +237,57 @@ written as an inference rule as follows:
 \section{Judgements for verifications}
 
 So far, we have given judgements which define what it means to be a
-proposition, and thence for each proposition, we have by definition a notion of
-what should count as a verification of that proposition. And by definition, to
-assert the judgement $\istrue{P}$ is to assert that one has a verification of
-$P$, but we have not considered any judgements which actually deal with such
-verifications directly.
+proposition, namely $\isprop{P}$, and thence for each proposition, we
+have by definition a notion of what should count as a verification of
+that proposition. And we have a judgement $\istrue{P}$, which in its
+assertion means that one has (a way to obtain) such a verification of
+$P$, but we have not considered any judgements which actually refer to
+the verifications themselves symbolically.
 
-It is a hallmark of Martin-L\"of's program to resolve the contradiction between
-syntax and semantics not by choosing symbols over meanings or meanings over
-symbols, but by endowing symbols with meaning in the course of knowing the
-evident judgements. As such, $P$ is a symbol, but when we assert \isprop{P} we
-are saying that we know what proposition $P$ denotes.
+It is a hallmark of Martin-L\"of's program to resolve the
+contradiction between syntax and semantics not by choosing symbols
+over meanings or meanings over symbols, but by endowing symbols with
+meaning in the course of knowing the evident judgements. \textbf{As
+such, $P$ is a symbol, but when we assert $\isprop{P}$ we are saying
+that we know what proposition $P$ denotes.}
 
-A similar thing can be done with verifications themselves, by placing them in
-the syntactic domain together with the propositional symbols. And then, we can
-consider a judgement such as ``$M$ is a verification of $P$'', and in knowing
-that judgement, we know what verification $M$ is meant to denote. In practice,
-this judgement has been written in several ways:\\\medskip
+A similar thing can be done with verifications themselves, by
+representing them with symbols in the same way we have done for the
+propositions. And then, we can consider a judgement such as ``$M$ is a
+verification of $P$'', and in knowing that judgement, we know what
+verification $M$ is meant to denote. In practice, this judgement has
+been written in several ways:\\[10pt]
 \begin{tabular}{c|l}
+  Notation & Pronunciation \\ \hline
   $M\in P$ & $M$ is an element of $P$\\
   $M\Vdash P$ & $M$ realizes $P$\\
   $P\ \llcorner\mathsf{ext}\; M\lrcorner$ & $P$ is witnessed by $M$
-\end{tabular}
+\end{tabular}\\
 
-But they all mean the same thing, and so we will tentatively give the following
-meaning explanation to this new judgement:
+But they all mean the same thing, so we will choose the notation
+$\ver{M}{P}$ and pronounce it ``$M$ verifies $P$''. Tentatively, the
+following defective meaning explanation could be given:
 \begin{quote}
   * To know $\ver{M}{P}$ is to know that $M$ is a verification of $P$.
 \end{quote}
 
-But now that we have started to assign expressions to verifications, we must be
-more careful about differentiating \emph{direct verifications} (which we will
-call ``canonical'') from \emph{indirect verifications} (which we will call
-``non-canonical''). So the domain of expressions must itself be accorded with a
-notion of reduction to canonical form, and this corresponds with putting into
-action a plan of verification in order to get an actual verification.
+But now that we have started to assign expressions to verifications,
+we must be more careful about differentiating \emph{direct
+verifications} (which we will call ``canonical'') from \emph{indirect
+verifications} (which we will call ``non-canonical''). So the domain
+of expressions must itself be accorded with a notion of reduction to
+canonical form, and this corresponds with putting into action a plan
+of verification in order to get a direct (canonical) verification.
 
 \begin{quote}
   To know $\reduce{M}{M'}$ is to know that $M$ is an expression which reduces to
   a canonical form $M'$.
 \end{quote}
+
+An example of an evident reduction judgement in elementary mathematics
+would be $\reduce{3+4}{7}$; note that $\reduce{3+4}{1+6}$ is, on the
+other hand, not evident, since this judgement describes reduction to
+\emph{canonical} form, whereas $1+6$ is not a canonical number.
 
 Now, we can correct the previous meaning explanation as follows:
 
@@ -268,8 +296,21 @@ Now, we can correct the previous meaning explanation as follows:
   canonical (direct) verification of $P$.
 \end{quote}
 
+If it is not yet clear why it would have been a mistake to fail to use
+the notion of reduction to canonical form in the above meaning
+explanation, consider that each time a proposition is defined, it
+should be possible to do so without knowing what other propositions
+exist in the theory. But if we consider non-canonical forms (as would
+be necessary if we omitted the $\reduce{M}{M'}$ premise), then we
+would have to fix in advance all the possible non-canonical forms in
+the computation system in the course of defining each proposition. As
+such, the open-ended nature of the logic would be destroyed; in a
+later chapter, the seriousness of this problem will be made even more
+clear.
+
+
 The meaning explanation for $\isprop{P}$ must be accordingly modified to take
-into account the computational behavior of the expression domain:
+into account the computational behavior of expressions:
 
 \begin{quote}
   To know $\isprop{P}$ is to know a $P'$ such that $\reduce{P}{P'}$ and $P'$ is a
@@ -285,19 +326,22 @@ As an example, then, we will update the evidence of the assertion
 $\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}$. The meaning
 of this, expanded into spoken language, is as follows:
 \begin{quote}
-  To know $\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}$ is
-  to know what counts as a canonical verification of $P\supset Q$ under
-  the circumstances that $\reduce{P}{P'}$, such one knows what counts as a
-  canonical verification $P'$, and, if one has such a verification,
-  $\reduce{Q}{Q'}$ such that one knows what counts as a canonical verification of
-  $Q'$.
+  To know $\hyp{\isprop{P\supset
+Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}$ is to know what counts
+  as a canonical (direct) verification of $P\supset Q$ under the
+  circumstances that $\reduce{P}{P'}$, such that one knows what counts
+  as a canonical verification $P'$, and, if one has such a verification,
+  $\reduce{Q}{Q'}$ such that one knows what counts as a canonical
+  verification of $Q'$.
 \end{quote}
 
-And this is evident, since we will say that a canonical verification of
-$P\supset Q$ is an expression $\lambda x. E$ such that we know the
-hypothetico-general judgement $\genj{x}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}$. This
-validates the assertion $\hyp{\ver{\lambda x.E}{P\supset
-Q}}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}$, written as an inference rule:
+And the above judgement is evident, since we will say that a canonical
+verification of $P\supset Q$ is an expression $\lambda x. E$ such that
+we know the hypothetico-general judgement
+$\genj{x}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}$. This validates the assertion
+$\hyp{\ver{\lambda x.E}{P\supset
+Q}}{\genj{x}{\hyp{\ver{E}{Q}}{\ver{x}{P}}}}$, or, written as an
+inference rule:
 
 %
 \[
@@ -312,7 +356,7 @@ By the addition of this judgement, we have graduated from a logical theory to a
 type theory, in the sense of \emph{Constructive Mathematics and Computer
 Programming} (Martin-L\"of, 1979). In fact, we may dispense with the original
 $\istrue{P}$ form of judgement by \emph{defining} it in terms of the new
-$\ver{M}{P} $judgement as follows:
+$\ver{M}{P}$ judgement as follows:
 \[
   \infer{
     \istrue{P}
@@ -321,11 +365,12 @@ $\ver{M}{P} $judgement as follows:
   }
 \]
 
-Further forms of judgement, such as assertions of equality between propositions
-and verifications, may be added, as Martin-L\"of does. However, this is not
-strictly necessary as they too may be defined in terms of the $\ver{M}{P}$
-judgement in the presence of an \emph{equality} proposition; this is what is
-done in Constable et al's Computational Type Theory, which has only one
-primitive form of judgement.
+%% TODO: add this to a sidebar somehow
+%% Further forms of judgement, such as assertions of equality between propositions
+%% and verifications, may be added, as Martin-L\"of does. However, this is not
+%% strictly necessary as they too may be defined in terms of the $\ver{M}{P}$
+%% judgement in the presence of an \emph{equality} proposition; this is what is
+%% done in Constable et al's Computational Type Theory, which has only one
+%% primitive form of judgement.
 
 \end{document}
