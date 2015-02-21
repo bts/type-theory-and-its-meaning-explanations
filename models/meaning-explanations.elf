@@ -6,6 +6,7 @@ void : val.
 unit : val.
 & : exp -> exp -> val.   %infix right 10 &.
 + : exp -> exp -> val.   %infix right 10 +.
+pi : exp -> (exp -> exp) -> val.
 
 ax : val.
 tt : val.
@@ -13,12 +14,14 @@ ff : val.
 pair : exp -> exp -> val.
 inl : exp -> val.
 inr : exp -> val.
+lam : (exp -> exp) -> val.
 
 ↑ : val -> exp.
 
 fst : exp -> exp.
 snd : exp -> exp.
 decide : exp -> (exp -> exp) -> (exp -> exp) -> exp.
+ap : exp -> exp -> exp.
 
 => : exp -> val -> type.  %infix right 9 =>.
 %mode => +X -Y.
@@ -36,6 +39,9 @@ decide : exp -> (exp -> exp) -> (exp -> exp) -> exp.
 =>/decide/inr : decide X L R => RX
                  <- X => inr X'
                  <- R X' => RX.
+=>/ap : ap M N => MN
+         <- M => lam E
+         <- E N => MN.
 
 ∈ : exp -> exp -> type. %infix right 9 ∈.
 ver : val -> val -> type.
@@ -43,6 +49,16 @@ ver : val -> val -> type.
 ver/void : ver void set.
 ver/unit : ver unit set.
 ver/ax : ver ax unit.
+ver/& : ver (A & B) set
+         <- B ∈ ↑ set
+         <- A ∈ ↑ set.
+ver/+ : ver (A + B) set
+         <- B ∈ ↑ set
+         <- A ∈ ↑ set.
+ver/pi : ver (pi A B) set
+          <- A ∈ ↑ set
+          <- {x} x ∈ A -> B x ∈ ↑ set.
+
 ver/pair : ver (pair X Y) (A & B)
             <- Y ∈ B
             <- X ∈ A.
@@ -52,9 +68,11 @@ ver/inl : ver (inl X) (A + B)
 ver/inr : ver (inr X) (A + B)
            <- A ∈ ↑ set
            <- X ∈ B.
+ver/lam : ver (lam E) (pi A B)
+           <- ({x} x ∈ A -> (E x) ∈ (B x)).
 
 % The meaning of membership is based on evaluation to canonical form.
-∈/def : X ∈ A
+mem/def : X ∈ A
          <- ver X' A'
          <- X => X'
          <- A => A'.
@@ -78,56 +96,91 @@ ver/inr : ver (inr X) (A + B)
 elim/fst : X ∈ ↑ (A & B) -> fst X ∈ A -> type.
 %mode elim/fst +D -E.
 - : elim/fst
-     (∈/def
+     (mem/def
         =>/↑
         X=>MN
-        (ver/pair (∈/def A=>A' M=>M' M'vA') _))
-     (∈/def A=>A' (=>/fst M=>M' X=>MN) M'vA').
+        (ver/pair (mem/def A=>A' M=>M' M'vA') _))
+     (mem/def A=>A' (=>/fst M=>M' X=>MN) M'vA').
 %worlds () (elim/fst _ _).
 %total E (elim/fst E _).
 
 elim/snd : X ∈ ↑ (A & B) -> snd X ∈ B -> type.
 %mode elim/snd +D -E.
 - : elim/snd
-     (∈/def
+     (mem/def
         =>/↑
         X=>MN
-        (ver/pair _ (∈/def B=>B' N=>N' N'vB')))
-     (∈/def B=>B' (=>/snd N=>N' X=>MN) N'vB').
+        (ver/pair _ (mem/def B=>B' N=>N' N'vB')))
+     (mem/def B=>B' (=>/snd N=>N' X=>MN) N'vB').
 %worlds () (elim/snd _ _).
 %total E (elim/snd E _).
 
-mem/invert : X ∈ A -> {A':val}{X':val} A => A' -> X => X' -> ver X' A' -> type.
+mem/invert
+   : X ∈ A
+      -> {A':val}{X':val} A => A'
+      -> X => X'
+      -> ver X' A'
+      -> type.
 %mode mem/invert +DX -A' -X' -RA -RX -V.
-- : mem/invert (∈/def (RA : A => A') (RX : X => X') V) A' X' RA RX V.
+- : mem/invert (mem/def (RA : A => A') (RX : X => X') V) A' X' RA RX V.
 %worlds () (mem/invert _ _ _ _ _ _).
 %total D (mem/invert D _ _ _ _ _).
 
-elim/decide : X ∈ ↑ (A + B) -> ({z} z ∈ A -> L z ∈ C) -> ({z} z ∈ B -> R z ∈ C) -> decide X L R ∈ C -> type.
+elim/decide
+   : X ∈ ↑ (A + B)
+      -> ({z} z ∈ A -> L z ∈ C)
+      -> ({z} z ∈ B -> R z ∈ C)
+      -> decide X L R ∈ C
+      -> type.
 %mode elim/decide +DX +DL +DR -E.
 - : elim/decide
-     (∈/def
+     (mem/def
         =>/↑
         (X=>inlM : X => inl M)
         (ver/inl (M∈A : M ∈ A) Bset))
      (DL : {z} z ∈ A -> L z ∈ C)
      (DR : {z} z ∈ B -> R z ∈ C)
-     (∈/def
+     (mem/def
         C=>C'
         (=>/decide/inl LM=>LM' X=>inlM)
         LM'vC')
      <- mem/invert (DL M M∈A) C' LM' C=>C' LM=>LM' LM'vC'.
 - : elim/decide
-     (∈/def
+     (mem/def
         =>/↑
         (X=>inrN : X => inr N)
         (ver/inr (N∈B : N ∈ B) Aset))
      (DL : {z} z ∈ A -> L z ∈ C)
      (DR : {z} z ∈ B -> R z ∈ C)
-     (∈/def
+     (mem/def
         C=>C'
         (=>/decide/inr RN=>RN' X=>inrN)
         RN'vC')
      <- mem/invert (DR N N∈B) C' RN' C=>C' RN=>RN' RN'vC'.
 %worlds () (elim/decide _ _ _ _).
 %total DX (elim/decide DX _ _ _).
+
+elim/ap
+   : X ∈ ↑ (pi A B)
+      -> Y ∈ A
+      -> ap X Y ∈ (B Y)
+      -> type.
+%mode elim/ap +DX +DY -DXY.
+- : elim/ap
+     (mem/def
+        =>/↑
+        X=>lamE
+        (ver/lam DE))
+     (Y∈A : Y ∈ A)
+     (mem/def
+        BY=>
+        (=>/ap EY=>XY X=>lamE)
+        XYvBY)
+     <- mem/invert (DE Y Y∈A) BY XY BY=> EY=>XY XYvBY.
+%worlds () (elim/ap _ _ _).
+%total DX (elim/ap DX _ _).
+
+
+%%% TODO: I have not included equality of verifications in the meaning
+%%% explanations; this should be added, and the hypothetico-general
+%%% judgements should include functionality obligations.
