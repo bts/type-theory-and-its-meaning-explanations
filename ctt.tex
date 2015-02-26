@@ -356,7 +356,7 @@ validates some further rules schemes:
   }{
   }\\[6pt]
   \infer{
-    \mathcal{J}
+    \sequent\Gamma\mathcal{J}
   }{
     \sequent\Gamma\ver{M}{\tyvoid}
   }
@@ -365,7 +365,7 @@ validates some further rules schemes:
 The last rule simply says that if we have a verification of $\tyvoid$, then we
 may conclude any judgement whatsoever. Remember that the inference rules are
 just notation for an \emph{evident} hypothetical judgement, e.g.\
-$\hyp{\mathcal{J}}{\sequent\Gamma\ver{M}{\tyvoid}}$.
+$\hyp{\sequent{\Gamma}\mathcal{J}}{\sequent\Gamma\ver{M}{\tyvoid}}$.
 
 Note that we did not introduce any special constant into the
 computation system to represent the elimination of a verification of
