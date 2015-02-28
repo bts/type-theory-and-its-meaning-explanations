@@ -109,10 +109,11 @@ thing a ``hypothetico-general'' judgement. One thing bears clarifying,
 which is, Why do we write $\hyp{\istrue{P}}{\istrue{P}}$ rather than
 $\genj{P}{\hyp{\istrue{P}}{\istrue{P}}}$?
 
-The former is really not a single judgement, but rather a \emph{scheme} for
-judgements, where $P$ and $Q$ are intended to be replaced with concrete
-expressions by the person asserting the judgements. On the other hand, the
-latter is itself a single judgement which may be asserted all on its own.
+The former is really not a single judgement, but rather a
+\emph{scheme} for judgements, where $P$ is intended to be replaced
+with a concrete expression by the person asserting the judgements. On
+the other hand, the latter is itself a single judgement which may be
+asserted all on its own.
 
 \section{Propositions and verifications}
 Now that we have propounded and explained the minimal system of judgements for
@@ -265,7 +266,7 @@ been written in several ways:\\[10pt]
 \end{tabular}\\
 
 But they all mean the same thing, so we will choose the notation
-$\ver{M}{P}$ and pronounce it ``$M$ verifies $P$''. Tentatively, the
+\framebox{$\ver{M}{P}$} and pronounce it ``$M$ verifies $P$''. Tentatively, the
 following defective meaning explanation could be given:
 \begin{quote}
   * To know $\ver{M}{P}$ is to know that $M$ is a verification of $P$.
@@ -277,7 +278,9 @@ verifications} (which we will call ``canonical'') from \emph{indirect
 verifications} (which we will call ``non-canonical''). So the domain
 of expressions must itself be accorded with a notion of reduction to
 canonical form, and this corresponds with putting into action a plan
-of verification in order to get a direct (canonical) verification.
+of verification in order to get a direct (canonical) verification;
+reduction to canonical form will be represented by a judgement
+\framebox{$\reduce{M}{M'}$}, pronounced ``$M$ evaluates to $M'$''.
 
 \begin{quote}
   To know $\reduce{M}{M'}$ is to know that $M$ is an expression which reduces to
