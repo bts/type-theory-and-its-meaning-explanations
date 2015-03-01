@@ -1,0 +1,216 @@
+%use equality/strings.
+
+tm : type.
+sem : type.
+
+%block var-sem : block {x:sem}.
+
+=> : sem -> sem -> type. %infix right 9 =>.
+%mode => +M -N.
+
+unit : tm.
+ax : tm.
+
+sg : string -> tm -> tm -> tm.
+pair : tm -> tm -> tm.
+fst : tm -> tm.
+snd : tm -> tm.
+
+pi : string -> tm -> tm -> tm.
+lam : string -> tm -> tm.
+ap : tm -> tm -> tm.
+var : string -> tm.
+
+<unit> : sem.
+<ax> : sem.
+
+<sg> : sem -> (sem -> sem) -> sem.
+<pair> : sem -> sem -> sem.
+<fst> : sem -> sem.
+<snd> : sem -> sem.
+
+<pi> : sem -> (sem -> sem) -> sem.
+<lam> : (sem -> sem) -> sem.
+<ap> : sem -> sem -> sem.
+<free> : string -> sem.
+
+=>/<unit> : <unit> => <unit>.
+=>/<ax> : <ax> => <ax>.
+
+=>/<sg> : <sg> A B => <sg> A B.
+=>/<pair> : <pair> M N => <pair> M N.
+=>/<lam> : <lam> E => <lam> E.
+=>/<fst> : <fst> (<pair> M N) => M'
+          <- M => M'.
+=>/<snd> : <snd> (<pair> M N) => N'
+          <- M => N'.
+
+=>/<pi> : <pi> A B => <pi> A B.
+=>/<lam> : <lam> E => <lam> E.
+=>/<ap> : <ap> (<lam> E) M => O
+         <- E M => O.
+
+=>/<free> : <free> V => <free> V.
+
+%worlds (var-sem) (=> _ _).
+
+assignment : type.
+~> : string -> sem -> assignment. %infix right 10 ~>.
+
+env : type.
+<> : env.
+; : env -> assignment -> env. %infix right 8 ;.
+
+lookup : env -> string -> sem -> type.
+%mode lookup +R +V -M.
+lookup/ze : lookup (R ; X ~> M) X M.
+lookup/su : lookup (R ; _) X M
+             <- lookup R X M.
+lookup/fv : lookup <> V (<free> V).
+%worlds (var-sem) (lookup _ _ _).
+%total G (lookup G V R).
+
+
+meaning : tm -> env -> sem -> type. 
+%mode meaning +M +R -E.
+
+meaning/unit : meaning unit R <unit>.
+meaning/ax : meaning ax R <ax>.
+
+meaning/sg : meaning (sg X A B) R (<sg> A' B')
+              <- ({x} meaning B (R ; X ~> x) (B' x))
+              <- meaning A R A'.
+meaning/pair : meaning (pair M N) R (<pair> M' N')
+                <- meaning N R N'
+                <- meaning M R M'.
+meaning/fst/pair : meaning (fst M) R M1
+                    <- meaning M R M'
+                    <- <fst> M' => M1.
+meaning/snd/pair : meaning (snd M) R M2
+                    <- meaning M R M'
+                    <- <snd> M' => M2.
+
+meaning/pi : meaning (pi X A B) R (<pi> A' B')
+              <- ({x} meaning B (R ; X ~> x) (B' x))
+              <- meaning A R A'.
+meaning/lam : meaning (lam X E) R (<lam> [x] (E' x))
+               <- ({x} meaning E (R ; X ~> x) (E' x)).
+meaning/ap : meaning (ap M N) R MN
+              <- meaning N R N'
+              <- meaning M R M'
+              <- <ap> M' N' => MN.
+
+meaning/var : meaning (var V) R M
+               <- lookup R V M.
+%worlds (var-sem) (meaning _ _ _).
+
+%solve - : meaning (ap (lam "x" (lam "z" (var "x"))) ax) <> Z.
+
+
+nat : type.
+ze : nat.
+su : nat -> nat.
+
+print-nat : nat -> string -> type.
+%mode print-nat +N -V.
+print-nat/ze : print-nat ze "z".
+print-nat/su : print-nat (su N) ("s" ++ V)
+                <- print-nat N V.
+%worlds () (print-nat _ _).
+%total N (print-nat N _).
+
+quote : nat -> sem -> tm -> type.
+%mode quote +N +D -M.
+
+quote/unit : quote G <unit> unit.
+quote/ax : quote G <ax> ax.
+
+quote/sg : quote G (<sg> A B) (sg X A' B')
+            <- print-nat G X
+            <- quote (su G) (B (<free> X)) B'
+            <- quote G A A'.
+quote/pair : quote G (<pair> M N) (pair M' N')
+              <- quote G M M'
+              <- quote G N N'.
+quote/fst : quote G (<fst> M) (fst M')
+             <- quote G M M'.
+quote/snd : quote G (<snd> M) (snd M')
+             <- quote G M M'.
+
+quote/pi : quote G (<pi> A B) (pi X A' B')
+            <- print-nat G X
+            <- quote (su G) (B (<free> X)) B'
+            <- quote G A A'.
+quote/lam : quote G (<lam> E) (lam X E')
+             <- print-nat G X
+             <- quote (su G) (E (<free> X)) E'.
+
+quote/free : quote G (<free> X) (var X).
+%worlds () (quote _ _ _).
+
+%define welp = Z
+%solve - : quote ze (<sg> <unit> ([x] (<sg> <unit> ([y] x)))) Z.
+
+reflect : sem -> sem -> sem -> type.
+%mode reflect +D1 +D2 -D3.
+
+reify : sem -> sem -> sem -> type.
+%mode reify +D1 +D2 -D3.
+
+reflect/unit : reflect <unit> K <ax>.
+reflect/sg : reflect (<sg> A B) K (<pair> M N)
+              <- reflect A (<snd> K) N
+              <- reflect A (<fst> K) M.
+reflect/pi : reflect (<pi> A B) K (<lam> E)
+              <- ({x} reify A x (N x))
+              <- ({x} reflect (B x) (<ap> K (N x)) (E x)).
+
+reify/unit : reify <unit> D <ax>.
+reify/sg : reify (<sg> A B) D (<pair> M N)
+            <- <fst> D => D1
+            <- <snd> D => D2
+            <- reify A D1 M
+            <- reify (B M) D2 N.
+reify/pi : reify (<pi> A B) D (<lam> E)
+            <- ({x} reflect A x (RA x))
+            <- ({x} <ap> D (RA x) => (DRA x))
+            <- ({x} (reify (B (RA x)) (DRA x) (E x))).
+
+%worlds (var-sem) (reify _ _ _) (reflect _ _ _).
+
+reify-ty : sem -> sem -> type.
+%mode reify-ty +D1 -D2.
+
+reify-ty/unit : reify-ty <unit> <unit>.
+reify-ty/pi : reify-ty (<pi> A B) (<pi> A' B')
+               <- ({x} reflect A x (RA x))
+               <- ({x} reify-ty (B (RA x)) (B' x))
+               <- reify-ty A A'.
+reify-ty/sg : reify-ty (<sg> A B) (<sg> A' B')
+               <- ({x} reflect A x (RA x))
+               <- ({x} reify-ty (B (RA x)) (B' x))
+               <- reify-ty A A'.
+
+%worlds (var-sem) (reify-ty _ _).
+
+nbe : tm -> tm -> tm -> type.
+%mode nbe +M +N -N'.
+
+nbe/def : nbe A M M'''
+           <- meaning M <> M'
+           <- meaning A <> A'
+           <- reify A' M' M''
+           <- quote ze M'' M'''.
+%worlds () (nbe _ _ _).
+
+nbe-ty : tm -> tm -> type.
+%mode nbe-ty +A -A'.
+
+nbe-ty/def : nbe-ty A A'''
+              <- meaning A <> A'
+              <- reify-ty A' A''
+              <- quote ze A'' A'''.
+%worlds () (nbe-ty _ _).
+
+%define result = Z
+%solve test : nbe (pi "x" unit unit) (lam "z" (var "z")) Z.
