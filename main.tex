@@ -21,6 +21,11 @@
 \newtheorem{remark}[thm]{Remark}
 \numberwithin{equation}{section}
 
+\def\InputModeColorName{MidnightBlue}
+\def\OutputModeColorName{Maroon}
+\newcommand\InputMode[1]{{\color{\InputModeColorName}{#1}}}
+\newcommand\OutputMode[1]{{\color{\OutputModeColorName}{#1}}}
+
 \newcommand\isprop[1]{\ensuremath{#1\;\mathit{prop}}}
 \newcommand\isset[1]{\ensuremath{#1\;\mathit{type}}}
 \newcommand\istrue[1]{\ensuremath{#1\;\mathit{true}}}
@@ -84,6 +89,6 @@ explanations for computational and intensional type theories.}
 
 \subfile{logicaltheory}
 \subfile{ctt}
-\subfile{prooftheory}
+% \subfile{prooftheory}
 
 \end{document}
