@@ -24,7 +24,7 @@ the judgement $\isprop{P}$ is analytic, since its evidence follows
 from the definition of $P$, whereas the assertion of $\istrue{P}$
 entails the knowledge of some extra information, namely a verification
 of $P$. When we have extended the logical theory to a type theory in
-the manner of the previous sections, the judgement $\ver{M}{P}$ is
+the manner of the previous chapter, the judgement $\ver{M}{P}$ is
 also synthetic, since $\ver{M}{P}$ is not self-evident in general.
 
 But why is it not enough to assert that $M$ verifies $P$ to know
@@ -41,7 +41,7 @@ We will say, then, that $\bullet$ is a canonical verification of
 $\mathsf{P}$ just when Goldbach's conjecture is true. Then it comes
 immediately that the judgement $\ver{M}{\mathsf{P}}$ may not be known
 or refuted on its own basis, nor even the judgement
-$\ver{\bullet}{\mathsf{P}}$, since they depend on an proposition whose
+$\ver{\bullet}{\mathsf{P}}$, since they depend on a proposition whose
 truth is not known:
 
 \begin{itemize}
@@ -59,15 +59,12 @@ of a proof theory $\ofty{M}{A}$ must be analytic, in order to avoid the
 infinite regress of a proof theory requiring a proof theory requiring
 a proof theory, and so on.
 
-The notion of verification of a proposition could never be the same as
-proof anyway, except in the most trivial circumstances, since a
-verification is meant to be an effective operation which realizes the
-truth of the proposition, and no constraints whatsoever (termination,
-totality, etc.) are placed on these operations except those which come
-from the meaning of the judgements (see Dummett).
-
-%% TODO: reference section Elements that refers to this; also reference
-%% Prawitz's comment in Martin-Loef festschrift
+The notion of verification of a proposition could never be the same as proof
+anyway, except in the most trivial circumstances, since a verification is meant
+to be an effective operation which realizes the truth of a proposition, and no
+constraints whatsoever (termination, totality, etc.) are placed on these
+operations except those which come from the meaning of the judgements (see
+\cite{Dummett:Elements}, \cite{Prawitz12}).
 
 So a proof theory is necessarily intensional, and its judgements are to be
 analytic/decidable. What is it, then, that we have considered so far which
@@ -119,7 +116,7 @@ latter is a judgement in a theory which is defined over a logical theory.
 
 To make this more concrete, let us expound a proof theoretic type
 theory called \MLLF, which stands for ``Martin-L\"of's Logical
-Framework''; in the course of introducing each type, we will specify
+Framework'';\footnote{For a detailed overview of Martin-L\"of's equational logical framework, see \cite{PiMLTT}.} in the course of introducing each type, we will specify
 which judgement of the underlying logical theory it is meant to
 interpret.
 
