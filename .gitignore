@@ -11,3 +11,6 @@ _region_.*
 auto
 *~
 *.agdai
+*.bbl
+*.blg
+*.dvi

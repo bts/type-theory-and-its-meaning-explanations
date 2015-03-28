@@ -15,7 +15,7 @@ term ``computational type theory'' in a general sense to characterize a family
 of type theories which have their origin in Martin-L\"of's 1979 paper
 \emph{Constructive Mathematics and Computer Programming}.}
 
-\section{The judgments of a computational type theory}
+\section{The categorical judgements}
 
 Because we will need to consider the introduction of types which do not have a
 trivial (intensional) equality relation, we must first amend the meaning
@@ -81,6 +81,8 @@ assistants for practical reasons. However, the extensional equality that we
 have expounded is the easiest and most obvious one to formulate, so we will
 use it here.
 
+\section{The functional sequent judgement}
+
 Now, because we are allowing the definition of types with arbitrary equivalence
 relations, we cannot use plain hypothetico-general judgement in the course of
 defining our types. For instance, if we were going to try and define the
@@ -101,7 +103,7 @@ $\Gamma\vdash\mathcal{J}$, and in the early literature surrounding Constable's
 Computational Type Theory and Nuprl, it was written
 \framebox{$\sequent{\Gamma}{\mathcal{J}}$}; we choose this last option to avoid
 confusion with a similar judgement form which appears in proof-theoretic,
-intensional type theories; we'll call the judgement form a ``sequent''.
+intensional type theories; we'll call the judgement form a ``(functional) sequent''.
 
 First, we will add the syntax of contexts into the computation system:
 \begin{gather*}
