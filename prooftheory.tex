@@ -55,7 +55,7 @@ truth is not known:
 
 Because the judgement $\ver{M}{P}$ is synthetic, we cannot say that it
 gives rise to a proof theory for the logic, since the core judgement
-of a proof theory $M:A$ must be analytic, in order to avoid the
+of a proof theory $\ofty{M}{A}$ must be analytic, in order to avoid the
 infinite regress of a proof theory requiring a proof theory requiring
 a proof theory, and so on.
 
@@ -64,21 +64,21 @@ proof anyway, except in the most trivial circumstances, since a
 verification is meant to be an effective operation which realizes the
 truth of the proposition, and no constraints whatsoever (termination,
 totality, etc.) are placed on these operations except those which come
-from the meaning of the judgements (see Dummett). 
+from the meaning of the judgements (see Dummett).
 
 %% TODO: reference section Elements that refers to this; also reference
 %% Prawitz's comment in Martin-Loef festschrift
 
 So a proof theory is necessarily intensional, and its judgements are to be
 analytic/decidable. What is it, then, that we have considered so far which
-corresponds with a proof $M$ such that $M:P$ in a proof theory? As discussed
+corresponds with a proof $M$ such that $\ofty{M}{P}$ in a proof theory? As discussed
 above, $M$ is not merely a term such that $\ver{M}{P}$, since this is not in
 general enough information to know whether $M$ is a proof. In fact, $M$ must
 comprise all the logical inferences which led to the knowledge that $P$ is
-true, and so a meaning explanation for the judgement $M:P$ in a proof theory
+true, and so a meaning explanation for the judgement $\ofty{M}{P}$ in a proof theory
 immediately suggests itself:
 \begin{quote}
-  To know $M:P$ is to know that $M$ is evidence (demonstration, proof,
+  To know $\ofty{M}{P}$ is to know that $M$ is evidence (demonstration, proof,
   derivation) of the judgement $\istrue{P}$.
 \end{quote}
 
@@ -102,15 +102,15 @@ that comparing one of the former with one of the latter is not quite
 fair, since there is not any clear analogy to be had. That is to say,
 the judgement $\ver{M}{P}$ is a judgement which is added to a logical
 theory and its meaning is (briefly) ``$M$ evaluates to a canonical
-verification of $P$'', whereas $M:P$ cannot be construed as a
+verification of $P$'', whereas $\ofty{M}{P}$ cannot be construed as a
 judgement added to a logical theory. Instead, it must be understood as
 part of a (proof) theory which is overlayed atop an existing logical theory;
 it is possible to understand the theory which contains the judgement
-$M:P$ to be a metatheory, or logical framework, for the theory which
+$\ofty{M}{P}$ to be a metatheory, or logical framework, for the theory which
 contains the judgement $\istrue{P}$, which can be construed as the
 ``object language''.
 
-In short, the judgements $\ver{M}{P}$ and $M:P$ are unrelated to each other in
+In short, the judgements $\ver{M}{P}$ and $\ofty{M}{P}$ are unrelated to each other in
 two respects: firstly, that they have different meanings, and secondly that the
 one is at the same level as the judgements of a logical theory, whereas the
 latter is a judgement in a theory which is defined over a logical theory.
@@ -128,9 +128,9 @@ We start with four categorical judgements:\\
 \begin{tabular}{c|l}
 Judgement Form & Pronunciation \\ \hline
   $\type{\alpha}$ & $\alpha$ is a type \\
-  $\type{\alpha=\beta}$ & $\alpha$ and $\beta$ are equal types \\
-  $M:\alpha$ & $M$ is of type $\alpha$ \\
-  $M=N:\alpha$ & $M$ and $N$ are equal at type $\alpha$ \\
+  $\etype{\alpha}{\beta}$ & $\alpha$ and $\beta$ are equal types \\
+  $\ofty{M}{\alpha}$ & $M$ is of type $\alpha$ \\
+  $\eofty{M}{N}{\alpha}$ & $M$ and $N$ are equal at type $\alpha$ \\
 \end{tabular}\\
 
 But we have not defined the meaning of the judgements; let us do so below:
@@ -146,20 +146,20 @@ theory, and the objects will be the derivations (demonstrations,
 proofs) of those judgements.
 
 \begin{quote}
-  To know $\type{\alpha=\beta}$ is to know that any object of type $\alpha$ is
+  To know $\etype{\alpha}{\beta}$ is to know that any object of type $\alpha$ is
   also an object of type $\beta$, and two equal objects of type $\alpha$ are
   equal as objects of type $\beta$ (necessarily presupposing \type\alpha\ and
   \type\beta).
 \end{quote}
 
 \begin{quote}
-  To know $M:\alpha$ is to know that $M$ is an object of type $\alpha$
+  To know $\ofty{M}{\alpha}$ is to know that $M$ is an object of type $\alpha$
   (necessarily presupposing $\type\alpha$).
 \end{quote}
 
 \begin{quote}
-  To know $M=N:\alpha$ is to know that $M$ and $N$ are equal objects of type
-  $\alpha$ (necessarily presupposing $M:\alpha$ and $N:\alpha$).
+  To know $\eofty{M}{N}{\alpha}$ is to know that $M$ and $N$ are equal objects of type
+  $\alpha$ (necessarily presupposing $\ofty{M}{\alpha}$ and $\ofty{N}{\alpha}$).
 \end{quote}
 
 Hypothetical judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ and general
@@ -171,7 +171,7 @@ and an intensional sequent judgement
 be precisely the same as in the computational type theory, modulo the
 fact that the intensional sequent judgement is defined over the
 categorical judgements of the logical framework ($\type\alpha$,
-$\type{\alpha=\beta}$, $M:\alpha$ and $M=N:\alpha$).
+$\etype{\alpha}{\beta}$, $\ofty{M}{\alpha}$ and $\eofty{M}{N}{\alpha}$).
 
 At this point, we may begin adding types to the logical framework. In
 practice, most types which we will introduce in the logical framework
@@ -200,7 +200,7 @@ moreover, for any two objects $y,z$ of type $\alpha$, that
 $[y/x]\beta$ and $[z/x]\beta$ are equal as types. To make this
 evident, then, we will say that under those circumstances an object of
 type $(x:\alpha)\beta$ is an object $[x]M$ such that one knows
-$\lfsequent{x:\alpha}{M:\beta}$ and $\genj{x,y}{\hyp{[y/x]M=[z/x]M}{y=z:\alpha}}$;
+$\lfsequent{x:\alpha}{\ofty{M}{\beta}}$ and $\genj{x,y}{\hyp{\eofty{[y/x]M}{[z/x]M}{[y/x]\beta}}{\eofty{y}{z}{\alpha}}}$;
 furthermore, two such objects are equal just when they yield equal
 outputs for equal inputs.
 
@@ -234,16 +234,16 @@ the judgement $\istrue{P}$, it may also be \emph{neutral} (i.e. blocked by a
 variable); we will call this ``normal'' rather than ``canonical''. Why does
 this happen?
 
-In order to keep the judgement $M:A$ analytic (decidable), its meaning
+In order to keep the judgement $\ofty{M}{A}$ analytic (decidable), its meaning
 explanation can no longer be based on the idea of the computation of closed
 terms to canonical form; instead, we will consider the computation of open
 terms (i.e. terms with free variables) to \emph{normal} form. The desire for
-$M:A$ to be analytic follows from our intention that it characterize a
+$\ofty{M}{A}$ to be analytic follows from our intention that it characterize a
 \emph{proof theory}: we must be able to recognize a proof when we see one. But
 why are closed-term-based meaning explanations incompatible with this goal?
 Consider briefly the following judgement:
 \[
-  \genj{n}{\hyp{M(n) \in P}{n\in\naturals}}
+  \genj{n}{\hyp{\ver{M(n)}{P}}{\ver{n}{\naturals}}}
 \]
 
 To know this judgement is to know that $M(n)$ computes to a canonical
@@ -254,10 +254,10 @@ clearly synthetic: to know it is, briefly, to have come up with an (inductive)
 argument that $M(N)$ computes to a canonical verification of $P$ at each
 natural number $n$.
 
-On the other hand, the judgement $\lfsequent{n:\naturals}{M(n):P}$ must have a
+On the other hand, the judgement $\lfsequent{n:\naturals}{\ofty{M(n)}{P}}$ must have a
 different meaning, one which admits its evidence or refutation purely on
 syntactic/analytic grounds. In essence, it is to know that $M(n)$ is a proof of
-$P$ for any \emph{arbitrary} object/expression $n$ such that $n:\naturals$
+$P$ for any \emph{arbitrary} object/expression $n$ such that $\ofty{n}{\naturals}$
 (i.e., the only thing we know about $n$ is that it is of type $\naturals$; we
 do not necessarily know that it is a numeral).
 
@@ -299,7 +299,7 @@ And this is the reason for the peculiarity of the proof-theoretic
 meaning explanations, namely that they do not include phrases like
 ``evaluates to a canonical...'', since evaluation may only be
 understood after taking the meanings of the judgements ($\type\alpha$,
-$\type{\alpha=\beta}$, $M:\alpha$, $M=N:\alpha$) as giving rise to a
+$\etype{\alpha}{\beta}$, $\ofty{M}{\alpha}$, $\eofty{M}{N}{\alpha}$) as giving rise to a
 closed formal system which is susceptible to metamathematical
 argument: to refer to evaluation in the meaning explanations for the
 core judgements, then, would be impredicative.
@@ -330,10 +330,10 @@ the formulation will immediately present themselves.
 To know $\type\top$ is to know what counts as an object of type $\top$, and when
 two such objects are equal. An object of type $\top$, then, is either the
 expression $\bullet$, or an expression $\abort{\top}{E}$ such that we know
-$E:\bot$, or an expression $E(E')$ such that we know $E:(\alpha)\top$ and
-$E':\alpha$, or an expression $\fst{E}$ such that we know $E:\product\top\beta$
+$\ofty{E}{\bot}$, or an expression $E(E')$ such that we know $\ofty{E}{(\alpha)\top}$ and
+$\ofty{E'}{\alpha}$, or an expression $\fst{E}$ such that we know $\ofty{E}{\product\top\beta}$
 for some $\beta$, or an expression $\snd{E}$ such that we know
-$E:\product\alpha\top$ for some $\alpha$; and we additionally have that $\bullet$
+$\ofty{E}{\product\alpha\top}$ for some $\alpha$; and we additionally have that $\bullet$
 is equal to $\bullet$, and ...
 \end{quote}
 

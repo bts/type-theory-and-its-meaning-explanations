@@ -45,11 +45,11 @@ the same as before:
 
 We'll need to add new judgements for equality (equality of
 verifications, and equality of types respectively). First, equality of
-verifications is written \framebox{$\ver{M=N}{A}$}, and means the
+verifications is written \framebox{$\ever{M}{N}{A}$}, and means the
 following:
 
 \begin{quote}
-  To know $\ver{M=N}{A}$ (presupposing $\ver{M}{A}$ and $\ver{N}{A}$,
+  To know $\ever{M}{N}{A}$ (presupposing $\ver{M}{A}$ and $\ver{N}{A}$,
   and thence $\isset{A}$) is to know that the values of $M$ and $N$ are
   equal as canonical verifications of $A$.
 \end{quote}
@@ -60,16 +60,16 @@ for them to be equal as such is known from the evidence of the
 presupposition $\isset{A}$ which is obtained from the other
 presuppositions.
 
-For equality of types \framebox{$\isset{A=B}$}, there are a number of
+For equality of types \framebox{$\eisset{A}{B}$}, there are a number of
 possible meaning explanations, but we'll use the one that Martin-L\"of
 used starting in 1979:
 
 \begin{quote}
-  To know $\isset{A=B}$ (presupposing $\isset{A}$ and $\isset{B}$) is to know
+  To know $\eisset{A}{B}$ (presupposing $\isset{A}$ and $\isset{B}$) is to know
 $\genj{M}{\hyp{\ver{M}{B}}{\ver{M}{A}}}$ and
 $\genj{M}{\hyp{\ver{M}{A}}{\ver{M}{B}}}$, and moreover
-$\genj{M,N}{\hyp{\ver{M=N}{B}}{\ver{M=N}{A}}}$ and
-$\genj{M,N}{\hyp{\ver{M=N}{A}}{\ver{M=N}{A}}}$.
+$\genj{M,N}{\hyp{\ever{M}{N}{B}}{\ever{M}{N}{A}}}$ and
+$\genj{M,N}{\hyp{\ever{M}{N}{A}}{\ever{M}{N}{A}}}$.
 \end{quote}
 
 In other words, two types are equal when they have the same canonical
@@ -165,7 +165,7 @@ $\reduce{\Gamma}{\cdot}$, then $\isset{A}$; otherwise, if
 $\reduce{\Gamma}{\Delta,x:B}$, that
 $\genj{M}{\hyp{\sequent{\Delta}{[M/x]\isset{A}}}{\sequent{\Delta}{M:B}}}$
 and moreover
-$\genj{M,N}{\hyp{\sequent{\Delta}{\isset{[M/x]A=[N/x]A}}}{\sequent{\Delta}{\ver{M=N}{B}}}}$.
+$\genj{M,N}{\hyp{\sequent{\Delta}{\eisset{[M/x]A}{[N/x]A}}}{\sequent{\Delta}{\ever{M}{N}{B}}}}$.
 
 \end{quote}
 
@@ -174,14 +174,12 @@ recursion on the context. We can explain type equality sequents in a
 similar way:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\isset{A=B}}$ is to know, if $\reduce{\Gamma}{\cdot}$, that $\isset{A=B}$; otherwise, if $\reduce{\Gamma}{\Delta,x:C}$, it is to know
+  To know $\sequent{\Gamma}{\eisset{A}{B}}$ is to know, if $\reduce{\Gamma}{\cdot}$, that $\eisset{A}{B}$; otherwise, if $\reduce{\Gamma}{\Delta,x:C}$, it is to know
   \[
     \genj{M}{
       \hyp{
         \sequent{\Delta}{
-          \isset{
-            [M/x]A=[M/x]B
-          }
+          \eisset{[M/x]A}{[M/x]B}
         }
       }{
         \sequent{\Delta}{
@@ -195,11 +193,11 @@ similar way:
     \genj{M,N}{
       \hyp{
         \sequent{\Delta}{
-          \isset{[M/x]A=[N/x]B}
+          \eisset{[M/x]A}{[N/x]B}
         }
       }{
         \sequent{\Delta}{
-          \ver{M=N}{C}
+          \ever{M}{N}{C}
         }
       }
     }
@@ -230,11 +228,11 @@ Next, the meaning of membership sequents is explained:
     \genj{L,N}{
       \hyp{
         \sequent{\Delta}{
-          \ver{[L/x]M=[N/x]M}{A}
+          \ever{[L/x]M}{[N/x]M}{A}
         }
       }{
         \sequent{\Delta}{
-          \ver{L=N}{B}
+          \ever{L}{N}{B}
         }
       }
     }
@@ -244,14 +242,14 @@ Next, the meaning of membership sequents is explained:
 Finally, member equality sequents have an analogous explanation:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\ver{M=M'}{A}}$ is to know, if
-  $\reduce{\Gamma}{\cdot}$, that $\ver{M=M'}{A}$; otherwise, if
+  To know $\sequent{\Gamma}{\ever{M}{M'}{A}}$ is to know, if
+  $\reduce{\Gamma}{\cdot}$, that $\ever{M}{M'}{A}$; otherwise, if
   $\reduce{\Gamma}{\Delta,x:B}$, it is to know
   \[
     \genj{N}{
       \hyp{
         \sequent{\Delta}{
-          \ver{[N/x]M=[N/x]M'}{A}
+          \ever{[N/x]M}{[N/x]M'}{A}
         }
       }{
         \sequent{\Delta}{
@@ -265,11 +263,11 @@ Finally, member equality sequents have an analogous explanation:
     \genj{L,N}{
       \hyp{
         \sequent{\Delta}{
-          \ver{[L/x]M=[N/x]M'}{A}
+          \ever{[L/x]M}{[N/x]M'}{A}
         }
       }{
         \sequent{\Delta}{
-          \ver{L=N}{B}
+          \ever{L}{N}{B}
         }
       }
     }
@@ -316,7 +314,7 @@ judgement, the following rule schemes are justified:
   }{
   }\qquad
   \infer{
-    \sequent\Gamma\isset{\tyunit=\tyunit}
+    \sequent\Gamma\eisset{\tyunit}{\tyunit}
   }{
   }\\[6pt]
   \infer{
@@ -324,7 +322,7 @@ judgement, the following rule schemes are justified:
   }{
   }\qquad
   \infer{
-    \sequent\Gamma\ver{\bullet=\bullet}{\tyunit}
+    \sequent\Gamma\ever{\bullet}{\bullet}{\tyunit}
   }{
   }
 \end{gather*}
@@ -354,7 +352,7 @@ validates some further rules schemes:
   }{
   }\qquad
   \infer{
-    \sequent\Gamma\isset{\tyvoid=\tyvoid}
+    \sequent\Gamma\eisset{\tyvoid}{\tyvoid}
   }{
   }\\[6pt]
   \infer{
@@ -422,7 +420,7 @@ verifications are equal. We will say that $\lam{x}{E}$ is a canonical
 verification of $\typrod{A}{x}{B}$ just when we know
 $\sequent{x:A}{\ver{E}{B}}$; moreover, that two verifications
 $\lam{x}{E}$ and $\lam{y}{E'}$ are equal just when
-$\sequent{\ver{z}{A}}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}$.
+$\sequent{\ver{z}{A}}{\ever{[z/x]E}{[z/y]E'}{[z/x]B}}$.
 
 By the meaning of the sequent judgement, this is to say that a lambda
 expression must be functional with respect to its domain (i.e. it must take
@@ -441,10 +439,10 @@ family cartesian product, are justified by this definition:
     \sequent{\Gamma,x:A}{\isset{B}}
   }\qquad
   \infer{
-    \sequent\Gamma\isset{\typrod{A}{x}{B}=\typrod{A'}{y}{B'}}
+    \sequent\Gamma\eisset{\typrod{A}{x}{B}}{\typrod{A'}{y}{B'}}
   }{
-   \sequent\Gamma\isset{A=A'} &
-    \sequent{\Gamma,z:A}{\isset{[z/x]B=[z/y]B'}}
+    \sequent\Gamma\eisset{A}{A'} &
+    \sequent{\Gamma,z:A}{\eisset{[z/x]B}{[z/y]B'}}
   }\\[6pt]
   \infer{
     \sequent\Gamma\ver{\lam{x}{E}}{\typrod{A}{x}{B}}
@@ -452,9 +450,9 @@ family cartesian product, are justified by this definition:
     \sequent{\Gamma,x:A}{\ver{E}{B}}
   }\qquad
   \infer{
-    \sequent\Gamma\ver{\lam{x}{E}=\lam{y}{E'}}{\typrod{A}{x}{B}}
+    \sequent\Gamma\ever{\lam{x}{E}}{\lam{y}{E'}}{\typrod{A}{x}{B}}
   }{
-    \sequent{\Gamma,z:A}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}
+    \sequent{\Gamma,z:A}{\ever{[z/x]E}{[z/y]E'}{[z/x]B}}
   }\\[6pt]
   \infer{
     \sequent\Gamma\ver{\ap{M}{N}}{[N/x]B}
@@ -463,10 +461,10 @@ family cartesian product, are justified by this definition:
     \sequent\Gamma\ver{N}{A}
   }\qquad
   \infer{
-    \sequent\Gamma\ver{\ap{M}{N}=\ap{M'}{N'}}{[N/x]B}
+    \sequent\Gamma\ever{\ap{M}{N}}{\ap{M'}{N'}}{[N/x]B}
   }{
-    \sequent\Gamma\ver{M=M'}{\typrod{A}{x}{B}} &
-    \sequent\Gamma\ver{N=N'}{A'}
+    \sequent\Gamma\ever{M}{M'}{\typrod{A}{x}{B}} &
+    \sequent\Gamma\ever{N}{N'}{A'}
   }
 \end{gather*}
 
