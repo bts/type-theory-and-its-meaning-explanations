@@ -12,10 +12,23 @@ proposed, asserted, and (if they are evident) known.
 \section{Judgements of a logical theory}
 
 The basic forms of judgement for a logical theory will be
-\framebox{$\isprop{P}$} and \framebox{$\istrue{P}$}; and what is $P$?
-It is a member of the species of terms, which are made meaningful in
-the course of making the judgement $\isprop{P}$ (``$P$ is a
-proposition'') evident for a proposition $P$.
+\framebox{$\isprop{P}$} and \framebox{$\istrue{P}$}; and what is $P$?  It is a
+member of the species of terms, which are made meaningful in the course of
+making the judgement $\isprop{P}$ (``$P$ is a proposition'') evident for a
+proposition $P$.
+
+The forms of judgement may be construed as containing
+\InputMode{\textit{inputs}} and \OutputMode{\textit{outputs}}; an
+\InputMode{\textit{input}} is something which is inspected in the course of
+knowing a judgement, whereas an \OutputMode{\textit{output}} is something which
+is synthesized (or created) in the course of knowing a judgement. The positions
+of \InputMode{\textit{inputs}} and \OutputMode{\textit{outputs}} in constitute
+for a judgement form what is called its \emph{mode}, and we color-code it in
+this presentation for clarity.\footnote{We will not see any judgements with
+\OutputMode{\textit{outputs}} at first, but it will become necessary as
+soon as we consider judgements about computation, where the reduction of a term
+is synthesized from the redex. Modes may be used to construe a judgement as
+having algorithmic content.}
 
 To each judgement is assigned a \emph{meaning explanation}, which explicates
 the knowledge-theoretic content of the judgement. For a judgement
@@ -133,7 +146,7 @@ hypothetical judgement $\hyp{\isprop{P\land Q}}{\isprop{P},\isprop{Q}}$;
 equivalently, we can display this as a rule of inference:\footnote{
 Evident hypothetical judgements are often written as rules, i.e.
 \[
-  \infer{\textit{conclusion}}{\textit{premise}} 
+  \infer{\textit{conclusion}}{\textit{premise}}
 \]
 rather than $\hyp{\textit{conclusion}}{\textit{premise}}$. It must be
 stressed that only \emph{evident}/\emph{known} judgements may be
@@ -209,18 +222,21 @@ previous ones. But by unfolding the meaning explanations for hypothetical
 judgement, proposition-hood and truth of a proposition, we arrive at the
 following explanation:
 \begin{quote}
-  To know $\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$ is
-  to know what counts as a direct verification of $P\supset Q$ when one knows what
-  counts as a direct verification of $P$, and, when one has such a verification, what
-  counts as a direct verification of $Q$.
+  To know $\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$
+  is to know what counts as a direct verification of $P\supset Q$ when one
+  knows what counts as a direct verification of $P$, and, when one has such a
+  verification, what counts as a direct verification of $Q$.\footnote{Note that
+  unless $\istrue{P}$, it need not be evident that $\isprop{Q}$; in other
+  words, $Q$ only has to be a proposition if $P$ is true. It would also be
+  acceptable to give a stronger definition to implication, but this is the one
+  accepted by Martin-L\"of.}
 \end{quote}
 
-(Note that unless $\istrue{P}$, it need not be evident that
-$\isprop{Q}$; in other words, $Q$ only has to be a proposition if $P$
-is true.) If the judgement $\hyp{\isprop{P\supset
-Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$ is going to be made
-evident, then we must come up with what should count as a direct
-verification of $P\supset Q$ under the assumptions described above.
+
+If the judgement $\hyp{\isprop{P\supset
+Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$ is going to be made evident, then
+we must come up with what should count as a direct verification of $P\supset Q$
+under the assumptions described above.
 
 And so to have a direct verification of $P\supset Q$ is to have a
 verification of $Q$ assuming that one has one of $P$; this is the
@@ -323,10 +339,10 @@ into account the computational behavior of expressions:
 
 In practice, when it is clear that $P$ is canonical, then we will simply say,
 ``To know $\isprop{P}$ is to know what counts as a canonical verification of
-$P$''.
-
-As an example, then, we will update the evidence of the assertion
-$\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}$. The meaning
+$P$''. As an example, then, we will update the evidence of the following assertion:
+\[\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}
+\]
+The meaning
 of this, expanded into spoken language, is as follows:
 \begin{quote}
   To know $\hyp{\isprop{P\supset
