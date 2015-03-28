@@ -26,28 +26,28 @@
 \newcommand\InputMode[1]{{\color{\InputModeColorName}{#1}}}
 \newcommand\OutputMode[1]{{\color{\OutputModeColorName}{#1}}}
 
-\newcommand\isprop[1]{\ensuremath{#1\;\mathit{prop}}}
-\newcommand\isset[1]{\ensuremath{#1\;\mathit{type}}}
-\newcommand\istrue[1]{\ensuremath{#1\;\mathit{true}}}
-\newcommand\isctx[1]{\ensuremath{#1\;\mathit{ctx}}}
-\newcommand\fresh[2]{\ensuremath{#1\mathrel{\#}#2}}
-\newcommand\sequent[2]{\ensuremath{#1\gg#2}}
+\newcommand\isprop[1]{\ensuremath{\InputMode{#1}\;\mathit{prop}}}
+\newcommand\isset[1]{\ensuremath{\InputMode{#1}\;\mathit{type}}}
+\newcommand\istrue[1]{\ensuremath{\InputMode{#1}\;\mathit{true}}}
+\newcommand\isctx[1]{\ensuremath{\InputMode{#1}\;\mathit{ctx}}}
+\newcommand\fresh[2]{\ensuremath{\OutputMode{#1}\mathrel{\#}\InputMode{#2}}}
+\newcommand\sequent[2]{\ensuremath{\InputMode{#1}\gg#2}}
 \newcommand\hyp[2]{\ensuremath{#1\ (#2)}}
 \newcommand\ahyp[2]{\ensuremath{#1 & (#2)}}
-\newcommand\genj[2]{\ensuremath{\lvert_{#1}\,#2}}
-\newcommand\ver[2]{\ensuremath{#1\in#2}}
-\newcommand\reduce[2]{\ensuremath{#1\Rightarrow#2}}
-\newcommand\areduce[2]{\ensuremath{#1&\Rightarrow#2}}
+\newcommand\genj[2]{\ensuremath{\lvert_{\InputMode{#1}}\,#2}}
+\newcommand\ver[2]{\ensuremath{\InputMode{#1}\in\InputMode{#2}}}
+\newcommand\reduce[2]{\ensuremath{\InputMode{#1}\Rightarrow\OutputMode{#2}}}
+\newcommand\areduce[2]{\ensuremath{\InputMode{#1}&\Rightarrow\OutputMode{#2}}}
 \newcommand\naturals{\ensuremath{\mathbb{N}}}
 \newcommand\suc[1]{\ensuremath{\mathsf{S}(#1)}}
 \newcommand\natrec[3]{\ensuremath{\mathsf{rec}_\naturals(#1;#2;#3)}}
-\newcommand\lfsequent[2]{\ensuremath{#1\vdash#2}}
+\newcommand\lfsequent[2]{\ensuremath{\InputMode{#1}\vdash#2}}
 \newcommand\prf[1]{\ensuremath{\mathsf{Prf}(#1)}}
 \newcommand\MLLF{\textbf{MLLF}}
-\newcommand\infers[2]{\ensuremath{#1\uparrow{\color{Gray}{#2}}}}
-\newcommand\checks[2]{\ensuremath{#1\downarrow#2}}
+\newcommand\infers[2]{\ensuremath{\InputMode{#1}\uparrow{\color{Gray}{\OutputMode{#2}}}}}
+\newcommand\checks[2]{\ensuremath{\InputMode{#1}\downarrow\InputMode{#2}}}
 
-\newcommand\type[1]{\ensuremath{#1:\mathit{type}}}
+\newcommand\type[1]{\ensuremath{\InputMode{#1}:\mathit{type}}}
 \newcommand\product[2]{\ensuremath{#1\&#2}}
 \newcommand\pair[2]{\ensuremath{\langle #1,#2\rangle}}
 \newcommand\fst[1]{\ensuremath{\mathsf{fst}(#1)}}

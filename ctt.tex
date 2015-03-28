@@ -106,7 +106,7 @@ intensional type theories; we'll call the judgement form a ``sequent''.
 First, we will add the syntax of contexts into the computation system:
 \begin{gather*}
   \reduce{\cdot}{\cdot}\tag{Canonical}\\
-  \reduce{(\Gamma,\ver{x}{A})}{(\Gamma,\ver{x}{A})}
+  \reduce{(\Gamma,x:A)}{(\Gamma,x:A)}
 \end{gather*}
 
 The sequent judgements will be defined simultaneously with two other
@@ -116,13 +116,13 @@ $\Gamma$''). Their meaning explanations are as follows:
 
 \begin{quote}
   To know $\isctx\Gamma$\ is to know that $\reduce{\Gamma}{\cdot}$, or it is to know
-  a variable $x$ and expressions $\Delta,A$ such that $\reduce{\Gamma}{\Delta, \ver{x}{A}}$
+  a variable $x$ and expressions $\Delta,A$ such that $\reduce{\Gamma}{\Delta, x:A}$
   and $\sequent{\Delta}{\isset{A}}$, and $\fresh{x}{\Delta}$.
 \end{quote}
 
 \begin{quote}
   To know $\fresh{x}{\Gamma}$\ is to know that
-  $\reduce{\Gamma}{\cdot}$, or, if $\reduce{\Gamma}{\Delta,\ver{y}{A}}$
+  $\reduce{\Gamma}{\cdot}$, or, if $\reduce{\Gamma}{\Delta,y:A}$
   such that $x$ is not $y$ and $\fresh{x}{\Delta}$.
 \end{quote}
 
@@ -132,7 +132,7 @@ following grammar:
   \infer{\isctx\cdot}{}
   \qquad
   \infer{
-    \isctx{\Gamma,\ver{x}{A}}
+    \isctx{\Gamma,x:A}
   }{
     \isctx\Gamma &
     \sequent{\Gamma}{\isset{A}} &
@@ -141,7 +141,7 @@ following grammar:
   \infer{\fresh{x}{\cdot}}{}
   \qquad
   \infer{
-    \fresh{x}{\Gamma,\ver{y}{A}}
+    \fresh{x}{\Gamma,y:A}
   }{
     \fresh{x}{\Gamma}
   }
@@ -160,8 +160,8 @@ $\sequent{\Gamma}{\mathcal{J}}$, starting with typehood with respect to a contex
 
   To know $\sequent{\Gamma}{\isset{A}}$ is to know, if
 $\reduce{\Gamma}{\cdot}$, then $\isset{A}$; otherwise, if
-$\reduce{\Gamma}{\Delta,\ver{x}{B}}$, that
-$\genj{M}{\hyp{\sequent{\Delta}{[M/x]\isset{A}}}{\sequent{\Delta}{\ver{M}{B}}}}$
+$\reduce{\Gamma}{\Delta,x:B}$, that
+$\genj{M}{\hyp{\sequent{\Delta}{[M/x]\isset{A}}}{\sequent{\Delta}{M:B}}}$
 and moreover
 $\genj{M,N}{\hyp{\sequent{\Delta}{\isset{[M/x]A=[N/x]A}}}{\sequent{\Delta}{\ver{M=N}{B}}}}$.
 
@@ -172,7 +172,7 @@ recursion on the context. We can explain type equality sequents in a
 similar way:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\isset{A=B}}$ is to know, if $\reduce{\Gamma}{\cdot}$, that $\isset{A=B}$; otherwise, if $\reduce{\Gamma}{\Delta,\ver{x}{C}}$, it is to know
+  To know $\sequent{\Gamma}{\isset{A=B}}$ is to know, if $\reduce{\Gamma}{\cdot}$, that $\isset{A=B}$; otherwise, if $\reduce{\Gamma}{\Delta,x:C}$, it is to know
   \[
     \genj{M}{
       \hyp{
@@ -209,7 +209,7 @@ Next, the meaning of membership sequents is explained:
 \begin{quote}
   To know $\sequent{\Gamma}{\ver{M}{A}}$ is to know, if
   $\reduce\Gamma\cdot$, that $\ver{M}{A}$; otherwise, if
-  $\reduce{\Gamma}{\Delta,\ver{x}{B}}$, it is to know
+  $\reduce{\Gamma}{\Delta,x:B}$, it is to know
   \[
     \genj{N}{
       \hyp{
@@ -244,7 +244,7 @@ Finally, member equality sequents have an analogous explanation:
 \begin{quote}
   To know $\sequent{\Gamma}{\ver{M=M'}{A}}$ is to know, if
   $\reduce{\Gamma}{\cdot}$, that $\ver{M=M'}{A}$; otherwise, if
-  $\reduce{\Gamma}{\Delta,\ver{x}{B}}$, it is to know
+  $\reduce{\Gamma}{\Delta,x:B}$, it is to know
   \[
     \genj{N}{
       \hyp{
@@ -405,20 +405,20 @@ We will make evident the following judgement scheme:
     \isset{\typrod{A}{x}{B}}
   }{
     \isset{A} &
-    \sequent{\ver{x}{A}}{\isset{B}}
+    \sequent{x:A}{\isset{B}}
   }
 \]
 
 Or, written as a hypothetical judgement:
 \[
-  \hyp{\isset{\typrod{A}{x}{B}}}{\isset{A},\;\sequent{\ver{x}{A}}{\isset{B}}}
+  \hyp{\isset{\typrod{A}{x}{B}}}{\isset{A},\;\sequent{x:A}{\isset{B}}}
 \]
 
 This is to say, under the stated assumptions, we know what counts as a
 canonical verification of $\typrod{A}{x}{B}$ and when two such
 verifications are equal. We will say that $\lam{x}{E}$ is a canonical
 verification of $\typrod{A}{x}{B}$ just when we know
-$\sequent{\ver{x}{A}}{\ver{E}{B}}$; moreover, that two verifications
+$\sequent{x:A}{\ver{E}{B}}$; moreover, that two verifications
 $\lam{x}{E}$ and $\lam{y}{E'}$ are equal just when
 $\sequent{\ver{z}{A}}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}$.
 
@@ -436,23 +436,23 @@ family cartesian product, are justified by this definition:
     \sequent\Gamma\isset{\typrod{A}{x}{B}}
   }{
     \sequent\Gamma\isset{A} &
-    \sequent{\Gamma,\ver{x}{A}}{\isset{B}}
+    \sequent{\Gamma,x:A}{\isset{B}}
   }\qquad
   \infer{
     \sequent\Gamma\isset{\typrod{A}{x}{B}=\typrod{A'}{y}{B'}}
   }{
    \sequent\Gamma\isset{A=A'} &
-    \sequent{\Gamma,\ver{z}{A}}{\isset{[z/x]B=[z/y]B'}}
+    \sequent{\Gamma,z:A}{\isset{[z/x]B=[z/y]B'}}
   }\\[6pt]
   \infer{
     \sequent\Gamma\ver{\lam{x}{E}}{\typrod{A}{x}{B}}
   }{
-    \sequent{\Gamma,\ver{x}{A}}{\ver{E}{B}}
+    \sequent{\Gamma,x:A}{\ver{E}{B}}
   }\qquad
   \infer{
     \sequent\Gamma\ver{\lam{x}{E}=\lam{y}{E'}}{\typrod{A}{x}{B}}
   }{
-    \sequent{\Gamma,\ver{z}{A}}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}
+    \sequent{\Gamma,z:A}{\ver{[z/x]E=[z/y]E'}{[z/x]B}}
   }\\[6pt]
   \infer{
     \sequent\Gamma\ver{\ap{M}{N}}{[N/x]B}
@@ -493,7 +493,7 @@ empty context, the rule amounts to the assertion
 By the meaning explanation for hypothetical judgement, and the
 definition of the family cartesian product type, we know that
 $\reduce{M}{\lam{x}{E}}$ for some $E$ such that we know
-$\sequent{\ver{x}{A}}{\ver{E}{B}}$; from the meaning of the sequent
+$\sequent{x:A}{\ver{E}{B}}$; from the meaning of the sequent
 judgement, we can conclude $\genj{L}{\hyp{\ver{[L/x]E}{[L/x]B}}{L\in
 A}}$. On the other hand, from the computation rules, we know that if
 for some particular $E'$, $\reduce{[N/x]E}{E'}$, then we know
