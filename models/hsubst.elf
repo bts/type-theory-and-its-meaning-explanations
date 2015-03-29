@@ -1,0 +1,161 @@
+mtm : type.
+%name mtm M N.
+
+utm : type.
+%name utm U V.
+
+rtm : type.
+%name rtm R S.
+
+@ : rtm -> utm -> rtm.
+%infix left 10 @.
+
+atm : rtm -> mtm.
+%prefix 10 atm.
+
+hsubst/m : mtm -> (rtm -> mtm) -> mtm -> type.
+%mode hsubst/m +M +E -M'.
+
+hsubst/r : mtm -> (rtm -> rtm) -> rtm -> type.
+%mode hsubst/r +M +E -R.
+
+hsubst/rr : mtm -> (rtm -> rtm) -> mtm -> type.
+%mode hsubst/rr +M +E -R.
+
+hsubst/u : mtm -> (rtm -> utm) -> utm -> type.
+%mode hsubst/u +M +E -U.
+
+reduce : mtm -> utm -> mtm -> type.
+%mode reduce +M +U -N.
+
+hsubst/m/r : hsubst/m M ([x] atm (R x)) (atm R')
+              <- hsubst/r M R R'.
+hsubst/m/rr : hsubst/m M ([x] atm (R x)) M'
+               <- hsubst/rr M R M'.
+
+hsubst/r/closed : hsubst/r M ([x] E) E.
+hsubst/r/u : hsubst/r M ([x] (R x) @ (U x)) (R' @ U')
+              <- hsubst/r M R R'
+              <- hsubst/u M U U'.
+
+hsubst/rr/var : hsubst/rr M ([x] x) M.
+hsubst/rr/u : hsubst/rr M0 ([x] (R x) @ (U x)) N
+               <- hsubst/rr M0 R M
+               <- hsubst/u M0 U U'
+               <- reduce M U' N.
+
+
+% hypothesis
+hyp : rtm -> mtm -> type.
+%mode hyp +R -T.
+
+% verifications
+ver : mtm -> mtm -> type.
+%mode ver +M +T.
+
+% types
+is-ty : mtm -> type.
+%mode is-ty +T.
+
+% uses
+use : utm -> mtm -> (rtm -> mtm) -> type.
+%mode use +U +T -T'.
+
+
+% type synthesis
+inf : rtm -> mtm -> type.
+%mode inf +R -T.
+
+inf/use : inf (R @ U) (A (R @ U))
+           <- inf R B
+           <- use U B A.
+inf/hyp : inf R A
+           <- hyp R A.
+
+% type checking
+chk : mtm -> mtm -> type.
+%mode chk +M +T.
+
+chk/ver : chk M A
+           <- ver M A.
+chk/inf : chk (atm R) A
+           <- inf R A.
+
+
+pi : mtm -> (rtm -> mtm) -> mtm.
+lam : (rtm -> mtm) -> mtm.
+ap : mtm -> utm.
+
+reduce/ap : reduce (lam M) (ap N) MN
+             <- hsubst/m N M MN.
+
+is-ty/pi : is-ty (pi A B)
+            <- is-ty A
+            <- {x} hyp x A -> is-ty (B x).
+ver/lam : ver (lam M) (pi A B)
+           <- {x} hyp x A -> chk (M x) (B x).
+
+use/ap : use (ap N) (pi A B) ([z] BN)
+          <- hsubst/m N B BN
+          <- chk N A.
+
+%% STRUCTURAL/FREE RULES {
+hsubst/m/pi : hsubst/m M0 ([x] (pi (A x) [y] B x y)) (pi A' B')
+                <- hsubst/m M0 A A'
+                <- {y:rtm} hsubst/m M0 ([x] B x y) (B' y).
+hsubst/m/lam : hsubst/m M0 ([x] (lam [y] M x y)) (lam M')
+                <- {y:rtm} hsubst/m M0 ([x] M x y) (M' y).
+hsubst/u/ap : hsubst/u M0 ([x] ap (N x)) (ap N')
+               <- hsubst/m M0 N N'.
+%% }
+
+
+sg : mtm -> (rtm -> mtm) -> mtm.
+pair : mtm -> mtm -> mtm.
+spread : (rtm -> mtm) -> (rtm -> rtm -> mtm) -> utm.
+
+is-ty/sg : is-ty (sg A B)
+            <- is-ty A
+            <- {x} hyp x A -> is-ty (B x).
+
+ver/pair : ver (pair M N) (sg A B)
+            <- chk M A
+            <- hsubst/m M B BM
+            <- chk N BM.
+use/spread : use (spread C E) (sg A B) ([z] C z)
+              <- ({x} {y} hsubst/m (pair (atm x) (atm y)) C (C' x y))
+              <- ({x} hyp x A -> {y} hyp y (B x) -> chk (E x y) (C' x y))
+              <- {z} hyp z (sg A B) -> is-ty (C z).
+
+%% STRUCTURAL/FREE RULES {
+hsubst/m/sg : hsubst/m M0 ([x] (sg (A x) [y] B x y)) (sg A' B')
+                <- hsubst/m M0 A A'
+                <- {y} hsubst/m M0 ([x] B x y) (B' y).
+hsubst/m/pair : hsubst/m M0 ([x] pair (M1 x) (M2 x)) (pair M1' M2')
+                 <- hsubst/m M0 M2 M2'
+                 <- hsubst/m M0 M1 M1'.
+hsubst/u/spread : hsubst/u M0 ([x] spread ([y] C x y) ([y] [z] E x y z)) (spread C' E')
+                   <- ({y} hsubst/m M0 ([x] C x y) (C' y))
+                   <- ({y1}{y2} hsubst/m M0 ([x] E x y1 y2) (E' y1 y2)).
+%% }
+
+
+unit : mtm.
+ax : mtm.
+
+is-ty/unit : is-ty unit.
+ver/ax : ver ax unit.
+
+%% STRUCTURAL/FREE RULES {
+hsubst/m/unit : hsubst/m M0 ([x] unit) unit.
+hsubst/m/ax : hsubst/m M0 ([x] ax) ax.
+%% }
+
+
+
+%solve - : chk (pair ax ax) (sg unit [x] unit).
+%solve - : is-ty (pi unit [x] unit).
+
+%solve - : chk (lam [z] atm (z @ (spread ([x] unit) ([x] [y] atm x)))) (pi (sg unit [x] unit) [x] unit).
+
+%solve - : chk (lam [z] atm (z @ (spread ([x] unit) ([x] [y] atm y)))) (pi (sg unit [x] unit) [x] unit).
