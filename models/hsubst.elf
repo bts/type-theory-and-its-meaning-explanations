@@ -33,7 +33,7 @@ hsubst/m/r : hsubst/m M ([x] atm (R x)) (atm R')
 hsubst/m/rr : hsubst/m M ([x] atm (R x)) M'
                <- hsubst/rr M R M'.
 
-hsubst/r/closed : hsubst/r M ([x] E) E.
+hsubst/r/closed : hsubst/r M ([x] R) R.
 hsubst/r/u : hsubst/r M ([x] (R x) @ (U x)) (R' @ U')
               <- hsubst/r M R R'
               <- hsubst/u M U U'.

@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{stmaryrd}
+\usepackage{mathtools}
 \usepackage{subfiles}
 
 \newtheorem{thm}{Theorem}[section]
@@ -54,6 +55,7 @@
 
 \newcommand\type[1]{\ensuremath{\InputMode{#1}:\mathit{type}}}
 \newcommand\etype[2]{\ensuremath{\InputMode{#1}=\InputMode{#2}:\mathit{type}}}
+\newcommand\cantype[1]{\ensuremath{\InputMode{#1}\mathrel{\epsilon}\mathit{type}}}
 \newcommand\product[2]{\ensuremath{#1\&#2}}
 \newcommand\pair[2]{\ensuremath{\langle #1,#2\rangle}}
 \newcommand\fst[1]{\ensuremath{\mathsf{fst}(#1)}}
@@ -71,12 +73,25 @@
 \newcommand\rtm{\ensuremath{\mathbf{neu}}}
 \newcommand\mtm{\ensuremath{\mathbf{exp}}}
 
+\newcommand\lfctx[1]{\ensuremath{\InputMode{#1}:\mathit{ctx}}}
 \newcommand\ufst{\ensuremath{\mathsf{fst}}}
 \newcommand\usnd{\ensuremath{\mathsf{snd}}}
 \newcommand\uap[1]{\ensuremath{\mathsf{ap}(#1)}}
-\newcommand\elim[2]{\ensuremath{#1\mathbin{@}#2}}
+\newcommand\uabort[1]{\ensuremath{\mathsf{abort}(#1)}}
+\newcommand\elim[2]{\ensuremath{#1@#2}}
 \newcommand\valof[2]{\ensuremath{\InputMode{#1}\mathrel{\epsilon}\InputMode{#2}}}
-\newcommand\useof[4]{\ensuremath{\InputMode{#1}:\InputMode{#2}>\InputMode{x}.\,\OutputMode{#4}}}
+\newcommand\useof[4]{\ensuremath{\InputMode{#1}:\InputMode{#2}>\OutputMode{x}.\,\OutputMode{#4}}}
+\newcommand\hsubste[4]{\ensuremath{[\InputMode{#1}/\InputMode{#2}]\InputMode{#3}\leadsto\OutputMode{#4}}}
+\newcommand\hsubstr[4]{\ensuremath{[\InputMode{#1}/\InputMode{#2}]\InputMode{#3}\leadsto\OutputMode{#4}}}
+\newcommand\hsubstrm[4]{\ensuremath{[\InputMode{#1}/\InputMode{#2}]\InputMode{#3}\leadsto\OutputMode{#4}}}
+\newcommand\hsubstm[4]{\ensuremath{[\InputMode{#1}/\InputMode{#2}]\InputMode{#3}\leadsto\OutputMode{#4}}}
+\newcommand\hsubstu[4]{\ensuremath{[\InputMode{#1}/\InputMode{#2}]\InputMode{#3}\leadsto\OutputMode{#4}}}
+
+\newcommand\hasvar[3]{\ensuremath{\InputMode{#1}(\InputMode{#2})\leadsto\OutputMode{#3}}}
+\newcommand\eapply[3]{\ensuremath{\InputMode{#1}\diamond\InputMode{#2}\leadsto\OutputMode{#3}}}
+\newcommand\match[2]{\ensuremath{\InputMode{#1}\equiv\OutputMode{#2}}}
+\newcommand\ival[1]{\ensuremath{\uparrow#1}}
+\newcommand\ineu[1]{\ensuremath{\mathsf{neu}(#1)}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
