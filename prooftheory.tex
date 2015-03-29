@@ -563,6 +563,16 @@ which may be implemented once and for all in terms of the other
 judgements, namely $\hsubstrm{E}{x}{R}{M}$, $\hsubstr{E}{x}{R}{S}$ and
 $\hsubste{E}{x}{F}{F'}$.
 
+Lastly, in its full presentation, Martin-L\"of's logical framework has
+a single universe $\mathsf{Set}$ such that
+$\hyp{\type{\mathsf{El}(A)}}{\ofty{A}{\mathsf{Set}}}$; in a proper
+development of our modular logical framework, we would need to add
+such a universe. In order to do this, the meaning explanation of
+$\lfsequent\Gamma\type{A}$ (which is defined trivially in terms of
+$\lfsequent\Gamma\cantype\alpha$) would have to be adjusted, in order
+to take into account the neutral types which would be introduced by
+the universe.
+
 \subsection{The definitions of types}
 
 Now we will proceed with defining some basic types according to the
