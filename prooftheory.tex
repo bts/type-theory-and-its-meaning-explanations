@@ -112,11 +112,11 @@ two respects: firstly, that they have different meanings, and secondly that the
 one is at the same level as the judgements of a logical theory, whereas the
 latter is a judgement in a theory which is defined over a logical theory.
 
-\section{Martin-L\"of's Logical Framework}
+\section{Martin-L\"of's equational logical framework}
 
 To make this more concrete, let us expound a proof theoretic type
-theory called \MLLF, which stands for ``Martin-L\"of's Logical
-Framework'';\footnote{For a detailed overview of Martin-L\"of's equational logical framework, see \cite{PiMLTT}.} in the course of introducing each type, we will specify
+theory called \MLLF, which stands for ``Martin-L\"of's (equational) logical
+framework'';\footnote{For a detailed overview of Martin-L\"of's equational logical framework, see \cite{PiMLTT}.} in the course of introducing each type, we will specify
 which judgement of the underlying logical theory it is meant to
 interpret.
 
@@ -343,5 +343,82 @@ done with full understanding of all the other types and their definitions.
 Furthermore, to extend an existing theory with a new type, the definitions of
 every other type must be rewritten to account for the elimination forms of the
 new type.
+
+\section{A modular logical framework via verifications \& uses}
+
+We will first try and address the easier of the two critiques by
+factoring the judgements of the logical framework in such a way as to
+permit different types to be defined in isolation, and then composed
+freely into theories. In order to simplify matters, we will restrict
+our syntax to normal forms, thus eliminating the need for a
+judgemental equality any more advanced than simple
+$\alpha$-equivalence.
+
+The source of the anti-modularity in the previous section's
+presentation was the fact that the introduction of a type and the
+elimination of a type were considered within the same judgement. A
+simple way to resolve this issue is to separate the typing judgement
+$\ofty{M}{A}$ into two separate judgements, a checking judgement
+$\checks{M}{A}$ and a synthesizing judgement
+$\infers{R}{A}$; the basic idea is that introduction forms
+(``verifications'') are to be checked, and elimination forms
+(``uses'') are to be synthesized (or inferred). \textbf{Note that in this
+chapter, we have no further use for the big-step reduction judgement
+$\reduce{M}{M'}$; since there will be no ambiguity, so we will re-use
+its notation for the type synthesis judgement.}
+
+In fact, the technique described above is commonplace in practical
+implementations of ytpe theory for proof assistants. In practice,
+checkable terms and inferrable terms are usually put into separate
+syntactic categories as well; because we need our syntax, judgements
+and definitions to be as modular as possible, we will find even
+further granularity to be useful.
+
+We introduce four syntactic categories (sorts):\\
+
+\begin{tabular}{lll}
+  \toprule
+  sort & names & description\\ \midrule
+  $\val$ & $M, N, A, B$ & values (canonical forms and types) \\
+  $\utm$ & $U, V$ & uses (eliminators) \\
+  $\rtm$ & $R, S$ & neutral terms (variables and applied uses) \\
+  $\mtm$ & $E, F$ & expressions (normal forms, i.e.\ canonical forms, neutral terms)\\
+  \bottomrule
+\end{tabular}\\
+
+A \emph{value} is an introduction form, like $\pair{E_1}{E_2}$ or
+$[x]E$. A \emph{use} is an unapplied elimination form, like $\ufst$,
+$\usnd$, or $\uap{N}$. A \emph{neutral term} is a variable $x$, or it
+is an application $\elim{U}{R}$ of a use $U$ to a neutral term $R$,
+like $\elim{\ufst}{R}$. Lastly, an \emph{expression} is a value or it
+is a neutral term. In our presentation, the injections from, for
+instance, values into expressions will be left tacit, since it will be
+clear from context what is meant.
+
+Then, we will have the following forms of judgement, each of which
+will be given a meaning explanation:\\
+
+\begin{tabular}{ll}
+  \toprule
+  judgement & pronunciation\\ \midrule
+  $\lfsequent\Gamma\type{A}$ & ``$A$ is a type in context $\Gamma$''\\
+  $\lfsequent\Gamma\valof{M}{A}$ & ``$M$ is a canonical verification of $A$ in context $\Gamma$''\\
+  $\lfsequent\Gamma\useof{U}{A}{x}{B(x)}$ & ``$U$ is a use of $x:A$ yielding $B(x)$ in context $\Gamma$''\\
+  $\lfsequent\Gamma\infers{R}{A}$ & ``$R$ synthesizes type $A$ in context $\Gamma$''\\
+  $\lfsequent\Gamma\checks{E}{A}$ & ``$E$ checks at type $A$ in context $\Gamma$''\\
+  \bottomrule
+\end{tabular}\\
+
+Note that we have made all the above judgements with respect to a
+context. It is tempting to first define the each judgement
+``categorically'' (i.e. without a context), and it is often done this
+way in presentations of type theory,
+but this is not actually possible for an intensional type theory, where the
+meaning of the sequent judgement is not compositional. In fact, the
+sequent judgement for intensional type theories may not even be
+defined in terms of Martin-L\"of's hypothetical judgement, since the
+latter represents derivability, whereas the former encompasses
+admissibility as well. In this sense, then, even the sequent
+judgements above are ``categorical''.
 
 \end{document}

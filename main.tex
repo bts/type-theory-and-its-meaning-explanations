@@ -5,6 +5,7 @@
 \usepackage{multicol}
 \usepackage{proof}
 \usepackage{setspace}
+\usepackage{booktabs}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{stmaryrd}
 \usepackage{subfiles}
@@ -48,8 +49,8 @@
 \newcommand\lfsequent[2]{\ensuremath{\InputMode{#1}\vdash#2}}
 \newcommand\prf[1]{\ensuremath{\mathsf{Prf}(#1)}}
 \newcommand\MLLF{\textbf{MLLF}}
-\newcommand\infers[2]{\ensuremath{\InputMode{#1}\uparrow{\color{Gray}{\OutputMode{#2}}}}}
-\newcommand\checks[2]{\ensuremath{\InputMode{#1}\downarrow\InputMode{#2}}}
+\newcommand\infers[2]{\ensuremath{\InputMode{#1}\Rightarrow{\OutputMode{#2}}}}
+\newcommand\checks[2]{\ensuremath{\InputMode{#1}\Leftarrow\InputMode{#2}}}
 
 \newcommand\type[1]{\ensuremath{\InputMode{#1}:\mathit{type}}}
 \newcommand\etype[2]{\ensuremath{\InputMode{#1}=\InputMode{#2}:\mathit{type}}}
@@ -64,6 +65,18 @@
 \newcommand\typrod[3]{\ensuremath{\mathsf{\Pi}(#1;#2.#3)}}
 \newcommand\lam[2]{\ensuremath{\mathsf{\lambda}(#1.#2)}}
 \newcommand\ap[2]{\ensuremath{\mathsf{ap}(#1;#2)}}
+
+\newcommand\val{\ensuremath{\mathbf{val}}}
+\newcommand\utm{\ensuremath{\mathbf{use}}}
+\newcommand\rtm{\ensuremath{\mathbf{neu}}}
+\newcommand\mtm{\ensuremath{\mathbf{exp}}}
+
+\newcommand\ufst{\ensuremath{\mathsf{fst}}}
+\newcommand\usnd{\ensuremath{\mathsf{snd}}}
+\newcommand\uap[1]{\ensuremath{\mathsf{ap}(#1)}}
+\newcommand\elim[2]{\ensuremath{#1\mathbin{@}#2}}
+\newcommand\valof[2]{\ensuremath{\InputMode{#1}\mathrel{\epsilon}\InputMode{#2}}}
+\newcommand\useof[4]{\ensuremath{\InputMode{#1}:\InputMode{#2}>\InputMode{x}.\,\OutputMode{#4}}}
 
 \begin{document}
 \title{Type theory and its meaning explanations}
