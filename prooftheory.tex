@@ -64,7 +64,7 @@ anyway, except in the most trivial circumstances, since a verification is meant
 to be an effective operation which realizes the truth of a proposition, and no
 constraints whatsoever (termination, totality, etc.) are placed on these
 operations except those which come from the meaning of the judgements (see
-\cite{Dummett:Elements}, \cite{Prawitz12}).
+\cite{Dummett:Elements}, \cite{Prawitz12}, \cite{TroelstraA:conm}).
 
 So a proof theory is necessarily intensional, and its judgements are to be
 analytic/decidable. What is it, then, that we have considered so far which
@@ -92,20 +92,18 @@ type theory that I have described in the previous sections, the one based on
 meaning explanations, underlies the proof assistant Nuprl.
 
 The proof-theoretic type theories on the one hand are often called
-``intensional'' and the meaning-theoretic type theories on the other
-hand are usually ``extensional''; these characterizations are
-certainly true, though they are not \emph{essential}; moreover, I fear
-that comparing one of the former with one of the latter is not quite
-fair, since there is not any clear analogy to be had. That is to say,
-the judgement $\ver{M}{P}$ is a judgement which is added to a logical
-theory and its meaning is (briefly) ``$M$ evaluates to a canonical
-verification of $P$'', whereas $\ofty{M}{P}$ cannot be construed as a
-judgement added to a logical theory. Instead, it must be understood as
-part of a (proof) theory which is overlayed atop an existing logical theory;
-it is possible to understand the theory which contains the judgement
-$\ofty{M}{P}$ to be a metatheory, or logical framework, for the theory which
-contains the judgement $\istrue{P}$, which can be construed as the
-``object language''.
+``intensional'' and the computational type theories on the other hand are
+usually ``extensional''; these characterizations are certainly true, though
+they are not \emph{essential}; moreover, I fear that comparing one of the
+former with one of the latter is not quite fair, since there is not any clear
+analogy to be had. That is to say, the judgement $\ver{M}{P}$ is a judgement
+which is added to a logical theory and its meaning is (briefly) ``$M$ evaluates
+to a canonical verification of $P$'', whereas $\ofty{M}{P}$ cannot be construed
+as a judgement added to a logical theory. Instead, it must be understood as
+part of a (proof) theory which is overlayed atop an existing logical theory; it
+is possible to understand the theory which contains the judgement $\ofty{M}{P}$
+to be a metatheory, or logical framework, for the theory which contains the
+judgement $\istrue{P}$, which can be construed as the ``object language''.
 
 In short, the judgements $\ver{M}{P}$ and $\ofty{M}{P}$ are unrelated to each other in
 two respects: firstly, that they have different meanings, and secondly that the
@@ -159,16 +157,16 @@ proofs) of those judgements.
   $\alpha$ (necessarily presupposing $\ofty{M}{\alpha}$ and $\ofty{N}{\alpha}$).
 \end{quote}
 
-Hypothetical judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ and general
-judgement $\genj{x}{\mathcal{J}}$ have the same meaning in the logical
-framework as before. In addition to these forms of judgement, we will
-need contexts (with their wellformedness judgement $\isctx{\Gamma}$)
-and an intensional sequent judgement
-\framebox{$\lfsequent{\Gamma}{\mathcal{J}}$}; their meanings here will
-be precisely the same as in the computational type theory, modulo the
-fact that the intensional sequent judgement is defined over the
-categorical judgements of the logical framework ($\type\alpha$,
-$\etype{\alpha}{\beta}$, $\ofty{M}{\alpha}$ and $\eofty{M}{N}{\alpha}$).
+Hypothetical judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ and general judgement
+$\genj{x}{\mathcal{J}}$ have the same meaning in the logical framework as
+before. In addition to these forms of judgement, we will need contexts (with
+their wellformedness judgement $\isctx{\Gamma}$) and an intensional sequent
+judgement \framebox{$\lfsequent{\Gamma}{\mathcal{J}}$}; their meanings here
+will similar to their meanings in the computational type theory, modulo the
+fact that the intensional sequent judgement is defined over the categorical
+judgements of the logical framework ($\type\alpha$, $\etype{\alpha}{\beta}$,
+$\ofty{M}{\alpha}$ and $\eofty{M}{N}{\alpha}$), and that we have no notion of
+evaluation internally.
 
 At this point, we may begin adding types to the logical framework. In
 practice, most types which we will introduce in the logical framework
@@ -376,7 +374,7 @@ further granularity to be useful.
 
 \subsection{Syntax and judgements}
 
-We introduce give syntactic categories (sorts):\\
+We introduce several syntactic categories (sorts):\\
 
 \begin{tabular}{lll}
   \toprule
@@ -550,11 +548,11 @@ $\lfsequent\Gamma\cantype{\alpha}$ as minimal as possible, so as to make the
 definitions of the types both economical and modular.
 
 The substitution judgements that we gave over each relevant syntactic category
-give rise to a system of \emph{hereditary substitution}; the purpose of
-hereditary substitutions is to provide a way to substitute a normal form into a
-term without creating redexes. The hereditary substitutions may be divided into
-two groups. First, the structural substitutions which must be given separately
-for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
+give rise to a system of \emph{hereditary substitution} (see \cite{watkins});
+the purpose of hereditary substitutions is to provide a way to substitute a
+normal form into a term without creating redexes. The hereditary substitutions
+may be divided into two groups. First, the structural substitutions which must
+be given separately for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
 $\hsubstr{E}{x}{U}{U'}$; these may be implemented mechanically, by induction on
 the arity of each operator. Second, the substitutions which may be implemented
 once and for all in terms of the other judgements, namely
@@ -597,7 +595,7 @@ judgement is the following list of definitions:
 \subsubsection{The empty type}
 For the empty type, we introduce the following operators:
 \begin{gather*}
-  \tyvoid:\val \qquad \hyp{\uabort{A}:\utm}{A:\exp}
+  \tyvoid:\val \qquad \hyp{\uabort{A}:\utm}{A:\mtm}
 \end{gather*}
 
 The judgement $\genj{\Gamma}{\lfsequent\Gamma\cantype\tyvoid}$ is made
