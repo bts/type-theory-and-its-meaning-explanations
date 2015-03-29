@@ -543,7 +543,7 @@ have stuck to the former here for uniformity.
 The idea of separating out unapplied elimination forms (\emph{uses} in
 our parlance) is closely related to the notion of \emph{spines}, which
 are lists of \emph{uses}, which may be applied all at once to
-variable. It would be possible to add further syntax and judgements
+a variable. It would be possible to add further syntax and judgements
 for spines into our system, but the primary reason for separating out
 the \emph{uses} in the first place was simply to make the evidence for
 $\lfsequent\Gamma\cantype{\alpha}$ as minimal as possible, so as to make the
@@ -585,7 +585,7 @@ The following operators are introduced with their sorts:
 \end{gather*}
 
 Then, we will make the judgement
-$\genj{\Gamma}{\lfsequent\Gamma\cantype\tyunit}$; note that we will use
+$\genj{\Gamma}{\lfsequent\Gamma\cantype\tyunit}$ evident; note that we will use
 Martin-L\"of's general judgement in order to express that the typehood
 assertion is valid in \emph{any} context. The evidence of this
 judgement is the following list of definitions:
@@ -611,6 +611,12 @@ evident by means of the following definitions:
   \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\tyvoid$ is $\tyvoid$.
 \end{enumerate}
 
+This is the first time we have seen a significant difference in
+practice from the extensional type theory explored in the previous
+chapter; note how we include an elimination form for $\tyvoid$ in its
+definition, whereas in extensional type theory this is entirely
+unnecessary.
+
 \subsubsection{The dependent function type}
 For the dependent function type, the following operators are introduced:
 \begin{gather*}
@@ -623,7 +629,7 @@ The judgement
 $\genj{\Gamma}{%
   \hyp{%
     \lfsequent\Gamma{
-      \type{(x:A)B(x)}%
+      \cantype{(x:A)B(x)}%
     }
   }{%
     \lfsequent\Gamma{\type{A}};\ %
