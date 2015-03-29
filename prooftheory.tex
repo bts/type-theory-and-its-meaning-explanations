@@ -475,7 +475,7 @@ substitution of $E$ for $x$ in $\alpha$ for any $E$ and $x$.
 \begin{quote}
   To know $\lfsequent\Gamma\valof{M}{\alpha}$ (presupposing
 $\lfsequent\Gamma\cantype{\alpha}$) is to know that $M$ is a canonical
-verification of $\alpha$ in context $\Gamma$. 
+verification of $\alpha$ in context $\Gamma$.
 \end{quote}\medskip
 
 \begin{quote}
@@ -549,18 +549,16 @@ the \emph{uses} in the first place was simply to make the evidence for
 $\lfsequent\Gamma\cantype{\alpha}$ as minimal as possible, so as to make the
 definitions of the types both economical and modular.
 
-The substitution judgements that we gave over each relevant syntactic
-category give rise to a system of \emph{hereditary substitution}; the
-purpose of hereditary substitutions is to provide a way to substitute
-a canonical form into a term and have the end result still be a
-canonical form. The hereditary substitutions may be divided into two
-groups. First, the structural substitutions which must be given
-separately for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
-$\hsubstr{E}{x}{U}{U'}$; these may be implemented mechanically, by
-induction on the arity of each operator. Second, the substitutions
-which may be implemented once and for all in terms of the other
-judgements, namely $\hsubstrm{E}{x}{R}{M}$, $\hsubstr{E}{x}{R}{S}$ and
-$\hsubste{E}{x}{F}{F'}$.
+The substitution judgements that we gave over each relevant syntactic category
+give rise to a system of \emph{hereditary substitution}; the purpose of
+hereditary substitutions is to provide a way to substitute a normal form into a
+term without creating redexes. The hereditary substitutions may be divided into
+two groups. First, the structural substitutions which must be given separately
+for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
+$\hsubstr{E}{x}{U}{U'}$; these may be implemented mechanically, by induction on
+the arity of each operator. Second, the substitutions which may be implemented
+once and for all in terms of the other judgements, namely
+$\hsubstrm{E}{x}{R}{M}$, $\hsubstr{E}{x}{R}{S}$ and $\hsubste{E}{x}{F}{F'}$.
 
 Lastly, in its full presentation, Martin-L\"of's logical framework has
 a single universe $\mathsf{Set}$ such that
@@ -625,7 +623,7 @@ For the dependent function type, the following operators are introduced:
   \hyp{\uap{E}:\utm}{E:\mtm}
 \end{gather*}
 
-The judgement 
+The judgement
 $\genj{\Gamma}{%
   \hyp{%
     \lfsequent\Gamma{
@@ -674,7 +672,7 @@ familiar inference rules are valid (justified):
 I leave the proofs of the validity of these rule schemes as an
 exercise to the reader.
 
-\subsection{Discussion} 
+\subsection{Discussion}
 
 In this chapter, a logical framework has been developed which, unlike
 Martin-L\"of's logical framework, permits the modular/separate
