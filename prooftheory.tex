@@ -666,4 +666,22 @@ familiar inference rules are valid (justified):
   }
 \end{gather*}
 
+I leave the proofs of the validity of these rule schemes as an
+exercise to the reader.
+
+\subsection{Discussion} 
+
+In this chapter, a logical framework has been developed which, unlike
+Martin-L\"of's logical framework, permits the modular/separate
+definitions of types. On the other hand, we have \emph{not} addressed
+the second critique of \MLLF, which is that it lacks computational
+content.
+
+To make the framework truly computational, it would be necessary to
+modify the syntax to include redexes, add judgements for reduction of
+open terms to normal form (as opposed to reduction of closed terms to
+canonical form), and adjust the meaning explanations of the judgements
+$\lfsequent\Gamma\checks{M}{A}$ and $\lfsequent\Gamma\infers{R}{A}$ to
+normalize their subjects.
+
 \end{document}
