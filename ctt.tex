@@ -123,7 +123,7 @@ $\Gamma$''). Their meaning explanations are as follows:
 \end{quote}
 
 \begin{quote}
-  To know $\fresh{x}{\Gamma}$\ is to know that
+  To know $\fresh{x}{\Gamma}$\ (presupposing $\isctx\Gamma$) is to know that
   $\reduce{\Gamma}{\cdot}$, or, if $\reduce{\Gamma}{\Delta,y:A}$
   such that $x$ is not $y$ and $\fresh{x}{\Delta}$.
 \end{quote}
@@ -149,32 +149,33 @@ following grammar:
   }
 \end{gather*}
 
-We will say that $\sequent{\Gamma}{\mathcal{J}}$ is only a judgement
-under the presuppositions that $\isctx\Gamma$\ and that $\mathcal{J}$
-is a categorical judgement of the form $\isset{A}$\ or
-$\ver{M}{A}$. Its meaning explanation must be given separately for
-each kind of conclusion.
+We will say that $\sequent{\Gamma}{\mathcal{J}}$ is only a judgement under the
+presuppositions that $\isctx\Gamma$\ and that $\mathcal{J}$ is a categorical
+judgement of the form $\isset{A}$, $\eisset{A}{B}$, $\ver{M}{A}$, or
+$\ever{M}{N}{A}$. Because of this presupposition, we are justified in
+propoounding the meaning of the judgement by structural induction on the
+evidence for $\isctx\Gamma$, separately for each $\mathcal{J}$.
 
 Now we may begin giving the meaning explanations for
 $\sequent{\Gamma}{\mathcal{J}}$, starting with typehood with respect to a context:
 
 \begin{quote}
 
-  To know $\sequent{\Gamma}{\isset{A}}$ is to know, if
-$\reduce{\Gamma}{\cdot}$, then $\isset{A}$; otherwise, if
+  To know $\sequent{\Gamma}{\isset{A}}$ (presupposing $\isctx\Gamma$) is to
+know, if $\reduce{\Gamma}{\cdot}$, then $\isset{A}$; otherwise, if
 $\reduce{\Gamma}{\Delta,x:B}$, that
-$\genj{M}{\hyp{\sequent{\Delta}{[M/x]\isset{A}}}{\sequent{\Delta}{M:B}}}$
-and moreover
+$\genj{M}{\hyp{\sequent{\Delta}{[M/x]\isset{A}}}{\sequent{\Delta}{M:B}}}$ and
+moreover
 $\genj{M,N}{\hyp{\sequent{\Delta}{\eisset{[M/x]A}{[N/x]A}}}{\sequent{\Delta}{\ever{M}{N}{B}}}}$.
 
 \end{quote}
 
-In this way, we have defined the sequent judgement by structural
-recursion on the context. We can explain type equality sequents in a
-similar way:
+In this way, we have defined the sequent judgement by structural induction on
+the evidence for the presupposition $\isctx\Gamma$. We can explain type
+equality sequents in a similar way:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\eisset{A}{B}}$ is to know, if $\reduce{\Gamma}{\cdot}$, that $\eisset{A}{B}$; otherwise, if $\reduce{\Gamma}{\Delta,x:C}$, it is to know
+  To know $\sequent{\Gamma}{\eisset{A}{B}}$ (presupposing $\isctx\Gamma$, $\sequent{\Gamma}{\isset{A}}$, $\sequent{\Gamma}{\isset{B}}$) is to know, if $\reduce{\Gamma}{\cdot}$, that $\eisset{A}{B}$; otherwise, if $\reduce{\Gamma}{\Delta,x:C}$, it is to know
   \[
     \genj{M}{
       \hyp{
@@ -207,7 +208,7 @@ similar way:
 Next, the meaning of membership sequents is explained:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\ver{M}{A}}$ is to know, if
+  To know $\sequent{\Gamma}{\ver{M}{A}}$ (presupposing $\isctx\Gamma$, $\sequent{\Gamma}{\isset{A}}$) is to know, if
   $\reduce\Gamma\cdot$, that $\ver{M}{A}$; otherwise, if
   $\reduce{\Gamma}{\Delta,x:B}$, it is to know
   \[
@@ -242,7 +243,7 @@ Next, the meaning of membership sequents is explained:
 Finally, member equality sequents have an analogous explanation:
 
 \begin{quote}
-  To know $\sequent{\Gamma}{\ever{M}{M'}{A}}$ is to know, if
+  To know $\sequent{\Gamma}{\ever{M}{M'}{A}}$ (presupposing $\isctx\Gamma$, $\sequent{\Gamma}{\isset{A}}$) is to know, if
   $\reduce{\Gamma}{\cdot}$, that $\ever{M}{M'}{A}$; otherwise, if
   $\reduce{\Gamma}{\Delta,x:B}$, it is to know
   \[
