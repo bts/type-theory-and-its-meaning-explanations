@@ -342,347 +342,348 @@ Furthermore, to extend an existing theory with a new type, the definitions of
 every other type must be rewritten to account for the elimination forms of the
 new type.
 
-\section{A modular logical framework via verifications \& uses}
 
-We will first try and address the easier of the two critiques by
-factoring the judgements of the logical framework in such a way as to
-permit different types to be defined modularly in isolation, and then
-composed freely into theories. In order to simplify matters, we will
-restrict our syntax to normal forms, thus eliminating the need for a
-judgemental equality any more advanced than simple
-$\alpha$-equivalence.
-
-The source of the anti-modularity in the previous section's
-presentation was the fact that the introduction of a type and the
-elimination of a type were considered within the same judgement. A
-simple way to resolve this issue is to separate the typing judgement
-$\ofty{M}{A}$ into two separate judgements, a checking judgement
-$\checks{M}{A}$ and a synthesizing judgement
-$\infers{R}{A}$; the basic idea is that introduction forms
-(``verifications'') are to be checked, and elimination forms
-(``uses'') are to be synthesized (or inferred). \textbf{Note that in this
-chapter, we have no further use for the big-step reduction judgement
-$\reduce{M}{M'}$; since there will be no ambiguity, so we will re-use
-its notation for the type synthesis judgement.}
-
-In fact, the technique described above is commonplace in practical
-implementations of type theory for proof assistants. In practice,
-checkable terms and inferrable terms are usually put into separate
-syntactic categories as well; because we need our syntax, judgements
-and definitions to be as modular as possible, we will find even
-further granularity to be useful.
-
-\subsection{Syntax and judgements}
-
-We introduce several syntactic categories (sorts):\\
-
-\begin{tabular}{lll}
-  \toprule
-  sort & names & description\\ \midrule
-  $\mathbf{ctx}$ & $\Gamma, \Delta$ & contexts\\
-  $\val$ & $M, N, \alpha, \beta$ & values (canonical forms and types) \\
-  $\utm$ & $U, V$ & uses (eliminators) \\
-  $\rtm$ & $R, S$ & neutral terms (variables and applied uses) \\
-  $\mtm$ & $E,F,A,B$ & expressions (normal forms, i.e.\ canonical forms, neutral terms)\\
-  \bottomrule
-\end{tabular}\\
-
-A \emph{value} is an introduction form, like $\pair{E_1}{E_2}$ or
-$[x]E$. A \emph{use} is an unapplied elimination form, like $\ufst$,
-$\usnd$, or $\uap{N}$. A \emph{neutral term} is a variable $x$, or it
-is an application $\elim{U}{R}$ of a use $U$ to a neutral term $R$,
-like $\elim{\ufst}{R}$. Lastly, an \emph{expression} is a value $\ival{M}$ or it
-is a neutral term $\ineu{R}$.
-
-Then, we will have the following forms of judgement, each of which
-will be given a meaning explanation:\\
-
-\begin{tabular}{ll}
-  \toprule
-  judgement & pronunciation\\ \midrule
-  $\lfctx{\Gamma}$ & ``$\Gamma$ is a context''\\
-  $\fresh{x}{\Gamma}$ & ``$x$ is fresh in $\Gamma$''\\
-  $\hasvar{\Gamma}{x}{A}$ & ``$\Gamma$ contains $x:A$''\\
-  $\lfsequent\Gamma\cantype{\alpha}$ & ``$\alpha$ is a canonical type in context $\Gamma$''\\
-  $\lfsequent\Gamma\type{A}$ & ``$A$ is a type in context $\Gamma$''\\
-  $\lfsequent\Gamma\valof{M}{\alpha}$ & ``$M$ is a canonical verification of $A$ in context $\Gamma$''\\
-  $\lfsequent\Gamma\useof{U}{\alpha}{x}{B(x)}$ & ``$U$ is a use of $x:\alpha$ yielding $B(x)$ in context $\Gamma$''\\
-  $\lfsequent\Gamma\infers{R}{A}$ & ``$R$ synthesizes type $A$ in context $\Gamma$''\\
-  $\lfsequent\Gamma\checks{E}{A}$ & ``$E$ checks at type $A$ in context $\Gamma$''\\
-  $\eapply{U}{M}{E}$ & ``$U$ applied to $M$ yields $E$\\
-  $\hsubste{E}{x}{M}{M'}$ & ``the substitution of $E$ for $x$ in $M$ is $M'$\\
-  $\hsubstu{E}{x}{U}{U'}$ & ``the substitution of $E$ for $x$ in $U$ is $U'$\\
-  $\hsubste{E}{x}{F}{F'}$ & ``the substitution of $E$ for $x$ in $F$ is $F'$\\
-  $\hsubstr{E}{x}{R}{R'}$ & ``the substitution of $E$ for $x$ in $R$ is $R'$\\
-  $\hsubstrm{E}{x}{R}{E'}$ & ``the substitution of $E$ for $x$ in $R$ is $E'$\\
-  \bottomrule
-\end{tabular}\\
-
-Note that we have made many of the above judgements with respect to a
-context. It is tempting to first define the each judgement
-``categorically'' (i.e. without a context), and it is often done this
-way in presentations of type theory,
-but this is not actually possible for an intensional type theory, where the
-meaning of the sequent judgement is not compositional. In fact, the
-sequent judgement for intensional type theories may not even be
-defined in terms of Martin-L\"of's hypothetical judgement, since the
-former represents derivability, whereas the latter encompasses
-admissibility as well. In this sense, then, even the sequent
-judgements above are ``categorical''.
-
-\subsection{Meaning explanations}
-
-For each form of judgement listed in the previous section, a meaning
-explanation will be given.
-
-\begin{quote}
-  To know $\lfctx\Gamma$ is to know that $\match{\Gamma}{\cdot}$; or it is
-to know that $\match{\Gamma}{\Delta,x:A}$ such that $\lfctx\Delta$, $\fresh{x}{\Delta}$ and
-$\lfsequent\Delta\type{A}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\fresh{x}{\Gamma}$ is to know that $\match\Gamma\cdot$, or
-to know a context $\Delta$ and a variable $\fresh{y}{\Delta}$ such
-that $x$ is not $y$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hasvar{\Gamma}{x}{A}$ (presupposing $\lfctx\Gamma$) is to
-know that $\match{\Gamma}{\Delta,x:A}$, or to know that
-$\match{\Gamma}{\Delta, y:A}$ such that $\hasvar{\Delta}{x}{A}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\cantype{\alpha}$ (presupposing $\lfctx\Gamma$) is
-to know what counts as a canonical verification of $\alpha$ in context
-$\Gamma$, and what is a use of $x:\alpha$ yielding what in context
-$\Gamma$; moreover, for any such use $U$ and any such canonical
-verification $M$, to know what expression is yielded by applying $U$
-to $M$. Moreover, for any such verification $M$ and any variable $x$,
-to know the value of the substitution of $E$ for $x$ in $M$ for any
-$E$; and for any such use $U$ and any variable $x$, to know the
-substitution of $E$ for $x$ in $U$ for any $E$; finally, to know the
-substitution of $E$ for $x$ in $\alpha$ for any $E$ and $x$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\type{A}$ is to know a type $\alpha$ such that $\match{A}{\ival{\alpha}}$ and $\lfsequent\Gamma\cantype\alpha$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\valof{M}{\alpha}$ (presupposing
-$\lfsequent\Gamma\cantype{\alpha}$) is to know that $M$ is a canonical
-verification of $\alpha$ in context $\Gamma$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\useof{U}{\alpha}{x}{B(x)}$ (presupposing
-$\lfsequent\Gamma\cantype{\alpha}$, $\lfsequent{\Gamma,x:\ival\alpha}{\type{B(x)}}$ and
-$\fresh{x}{\Gamma}$) is to know that $U$ is a use of $x:\alpha$ yielding
-$B(x)$ in context $\Gamma$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\infers{R}{A}$ (presupposing
-$\lfctx\Gamma$) is, if $\match{R}{x}$, to know that
-$\hasvar{\Gamma}{x}{A}$; if $\match{R}{\elim{U}{S}}$, then it is to
-know that $\lfsequent\Gamma\useof{U}{\beta}{x}{C(x)}$,
-$\lfsequent\Gamma\infers{S}{\ival\beta}$, and $\match{C(\elim{U}{S})}{A}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\lfsequent\Gamma\checks{E}{A}$ (presupposing
-$\lfsequent\Gamma\type{A}$) is, if $\match{E}{\ineu{R}}$, to know that
-$\lfsequent\Gamma\infers{R}{A}$; if $\match{E}{\ival{M}}$, then it is to know
-$\match{A}{\ival\alpha}$ and $\lfsequent\Gamma\valof{M}{\alpha}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\eapply{U}{M}{E}$ is to know that $U$ applied
-to $M$ yields $E$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hsubste{E}{x}{M}{M'}$ is to know that the substitution of $E$ for $x$ in $M$ is $M'$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hsubste{E}{x}{U}{U'}$ is to know that the substitution of $E$ for $x$ in $U$ is $U'$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hsubste{E}{x}{\ineu{R}}{\ineu{R'}}$ is to know that
-$\hsubstr{E}{x}{R}{R'}$; to know $\hsubste{E}{x}{\ineu{R}}{\ival{M}}$
-is to know that $\hsubstrm{E}{x}{R}{\ival{M}}$; to know
-$\hsubste{E}{x}{\ival{M}}{\ival{M'}}$ is to know that
-$\hsubstm{E}{x}{M}{M'}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hsubstr{E}{x}{R}{R}$ is to know that $x$ does not occur
-free in $R$; to know $\hsubstr{E}{x}{\elim{U}{R}}{\elim{V}{S}}$ is to
-know that $\hsubstu{E}{x}{U}{V}$ and $\hsubstr{E}{x}{R}{S}$.
-\end{quote}\medskip
-
-\begin{quote}
-  To know $\hsubstrm{E}{x}{x}{E}$ is immediate; to know
-$\hsubstrm{E}{x}{\elim{U}{R}}{E'}$ is to know that
-$\hsubstu{E}{x}{U}{V}$, $\hsubstrm{E}{x}{R}{F}$, and $\eapply{V}{F}{E'}$.
-\end{quote}\medskip
-
-Many of the above explanations may be given more clearly as inference
-rules; it is not some peculiarity of meaning explanations that they
-must be given in prose rather than mathematical notation, though we
-have stuck to the former here for uniformity.
-
-\subsubsection{Discussion}
-
-The idea of separating out unapplied elimination forms (\emph{uses} in
-our parlance) is closely related to the notion of \emph{spines}, which
-are lists of \emph{uses}, which may be applied all at once to
-a variable. It would be possible to add further syntax and judgements
-for spines into our system, but the primary reason for separating out
-the \emph{uses} in the first place was simply to make the evidence for
-$\lfsequent\Gamma\cantype{\alpha}$ as minimal as possible, so as to make the
-definitions of the types both economical and modular.
-
-The substitution judgements that we gave over each relevant syntactic category
-give rise to a system of \emph{hereditary substitution} (see \cite{watkins});
-the purpose of hereditary substitutions is to provide a way to substitute a
-normal form into a term without creating redexes. The hereditary substitutions
-may be divided into two groups. First, the structural substitutions which must
-be given separately for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
-$\hsubstr{E}{x}{U}{U'}$; these may be implemented mechanically, by induction on
-the arity of each operator. Second, the substitutions which may be implemented
-once and for all in terms of the other judgements, namely
-$\hsubstrm{E}{x}{R}{M}$, $\hsubstr{E}{x}{R}{S}$ and $\hsubste{E}{x}{F}{F'}$.
-
-Lastly, in its full presentation, Martin-L\"of's logical framework has
-a single universe $\mathsf{Set}$ such that
-$\hyp{\type{\mathsf{El}(A)}}{\ofty{A}{\mathsf{Set}}}$; in a proper
-development of our modular logical framework, we would need to add
-such a universe. In order to do this, the meaning explanation of
-$\lfsequent\Gamma\type{A}$ (which is defined trivially in terms of
-$\lfsequent\Gamma\cantype\alpha$) would have to be adjusted, in order
-to take into account the neutral types which would be introduced by
-the universe.
-
-\subsection{The definitions of types}
-
-Now we will proceed with defining some basic types according to the
-meaning explanations we gave above.
-
-\subsubsection{The unit type}
-
-The following operators are introduced with their sorts:
-\begin{gather*}
-  \tyunit : \val\qquad \bullet : \val
-\end{gather*}
-
-Then, we will make the judgement
-$\genj{\Gamma}{\lfsequent\Gamma\cantype\tyunit}$ evident; note that we will use
-Martin-L\"of's general judgement in order to express that the typehood
-assertion is valid in \emph{any} context. The evidence of this
-judgement is the following list of definitions:
-\begin{enumerate}
-  \item $\bullet$ is a canonical verification of $\tyunit$ in context $\Gamma$.
-  \item There are no applicable uses.
-  \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\bullet$ is $\bullet$.
-  \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\tyunit$ is $\tyunit$.
-\end{enumerate}
-
-\subsubsection{The empty type}
-For the empty type, we introduce the following operators:
-\begin{gather*}
-  \tyvoid:\val \qquad \hyp{\uabort{A}:\utm}{A:\mtm}
-\end{gather*}
-
-The judgement $\genj{\Gamma}{\lfsequent\Gamma\cantype\tyvoid}$ is made
-evident by means of the following definitions:
-\begin{enumerate}
-  \item There is no canonical verification of $\tyvoid$.
-  \item $\uabort{A}$ is a use of $x:\tyvoid$ yielding $A$ in context $\Gamma$, assuming $\lfsequent\Gamma\type{A}$.
-  \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\uabort{A}$ is $\uabort{A'}$, assuming $\hsubste{E}{x}{A}{A'}$.
-  \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\tyvoid$ is $\tyvoid$.
-\end{enumerate}
-
-This is the first time we have seen a significant difference in
-practice from the extensional type theory explored in the previous
-chapter; note how we include an elimination form for $\tyvoid$ in its
-definition, whereas in extensional type theory this is entirely
-unnecessary.
-
-\subsubsection{The dependent function type}
-For the dependent function type, the following operators are introduced:
-\begin{gather*}
-  \hyp{(x:A)B(x) : \val}{A:\mtm, \hyp{B(x):\mtm}{x:\rtm}}\\
-  \hyp{[x]E(x) : \val}{\hyp{E(x):\mtm}{x:\rtm}}\\
-  \hyp{\uap{E}:\utm}{E:\mtm}
-\end{gather*}
-
-The judgement
-$\genj{\Gamma}{%
-  \hyp{%
-    \lfsequent\Gamma{
-      \cantype{(x:A)B(x)}%
-    }
-  }{%
-    \lfsequent\Gamma{\type{A}};\ %
-    \lfsequent{\Gamma,x:A}{\type{B(x)}}
-  }%
-}$
-is made evident via the following definitions:
-\begin{enumerate}
-  \item A canonical verification of $(x:A)B(x)$ in context $\Gamma$ is
-$[x]E(x)$, such that $\lfsequent{\Gamma,x:A}{\checks{E(x)}{B(x)}}$
-  \item $\uap{E}$ is a use of $z:(x:A)B(x)$ yielding $B'$ in context $\Gamma$, assuming $\lfsequent\Gamma\checks{E}{A}$ and $\hsubste{E}{x}{B}{B'}$.
-  \item Applying $\uap{E}$ to $[x]F(x)$ yields $F'$, assuming $\hsubste{E}{x}{F}{F'}$.
-  \item The substitution of $E$ for $z$ in $[x]F(x)$ is $[x]F'(x)$, assuming $\hsubste{E}{z}{F}{F'}$.
-  \item The substitution of $E$ for $z$ in $\uap{F}$ is $\uap{F'}$, assuming $\hsubste{E}{z}{F}{F'}$.
-  \item The substitution of $E$ for $z$ in $(x:A)B(x)$ is $(x:A')B'(x)$, assuming $\hsubste{E}{z}{A}{A'}$ and $\hsubste{E}{z}{B}{B'}$.
-\end{enumerate}
-
-Based on this definition, and the meanings of the judgements, the
-familiar inference rules are valid (justified):
-\begin{gather*}
-  \infer{
-    \lfsequent\Gamma\type{\ival{(x:A)B(x)}}
-  }{
-    \lfsequent\Gamma\type{A} &
-    \lfsequent{\Gamma,x:A}\type{B(x)}
-  }\\[6pt]
-  %
-  \infer{
-    \lfsequent\Gamma\checks{\ival{[x]E(x)}}{\ival{(x:A)B(x)}}
-  }{
-    \lfsequent{\Gamma,x:A}\checks{E(x)}{B(x)}
-  }
-  \qquad
-  \infer{
-    \lfsequent\Gamma\infers{\elim{\uap{E}}{F}}{B'}
-  }{
-    \lfsequent\Gamma\infers{F}{\ival{(x:A)B(x)}} &
-    \hsubste{E}{x}{B}{B'}
-  }
-\end{gather*}
-
-I leave the proofs of the validity of these rule schemes as an
-exercise to the reader.
-
-\subsection{Discussion}
-
-In this chapter, a logical framework has been developed which, unlike
-Martin-L\"of's logical framework, permits the modular/separate
-definitions of types. On the other hand, we have \emph{not} addressed
-the first critique of \MLLF, which is that it lacks computational
-content.
-
-To make the framework truly computational, it would be necessary to
-modify the syntax to include redexes, add judgements for reduction of
-open terms to normal form (as opposed to reduction of closed terms to
-canonical form), and adjust the meaning explanations of the judgements
-$\lfsequent\Gamma\checks{M}{A}$ and $\lfsequent\Gamma\infers{R}{A}$ to
-normalize their subjects.
-
+%% \section{A modular logical framework via verifications \& uses}
+%%
+%% We will first try and address the easier of the two critiques by
+%% factoring the judgements of the logical framework in such a way as to
+%% permit different types to be defined modularly in isolation, and then
+%% composed freely into theories. In order to simplify matters, we will
+%% restrict our syntax to normal forms, thus eliminating the need for a
+%% judgemental equality any more advanced than simple
+%% $\alpha$-equivalence.
+%%
+%% The source of the anti-modularity in the previous section's
+%% presentation was the fact that the introduction of a type and the
+%% elimination of a type were considered within the same judgement. A
+%% simple way to resolve this issue is to separate the typing judgement
+%% $\ofty{M}{A}$ into two separate judgements, a checking judgement
+%% $\checks{M}{A}$ and a synthesizing judgement
+%% $\infers{R}{A}$; the basic idea is that introduction forms
+%% (``verifications'') are to be checked, and elimination forms
+%% (``uses'') are to be synthesized (or inferred). \textbf{Note that in this
+%% chapter, we have no further use for the big-step reduction judgement
+%% $\reduce{M}{M'}$; since there will be no ambiguity, so we will re-use
+%% its notation for the type synthesis judgement.}
+%%
+%% In fact, the technique described above is commonplace in practical
+%% implementations of type theory for proof assistants. In practice,
+%% checkable terms and inferrable terms are usually put into separate
+%% syntactic categories as well; because we need our syntax, judgements
+%% and definitions to be as modular as possible, we will find even
+%% further granularity to be useful.
+%%
+%% \subsection{Syntax and judgements}
+%%
+%% We introduce several syntactic categories (sorts):\\
+%%
+%% \begin{tabular}{lll}
+%%   \toprule
+%%   sort & names & description\\ \midrule
+%%   $\mathbf{ctx}$ & $\Gamma, \Delta$ & contexts\\
+%%   $\val$ & $M, N, \alpha, \beta$ & values (canonical forms and types) \\
+%%   $\utm$ & $U, V$ & uses (eliminators) \\
+%%   $\rtm$ & $R, S$ & neutral terms (variables and applied uses) \\
+%%   $\mtm$ & $E,F,A,B$ & expressions (normal forms, i.e.\ canonical forms, neutral terms)\\
+%%   \bottomrule
+%% \end{tabular}\\
+%%
+%% A \emph{value} is an introduction form, like $\pair{E_1}{E_2}$ or
+%% $[x]E$. A \emph{use} is an unapplied elimination form, like $\ufst$,
+%% $\usnd$, or $\uap{N}$. A \emph{neutral term} is a variable $x$, or it
+%% is an application $\elim{U}{R}$ of a use $U$ to a neutral term $R$,
+%% like $\elim{\ufst}{R}$. Lastly, an \emph{expression} is a value $\ival{M}$ or it
+%% is a neutral term $\ineu{R}$.
+%%
+%% Then, we will have the following forms of judgement, each of which
+%% will be given a meaning explanation:\\
+%%
+%% \begin{tabular}{ll}
+%%   \toprule
+%%   judgement & pronunciation\\ \midrule
+%%   $\lfctx{\Gamma}$ & ``$\Gamma$ is a context''\\
+%%   $\fresh{x}{\Gamma}$ & ``$x$ is fresh in $\Gamma$''\\
+%%   $\hasvar{\Gamma}{x}{A}$ & ``$\Gamma$ contains $x:A$''\\
+%%   $\lfsequent\Gamma\cantype{\alpha}$ & ``$\alpha$ is a canonical type in context $\Gamma$''\\
+%%   $\lfsequent\Gamma\type{A}$ & ``$A$ is a type in context $\Gamma$''\\
+%%   $\lfsequent\Gamma\valof{M}{\alpha}$ & ``$M$ is a canonical verification of $A$ in context $\Gamma$''\\
+%%   $\lfsequent\Gamma\useof{U}{\alpha}{x}{B(x)}$ & ``$U$ is a use of $x:\alpha$ yielding $B(x)$ in context $\Gamma$''\\
+%%   $\lfsequent\Gamma\infers{R}{A}$ & ``$R$ synthesizes type $A$ in context $\Gamma$''\\
+%%   $\lfsequent\Gamma\checks{E}{A}$ & ``$E$ checks at type $A$ in context $\Gamma$''\\
+%%   $\eapply{U}{M}{E}$ & ``$U$ applied to $M$ yields $E$\\
+%%   $\hsubste{E}{x}{M}{M'}$ & ``the substitution of $E$ for $x$ in $M$ is $M'$\\
+%%   $\hsubstu{E}{x}{U}{U'}$ & ``the substitution of $E$ for $x$ in $U$ is $U'$\\
+%%   $\hsubste{E}{x}{F}{F'}$ & ``the substitution of $E$ for $x$ in $F$ is $F'$\\
+%%   $\hsubstr{E}{x}{R}{R'}$ & ``the substitution of $E$ for $x$ in $R$ is $R'$\\
+%%   $\hsubstrm{E}{x}{R}{E'}$ & ``the substitution of $E$ for $x$ in $R$ is $E'$\\
+%%   \bottomrule
+%% \end{tabular}\\
+%%
+%% Note that we have made many of the above judgements with respect to a
+%% context. It is tempting to first define the each judgement
+%% ``categorically'' (i.e. without a context), and it is often done this
+%% way in presentations of type theory,
+%% but this is not actually possible for an intensional type theory, where the
+%% meaning of the sequent judgement is not compositional. In fact, the
+%% sequent judgement for intensional type theories may not even be
+%% defined in terms of Martin-L\"of's hypothetical judgement, since the
+%% former represents derivability, whereas the latter encompasses
+%% admissibility as well. In this sense, then, even the sequent
+%% judgements above are ``categorical''.
+%%
+%% \subsection{Meaning explanations}
+%%
+%% For each form of judgement listed in the previous section, a meaning
+%% explanation will be given.
+%%
+%% \begin{quote}
+%%   To know $\lfctx\Gamma$ is to know that $\match{\Gamma}{\cdot}$; or it is
+%% to know that $\match{\Gamma}{\Delta,x:A}$ such that $\lfctx\Delta$, $\fresh{x}{\Delta}$ and
+%% $\lfsequent\Delta\type{A}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\fresh{x}{\Gamma}$ is to know that $\match\Gamma\cdot$, or
+%% to know a context $\Delta$ and a variable $\fresh{y}{\Delta}$ such
+%% that $x$ is not $y$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hasvar{\Gamma}{x}{A}$ (presupposing $\lfctx\Gamma$) is to
+%% know that $\match{\Gamma}{\Delta,x:A}$, or to know that
+%% $\match{\Gamma}{\Delta, y:A}$ such that $\hasvar{\Delta}{x}{A}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\cantype{\alpha}$ (presupposing $\lfctx\Gamma$) is
+%% to know what counts as a canonical verification of $\alpha$ in context
+%% $\Gamma$, and what is a use of $x:\alpha$ yielding what in context
+%% $\Gamma$; moreover, for any such use $U$ and any such canonical
+%% verification $M$, to know what expression is yielded by applying $U$
+%% to $M$. Moreover, for any such verification $M$ and any variable $x$,
+%% to know the value of the substitution of $E$ for $x$ in $M$ for any
+%% $E$; and for any such use $U$ and any variable $x$, to know the
+%% substitution of $E$ for $x$ in $U$ for any $E$; finally, to know the
+%% substitution of $E$ for $x$ in $\alpha$ for any $E$ and $x$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\type{A}$ is to know a type $\alpha$ such that $\match{A}{\ival{\alpha}}$ and $\lfsequent\Gamma\cantype\alpha$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\valof{M}{\alpha}$ (presupposing
+%% $\lfsequent\Gamma\cantype{\alpha}$) is to know that $M$ is a canonical
+%% verification of $\alpha$ in context $\Gamma$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\useof{U}{\alpha}{x}{B(x)}$ (presupposing
+%% $\lfsequent\Gamma\cantype{\alpha}$, $\lfsequent{\Gamma,x:\ival\alpha}{\type{B(x)}}$ and
+%% $\fresh{x}{\Gamma}$) is to know that $U$ is a use of $x:\alpha$ yielding
+%% $B(x)$ in context $\Gamma$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\infers{R}{A}$ (presupposing
+%% $\lfctx\Gamma$) is, if $\match{R}{x}$, to know that
+%% $\hasvar{\Gamma}{x}{A}$; if $\match{R}{\elim{U}{S}}$, then it is to
+%% know that $\lfsequent\Gamma\useof{U}{\beta}{x}{C(x)}$,
+%% $\lfsequent\Gamma\infers{S}{\ival\beta}$, and $\match{C(\elim{U}{S})}{A}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\lfsequent\Gamma\checks{E}{A}$ (presupposing
+%% $\lfsequent\Gamma\type{A}$) is, if $\match{E}{\ineu{R}}$, to know that
+%% $\lfsequent\Gamma\infers{R}{A}$; if $\match{E}{\ival{M}}$, then it is to know
+%% $\match{A}{\ival\alpha}$ and $\lfsequent\Gamma\valof{M}{\alpha}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\eapply{U}{M}{E}$ is to know that $U$ applied
+%% to $M$ yields $E$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hsubste{E}{x}{M}{M'}$ is to know that the substitution of $E$ for $x$ in $M$ is $M'$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hsubste{E}{x}{U}{U'}$ is to know that the substitution of $E$ for $x$ in $U$ is $U'$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hsubste{E}{x}{\ineu{R}}{\ineu{R'}}$ is to know that
+%% $\hsubstr{E}{x}{R}{R'}$; to know $\hsubste{E}{x}{\ineu{R}}{\ival{M}}$
+%% is to know that $\hsubstrm{E}{x}{R}{\ival{M}}$; to know
+%% $\hsubste{E}{x}{\ival{M}}{\ival{M'}}$ is to know that
+%% $\hsubstm{E}{x}{M}{M'}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hsubstr{E}{x}{R}{R}$ is to know that $x$ does not occur
+%% free in $R$; to know $\hsubstr{E}{x}{\elim{U}{R}}{\elim{V}{S}}$ is to
+%% know that $\hsubstu{E}{x}{U}{V}$ and $\hsubstr{E}{x}{R}{S}$.
+%% \end{quote}\medskip
+%%
+%% \begin{quote}
+%%   To know $\hsubstrm{E}{x}{x}{E}$ is immediate; to know
+%% $\hsubstrm{E}{x}{\elim{U}{R}}{E'}$ is to know that
+%% $\hsubstu{E}{x}{U}{V}$, $\hsubstrm{E}{x}{R}{F}$, and $\eapply{V}{F}{E'}$.
+%% \end{quote}\medskip
+%%
+%% Many of the above explanations may be given more clearly as inference
+%% rules; it is not some peculiarity of meaning explanations that they
+%% must be given in prose rather than mathematical notation, though we
+%% have stuck to the former here for uniformity.
+%%
+%% \subsubsection{Discussion}
+%%
+%% The idea of separating out unapplied elimination forms (\emph{uses} in
+%% our parlance) is closely related to the notion of \emph{spines}, which
+%% are lists of \emph{uses}, which may be applied all at once to
+%% a variable. It would be possible to add further syntax and judgements
+%% for spines into our system, but the primary reason for separating out
+%% the \emph{uses} in the first place was simply to make the evidence for
+%% $\lfsequent\Gamma\cantype{\alpha}$ as minimal as possible, so as to make the
+%% definitions of the types both economical and modular.
+%%
+%% The substitution judgements that we gave over each relevant syntactic category
+%% give rise to a system of \emph{hereditary substitution} (see \cite{watkins});
+%% the purpose of hereditary substitutions is to provide a way to substitute a
+%% normal form into a term without creating redexes. The hereditary substitutions
+%% may be divided into two groups. First, the structural substitutions which must
+%% be given separately for the operators of each type, $\hsubstm{E}{x}{M}{M'}$ and
+%% $\hsubstr{E}{x}{U}{U'}$; these may be implemented mechanically, by induction on
+%% the arity of each operator. Second, the substitutions which may be implemented
+%% once and for all in terms of the other judgements, namely
+%% $\hsubstrm{E}{x}{R}{M}$, $\hsubstr{E}{x}{R}{S}$ and $\hsubste{E}{x}{F}{F'}$.
+%%
+%% Lastly, in its full presentation, Martin-L\"of's logical framework has
+%% a single universe $\mathsf{Set}$ such that
+%% $\hyp{\type{\mathsf{El}(A)}}{\ofty{A}{\mathsf{Set}}}$; in a proper
+%% development of our modular logical framework, we would need to add
+%% such a universe. In order to do this, the meaning explanation of
+%% $\lfsequent\Gamma\type{A}$ (which is defined trivially in terms of
+%% $\lfsequent\Gamma\cantype\alpha$) would have to be adjusted, in order
+%% to take into account the neutral types which would be introduced by
+%% the universe.
+%%
+%% \subsection{The definitions of types}
+%%
+%% Now we will proceed with defining some basic types according to the
+%% meaning explanations we gave above.
+%%
+%% \subsubsection{The unit type}
+%%
+%% The following operators are introduced with their sorts:
+%% \begin{gather*}
+%%   \tyunit : \val\qquad \bullet : \val
+%% \end{gather*}
+%%
+%% Then, we will make the judgement
+%% $\genj{\Gamma}{\lfsequent\Gamma\cantype\tyunit}$ evident; note that we will use
+%% Martin-L\"of's general judgement in order to express that the typehood
+%% assertion is valid in \emph{any} context. The evidence of this
+%% judgement is the following list of definitions:
+%% \begin{enumerate}
+%%   \item $\bullet$ is a canonical verification of $\tyunit$ in context $\Gamma$.
+%%   \item There are no applicable uses.
+%%   \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\bullet$ is $\bullet$.
+%%   \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\tyunit$ is $\tyunit$.
+%% \end{enumerate}
+%%
+%% \subsubsection{The empty type}
+%% For the empty type, we introduce the following operators:
+%% \begin{gather*}
+%%   \tyvoid:\val \qquad \hyp{\uabort{A}:\utm}{A:\mtm}
+%% \end{gather*}
+%%
+%% The judgement $\genj{\Gamma}{\lfsequent\Gamma\cantype\tyvoid}$ is made
+%% evident by means of the following definitions:
+%% \begin{enumerate}
+%%   \item There is no canonical verification of $\tyvoid$.
+%%   \item $\uabort{A}$ is a use of $x:\tyvoid$ yielding $A$ in context $\Gamma$, assuming $\lfsequent\Gamma\type{A}$.
+%%   \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\uabort{A}$ is $\uabort{A'}$, assuming $\hsubste{E}{x}{A}{A'}$.
+%%   \item For any $E$ and $x$, the substitution of $E$ for $x$ in $\tyvoid$ is $\tyvoid$.
+%% \end{enumerate}
+%%
+%% This is the first time we have seen a significant difference in
+%% practice from the extensional type theory explored in the previous
+%% chapter; note how we include an elimination form for $\tyvoid$ in its
+%% definition, whereas in extensional type theory this is entirely
+%% unnecessary.
+%%
+%% \subsubsection{The dependent function type}
+%% For the dependent function type, the following operators are introduced:
+%% \begin{gather*}
+%%   \hyp{(x:A)B(x) : \val}{A:\mtm, \hyp{B(x):\mtm}{x:\rtm}}\\
+%%   \hyp{[x]E(x) : \val}{\hyp{E(x):\mtm}{x:\rtm}}\\
+%%   \hyp{\uap{E}:\utm}{E:\mtm}
+%% \end{gather*}
+%%
+%% The judgement
+%% $\genj{\Gamma}{%
+%%   \hyp{%
+%%     \lfsequent\Gamma{
+%%       \cantype{(x:A)B(x)}%
+%%     }
+%%   }{%
+%%     \lfsequent\Gamma{\type{A}};\ %
+%%     \lfsequent{\Gamma,x:A}{\type{B(x)}}
+%%   }%
+%% }$
+%% is made evident via the following definitions:
+%% \begin{enumerate}
+%%   \item A canonical verification of $(x:A)B(x)$ in context $\Gamma$ is
+%% $[x]E(x)$, such that $\lfsequent{\Gamma,x:A}{\checks{E(x)}{B(x)}}$
+%%   \item $\uap{E}$ is a use of $z:(x:A)B(x)$ yielding $B'$ in context $\Gamma$, assuming $\lfsequent\Gamma\checks{E}{A}$ and $\hsubste{E}{x}{B}{B'}$.
+%%   \item Applying $\uap{E}$ to $[x]F(x)$ yields $F'$, assuming $\hsubste{E}{x}{F}{F'}$.
+%%   \item The substitution of $E$ for $z$ in $[x]F(x)$ is $[x]F'(x)$, assuming $\hsubste{E}{z}{F}{F'}$.
+%%   \item The substitution of $E$ for $z$ in $\uap{F}$ is $\uap{F'}$, assuming $\hsubste{E}{z}{F}{F'}$.
+%%   \item The substitution of $E$ for $z$ in $(x:A)B(x)$ is $(x:A')B'(x)$, assuming $\hsubste{E}{z}{A}{A'}$ and $\hsubste{E}{z}{B}{B'}$.
+%% \end{enumerate}
+%%
+%% Based on this definition, and the meanings of the judgements, the
+%% familiar inference rules are valid (justified):
+%% \begin{gather*}
+%%   \infer{
+%%     \lfsequent\Gamma\type{\ival{(x:A)B(x)}}
+%%   }{
+%%     \lfsequent\Gamma\type{A} &
+%%     \lfsequent{\Gamma,x:A}\type{B(x)}
+%%   }\\[6pt]
+%%   %
+%%   \infer{
+%%     \lfsequent\Gamma\checks{\ival{[x]E(x)}}{\ival{(x:A)B(x)}}
+%%   }{
+%%     \lfsequent{\Gamma,x:A}\checks{E(x)}{B(x)}
+%%   }
+%%   \qquad
+%%   \infer{
+%%     \lfsequent\Gamma\infers{\elim{\uap{E}}{F}}{B'}
+%%   }{
+%%     \lfsequent\Gamma\infers{F}{\ival{(x:A)B(x)}} &
+%%     \hsubste{E}{x}{B}{B'}
+%%   }
+%% \end{gather*}
+%%
+%% I leave the proofs of the validity of these rule schemes as an
+%% exercise to the reader.
+%%
+%% \subsection{Discussion}
+%%
+%% In this chapter, a logical framework has been developed which, unlike
+%% Martin-L\"of's logical framework, permits the modular/separate
+%% definitions of types. On the other hand, we have \emph{not} addressed
+%% the first critique of \MLLF, which is that it lacks computational
+%% content.
+%%
+%% To make the framework truly computational, it would be necessary to
+%% modify the syntax to include redexes, add judgements for reduction of
+%% open terms to normal form (as opposed to reduction of closed terms to
+%% canonical form), and adjust the meaning explanations of the judgements
+%% $\lfsequent\Gamma\checks{M}{A}$ and $\lfsequent\Gamma\infers{R}{A}$ to
+%% normalize their subjects.
+%%
 \end{document}
