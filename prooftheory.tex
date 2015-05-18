@@ -342,6 +342,38 @@ Furthermore, to extend an existing theory with a new type, the definitions of
 every other type must be rewritten to account for the elimination forms of the
 new type.
 
+\section{A way forward: verifications \& uses}
+
+The second critique of \MLLF{} may be partially addressed by fragmenting type
+theory into a logic of \emph{verifications \& uses}: instead of a type being
+defined by its introduction rules, it must be simultaneously defined by its
+introduction rules (verifications) and its elimination rules (uses). In
+practice, this amounts to a standard technique known as \emph{bidirectional
+type checking}.
+
+The semantic priority of the forms of judgement also changes drastically: the
+sequent judgement must in this case be explained \emph{before} the categorical
+judgements; moreover, sequents may no longer be explained modularly in terms of
+general and hypothetical judgement, since the latter amounts to
+\emph{semantic} consequence (admissibility), whereas the meaning of a sequent
+in a proof theory should be \emph{syntactic} consequence (derivability).
+
+Because the target theory lacks computation, it is necessary to rule out
+redexes from terms syntactically, but this complicates the definition of
+substitution; to address this, Watkins introduced in \cite{watkins} a technique
+known as \emph{hereditary substitution}, which is a family of syntax-directed
+(algorithmic) judgements which contract redexes along the way, guaranteeing
+canonical form in their outputs. Both bidirectional type checking and
+hereditary substitutions have been used to great effect in the descendants of
+the Edinburgh Logical Framework (see \cite{Harper-Licata-2007}).
+
+The first critique, the lack of computational content, is more difficult to
+address. Roughly, the right way to do it is to replace the notion of the
+evaluation of closed terms to canonical form with the evaluation of \emph{open}
+terms to normal form. Peter Dybjer demonstrates in \cite{series/leus/Dybjer12a}
+how this technique may be used to endow the Calculus of Constructions with a
+meaning explanation, albeit necessarily of a very different kind than we have
+considered here.
 
 %% \section{A modular logical framework via verifications \& uses}
 %%
