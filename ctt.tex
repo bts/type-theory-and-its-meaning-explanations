@@ -389,9 +389,10 @@ our canonical and non-canonical forms and their reduction rules:
   \reduce{\lam{x}{E}}{\lam{x}{E}}
   \tag{Canonical}\\
   \infer{
-    \reduce{\ap{\lam{x}{E}}{M}}{N}
+    \reduce{\ap{M}{N}}{M'}
   }{
-    \reduce{[M/x]E}{N}
+    \reduce{M}{\lam{x}{E}} &
+    \reduce{[N/x]E}{M'}
   }\tag{Non-canonical}
 \end{gather*}
 
