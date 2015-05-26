@@ -157,16 +157,11 @@ proofs) of those judgements.
   $\alpha$ (necessarily presupposing $\ofty{M}{\alpha}$ and $\ofty{N}{\alpha}$).
 \end{quote}
 
-Hypothetical judgement $\hyp{\mathcal{J}}{\mathcal{J}'}$ and general judgement
-$\genj{x}{\mathcal{J}}$ have the same meaning in the logical framework as
-before. In addition to these forms of judgement, we will need contexts (with
-their wellformedness judgement $\isctx{\Gamma}$) and an intensional sequent
-judgement \framebox{$\lfsequent{\Gamma}{\mathcal{J}}$}; their meanings here
-will be similar to their meanings in the computational type theory, modulo the
-fact that the intensional sequent judgement is defined over the categorical
-judgements of the logical framework ($\type\alpha$, $\etype{\alpha}{\beta}$,
-$\ofty{M}{\alpha}$ and $\eofty{M}{N}{\alpha}$), and that we have no notion of
-evaluation internally.
+In addition to the above judgements, we will need contexts (with their
+wellformedness judgement $\isctx{\Gamma}$) and an intensional sequent judgement
+\framebox{$\lfsequent{\Gamma}{\mathcal{J}}$}; their meanings here will differ
+from the sequent judgements of computational type theory, in that they must
+mean proof-theoretic derivability, rather than semantic consequence.
 
 At this point, we may begin adding types to the logical framework. In
 practice, most types which we will introduce in the logical framework
