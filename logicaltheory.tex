@@ -340,13 +340,13 @@ into account the computational behavior of expressions:
 In practice, when it is clear that $P$ is canonical, then we will simply say,
 ``To know $\isprop{P}$ is to know what counts as a canonical verification of
 $P$''. As an example, then, we will update the evidence of the following assertion:
-\[\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}
+\[\hyp{\isprop{P\supset Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}
 \]
 The meaning
 of this, expanded into spoken language, is as follows:
 \begin{quote}
   To know $\hyp{\isprop{P\supset
-Q}}{\isprop{P},\hyp{\isprop{Q}}{\isprop{P}}}$ is to know what counts
+Q}}{\isprop{P},\hyp{\isprop{Q}}{\istrue{P}}}$ is to know what counts
   as a canonical (direct) verification of $P\supset Q$ under the
   circumstances that $\reduce{P}{P'}$, such that one knows what counts
   as a canonical verification $P'$, and, if one has such a verification,
